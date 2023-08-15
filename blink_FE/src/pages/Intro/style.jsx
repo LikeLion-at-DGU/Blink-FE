@@ -1,54 +1,5 @@
 import styled, { keyframes } from "styled-components";
 
-export const IntroContainer = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #1b2130;
-  color: white;
-  display: flex;
-  /* align-items: center; */
-  justify-content: center;
-  /* text-align: center; */
-  font-size: 2rem;
-  overflow: auto; // Hide overflow to prevent scrolling on this element
-`;
-
-export const Logo = styled.div`
-  top: -20%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  animation: ${({ isFadingIn }) => (isFadingIn ? fadeIn : fadeOut)} 2s
-    ease-in-out;
-`;
-
-export const LogoText = styled.text`
-  margin-top: 15rem;
-  line-height: 2.5rem;
-  text-align: center;
-`;
-
-export const ScrollIndicator = styled.div`
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 1rem;
-  color: #999;
-`;
-
-export const NavLogoImage = styled.img`
-  width: 20rem;
-  height: 20rem;
-  top: 30%;
-  position: relative;
-`;
-
 // Define keyframes animation
 export const fadeIn = keyframes`
   from {
@@ -57,7 +8,6 @@ export const fadeIn = keyframes`
   to {
     opacity: 1;
   }
-
 `;
 
 export const fadeOut = keyframes`
@@ -66,6 +16,72 @@ export const fadeOut = keyframes`
   }
   to {
     opacity: 0;
-
   }
 `;
+
+//첫페이지
+
+export const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  background-color: ${({ bgColor }) => bgColor};
+  opacity: ${({ opacity }) => opacity};
+  color: ${({ textColor }) => textColor};
+  animation: ${({ isFadingIn }) => (isFadingIn ? fadeIn : fadeOut)} 2s
+    ease-in-out;
+`;
+
+export const LogoImage = styled.img`
+  width: 20rem;
+  height: 20rem;
+`;
+
+export const LogoText = styled.div`
+  margin-top: 5rem;
+  line-height: 2.5rem;
+  text-align: center;
+  font-family: "GangwonEduPowerExtraBoldA";
+`;
+
+export const LogoBlink = styled.div`
+  margin-top: 1rem;
+  line-height: 2.5rem;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bolder;
+`;
+
+export const LocationImg = styled.img`
+  width: 20rem;
+  height: 20rem;
+  z-index: 100;
+`;
+
+export const LocationTextTitle = styled.div`
+  color: white;
+  font-weight: bolder;
+`;
+
+//두번째 페이지
+
+export const TwoContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  background-color: ${({ bgColor }) => bgColor};
+  opacity: ${({ opacity }) => opacity};
+  color: ${({ textColor }) => textColor};
+  animation: ${({ isFadingIn }) => (isFadingIn ? fadeIn : fadeOut)} 2s
+    ease-in-out;
+`;
+
+export const Button = styled.div``;
