@@ -70,8 +70,73 @@ export const LocationTextTitle = styled.div`
 //두번째 페이지
 
 export const TwoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  height: 70vh;
+`;
+
+export const PageWrapper = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ bgColor }) => bgColor};
+  opacity: ${({ opacity }) => opacity};
+  color: ${({ textColor }) => textColor};
+  animation: ${({ isFadingIn }) => (isFadingIn ? fadeIn : fadeOut)} 2s
+    ease-in-out;
+`;
+export const Button = styled.div`
+  border: none;
+  width: 10rem;
+  height: 3rem;
+  justify-content: center;
+  display: flex;
+  background-color: #1b2130;
+  border-radius: 20px;
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 3rem;
+  box-shadow: 5px 5px;
+  &:hover {
+    color: #3865bf;
+  }
+`;
+
+export const GoMain = styled.div`
+  display: flex;
+  justify-content: center;
+  text-align: center;
+`;
+
+export const LocationText = styled.div`
+  color: white;
+  font-size: 1.5rem;
+  justify-content: center;
+  text-align: center;
+  line-height: 2rem;
+  margin-top: 1.5rem;
+`;
+
+export const WholeLocationText = styled.div`
+  margin-left: 1rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+`;
+
+//세번째 페이지
+
+export const ThreeContainer = styled.div`
+  width: 100vw;
+  height: 70vh;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -83,5 +148,3 @@ export const TwoContainer = styled.div`
   animation: ${({ isFadingIn }) => (isFadingIn ? fadeIn : fadeOut)} 2s
     ease-in-out;
 `;
-
-export const Button = styled.div``;
