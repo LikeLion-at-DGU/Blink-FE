@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import Logo from "../../assets/images/NuLogo.png";
 import Locationpin from "../../assets/images/location.png";
 import Magnifying from "../../assets/images/magnify.png";
 import Camera from "../../assets/images/camera.png";
 import * as S from "./style";
+import { Link } from "react-router-dom";
 
 const Page1 = () => (
   <S.Container bgColor="#1B2130" textColor="white" isFadingIn={true}>
@@ -126,6 +128,12 @@ const Page3 = () => {
 
 const Page4 = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate(); // useNavigate 훅 가져오기
+
+  const handleGoToMainPage = () => {
+    // "/home" 경로로 이동
+    navigate("/home");
+  };
 
   const handleScroll = () => {
     const viewportHeight = window.innerHeight;
@@ -148,11 +156,6 @@ const Page4 = () => {
 
   const handleAnimationEnd = () => {
     setIsVisible(false);
-  };
-
-  const handleGoToMainPage = () => {
-    // 메인 페이지로 이동하는 코드를 여기에 작성
-    // 예: window.location.href = "/"; 를 사용해서 메인 페이지로 이동할 수 있습니다.
   };
 
   return (
@@ -180,13 +183,15 @@ const Page4 = () => {
         </S.WholeLocationText>
       </S.TwoContainer>
       <S.GoMain>
-        <S.Button onClick={handleGoToMainPage}>Blink 시작하기</S.Button>
+        <Link to="/home">
+          <S.Button>Blink 시작하기</S.Button>
+        </Link>
       </S.GoMain>
     </S.PageWrapper>
   );
 };
 
-function App() {
+function Intro() {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
@@ -211,4 +216,4 @@ function App() {
   );
 }
 
-export default App;
+export default Intro;
