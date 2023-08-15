@@ -52,8 +52,8 @@ function App() {
         {/* <Route index element={<Home />} /> */}
         {/* <Route index element={<KMap />} /> */}
         {/* <Route index element={<Signin />}> */}
-        {/* <Route index element={<Post />} /> */}
-        <Route index element={<Intro />} />
+        <Route index element={<Post />} />
+        {/* <Route index element={<Intro />} /> */}
         {/* <Route index element={<Signup />}> */}
         {/* <Route index element={<ExpertSignup />}> */}
         {/* #4 변호사 페이지 렌더링 코드 */}
