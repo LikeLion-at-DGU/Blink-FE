@@ -57,18 +57,25 @@ function Nav() {
         <BsChat className="chat" />
         <p>Comuunity</p>
       </S.NavIcon>
+
       <HorizonLine width="50%" marginTop="0.8rem" opacity="30%" />
+
       <S.NavIcon>
         <BsBell className="bell" />
         <p>Notice</p>
       </S.NavIcon>
       <HorizonLine width="50%" marginTop="0.8rem" opacity="30%" />
-      <Link to="/expertList">
-        <S.NavIcon>
+
+      <S.NavIcon>
+        <Link
+          to="/expertList"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
           <BsPersonVcard className="Person" />
           <p>Expert</p>
-        </S.NavIcon>
-      </Link>
+        </Link>
+      </S.NavIcon>
+
       <Link to="/signin">
         <S.Profile>
           {profileImageUrl && (
