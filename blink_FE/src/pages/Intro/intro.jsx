@@ -173,9 +173,9 @@ const Page4 = () => {
             블랙박스로 서로의 눈과 귀가 되어주세요!
           </S.LocationTextTitle>
           <S.LocationText>
-            <br /> 당신의 제보가 필요한 사람들이 많습니다. <br />
-            누군가에게 중요한 사람이 되어주세요. <br />
-            그리고 다시 보답받으세요.
+            <br /> 당신의 제보가 필요한 사람들이 많답니다 <br />
+            누군가에게 중요한 사람이 되어주세요 <br />
+            그리고 다시 보답받으세요 :)
           </S.LocationText>
         </S.WholeLocationText>
       </S.TwoContainer>
