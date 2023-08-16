@@ -23,15 +23,62 @@ const Input = styled.input`
   z-index: 5;
 `;
 
+const ClearMarkersButton = styled.button`
+  position: absolute;
+  bottom: 10px;
+  left: 500px;
+  padding: 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 5;
+`;
+
+const ClearMarkersButton2 = styled.button`
+  position: absolute;
+  bottom: 10px;
+  left: 1000px;
+  padding: 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 5;
+`;
+
+const ClearMarkersButton3 = styled.button`
+  position: absolute;
+  bottom: 10px;
+  left: 1500px;
+  padding: 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 5;
+`;
+
+const LeftDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 500px;
+`;
+
+let clickListener; // 클릭 이벤트 리스너 저장 변수
+
 function CustomGMap() {
   const googleMapApiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
   const [map, setMap] = useState(null);
   const [autocomplete, setAutocomplete] = useState(null);
-  const [predictions, setPredictions] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [clickedLocation, setClickedLocation] = useState(null);
+  const [marker, setMarker] = useState(null);
+  const [center, setCenter] = useState({ lat: 37.468352, lng: 127.039021 });
   const [markers, setMarkers] = useState([]);
-  const [center, setCenter] = useState({ lat: 37.468352, lng: 127.039021 }); // 추가: 중앙 위치 상태
+  const [clickDisabled, setClickDisabled] = useState(false); // 클릭 이벤트 비활성화 상태
+  const [maxMarkersAlert, setMaxMarkersAlert] = useState(false);
 
   const containerStyle = {
     width: "100%",
@@ -56,29 +103,52 @@ function CustomGMap() {
 
   const initMap = () => {
     const mapOptions = {
-      center: center, // 중앙 위치 설정
+      center: center,
       zoom: 16,
-      fullscreenControl: false,
+      fullscreenControl: false, // 맵 상에서 풀스크린(F11) 기능 삭제
+      minZoom: 13, // 최소 줌 레벨 설정
+      maxZoom: 20, // 최대 줌 레벨 설정
     };
     const newMap = new window.google.maps.Map(
       document.getElementById("map"),
       mapOptions
     );
 
-    newMap.addListener("click", (event) => {
-      const clickedLatLng = event.latLng.toJSON();
-      setClickedLocation(clickedLatLng);
+    // 원하는 위치에 마커 추가
+    const markerLocations = [
+      { lat: 37.514438, lng: 127.037484 },
+      { lat: 37.514838, lng: 127.037084 },
+      { lat: 37.512438, lng: 127.030484 },
+    ];
 
-      clearMarkers();
+    markerLocations.forEach((location) => {
       const marker = new window.google.maps.Marker({
-        position: clickedLatLng,
+        position: location,
         map: newMap,
-        title: "선택한 위치",
+        title: "마커 위치",
       });
-      setMarkers([marker]);
+      setMarkers((prevMarkers) => [...prevMarkers, marker]);
     });
 
-    // 중앙 위치가 변경되면 맵의 중앙 위치를 업데이트합니다.
+    clickListener = newMap.addListener("click", (event) => {
+      if (!clickDisabled) {
+        const clickedLatLng = event.latLng.toJSON();
+        setClickedLocation(clickedLatLng);
+
+        if (marker) {
+          marker.setMap(null); // Remove the previous marker
+        }
+
+        const newMarker = new window.google.maps.Marker({
+          position: clickedLatLng,
+          map: newMap,
+          title: "선택한 위치",
+        });
+        setMarker(newMarker);
+        setMarkers([...markers, newMarker]);
+      }
+    });
+
     newMap.addListener("center_changed", () => {
       const newCenter = newMap.getCenter().toJSON();
       setCenter(newCenter);
@@ -93,99 +163,58 @@ function CustomGMap() {
     }
   };
 
-  const handlePlacePredictions = (predictions) => {
-    setPredictions(predictions);
-  };
-
   const handleInputChange = (e) => {
     if (autocomplete) {
-      autocomplete.getPlacePredictions(
-        {
-          input: e.target.value,
-        },
-        handlePlacePredictions
-      );
-
-      // Update selectedPlace state with the input value
       setSelectedPlace(e.target.value);
     }
   };
 
-  // handlePlaceSelection 함수를 다음과 같이 수정
-  const handlePlaceSelection = async (placeId) => {
-    if (!map) return;
-
-    // Fetch place details using placeId
-    const service = new window.google.maps.places.PlacesService(map);
-    service.getDetails({ placeId }, (place, status) => {
-      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        // Center map on selected place
-        map.setCenter(place.geometry.location);
-
-        // Remove existing markers
-        clearMarkers();
-
-        // Add marker to selected place
-        const marker = new window.google.maps.Marker({
-          position: place.geometry.location,
-          map: map,
-          title: place.name,
-        });
-
-        // Store the marker reference to clear later
-        setMarkers([marker]);
-
-        // Update clickedLocation to the selected place's location
-        setClickedLocation(place.geometry.location.toJSON());
-      }
-    });
-  };
-
-  // render 함수 내에서 선택된 장소 정보 출력 부분 수정
-  {
-    selectedPlace && (
-      <div>
-        <p>선택한 장소: {selectedPlace}</p>
-        <button onClick={() => handlePlaceSelection(selectedPlace)}>
-          선택한 장소 보기
-        </button>
-      </div>
-    );
-  }
-
-  // Add marker to selected place
-  const addMarkerToPlace = (place) => {
-    const marker = new window.google.maps.Marker({
-      position: place.geometry.location,
-      map: map,
-      title: place.name,
-    });
-
-    // Store the marker reference to clear later
-    setMarkers([marker]);
-  };
-
-  const clearMarkers = () => {
+  const clearAllMarkers = () => {
     markers.forEach((marker) => {
       marker.setMap(null);
     });
     setMarkers([]);
+    setClickedLocation(null);
   };
 
-  const mapLocation = [
-    { lat: 37.569227, lng: 126.9777256 }, // Example marker location
-    { lat: 37.569224, lng: 126.9777257 },
-    { lat: 37.56922, lng: 126.977725 },
-    // Add more marker locations as needed
-  ];
+  const temporarilyDisableClickEvent = () => {
+    if (clickListener) {
+      // 클릭 이벤트 리스너를 제거하여 클릭 이벤트 비활성화
+      window.google.maps.event.removeListener(clickListener);
+      setClickDisabled(true);
 
-  const mapviewMarkerClickHandler = (e) => {
-    // Handle marker click event
+      // 클릭 이벤트 리스너를 추가하여 클릭 시 알림 띄우기
+      clickListener = map.addListener("click", () => {
+        window.alert("마커 기능이 제한되어 있습니다.");
+      });
+    }
+  };
+
+  const temporarilyEnableClickEvent = () => {
+    if (clickDisabled) {
+      setMarker(null);
+      setMaxMarkersAlert(false);
+
+      clickListener = map.addListener("click", (event) => {
+        const clickedLatLng = event.latLng.toJSON();
+        setClickedLocation(clickedLatLng);
+
+        const newMarker = new window.google.maps.Marker({
+          position: clickedLatLng,
+          map: map,
+          title: "선택한 위치",
+        });
+        setMarker(newMarker);
+        setMarkers([newMarker]);
+      });
+
+      setClickDisabled(false);
+    }
   };
 
   return (
     <>
-      {autocomplete && (
+      {/* {autocomplete && (
         <Autocomplete>
           <Input
             type="text"
@@ -194,7 +223,7 @@ function CustomGMap() {
             value={selectedPlace ? selectedPlace : ""}
           />
         </Autocomplete>
-      )}
+      )} */}
       <GMapContainer id="map">
         {map && (
           <LoadScript googleMapsApiKey={googleMapApiKey}>
@@ -203,11 +232,17 @@ function CustomGMap() {
               center={center}
               zoom={20}
             >
-              {/* 마커 클릭 핸들러 등 다른 내용 */}
+              {marker && (
+                <Marker
+                  position={marker.getPosition().toJSON()}
+                  title="선택한 위치"
+                />
+              )}
             </GoogleMap>
           </LoadScript>
         )}
       </GMapContainer>
+
       {clickedLocation && (
         <div>
           <p>선택한 위치:</p>
@@ -220,6 +255,17 @@ function CustomGMap() {
         <p>위도: {center.lat.toFixed(6)}</p>
         <p>경도: {center.lng.toFixed(6)}</p>
       </div>
+      <LeftDiv>
+        <ClearMarkersButton3 onClick={clearAllMarkers}>
+          마커 제거
+        </ClearMarkersButton3>
+        <ClearMarkersButton onClick={temporarilyDisableClickEvent}>
+          클릭 이벤트 일시 비활성화
+        </ClearMarkersButton>
+        <ClearMarkersButton2 onClick={temporarilyEnableClickEvent}>
+          클릭 이벤트 다시 활성화
+        </ClearMarkersButton2>
+      </LeftDiv>
     </>
   );
 }

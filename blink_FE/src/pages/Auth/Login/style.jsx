@@ -32,4 +32,4 @@ export const SigninWrapper = styled.div`
   left: 22%;
 `;
 
-export const SignInInputWrapper = styled.div``;
+export const SignInInputWrapper = styled.form``;

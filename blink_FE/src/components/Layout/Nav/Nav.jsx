@@ -1,37 +1,95 @@
-import React, { useRef, useEffect } from "react";
-import styled from "styled-components";
+import React, { useRef, useEffect, useState } from "react";
 import * as S from "./Styled";
 import LogoIcon from "../../../assets/images/Logo.png";
-import { IoIosSearch } from "react-icons/io";
-import { AiOutlineMinus } from "react-icons/ai";
 import HorizonLine from "../../Layout/Line";
-import { BsChat } from "react-icons/bs";
+import { BsChat, BsBell, BsPersonVcard } from "react-icons/bs";
+import { CiSearch } from "react-icons/ci";
+import { css } from "styled-components";
+import { PiUserCircleDuotone } from "react-icons/pi";
+import DefaultProfileImage from "../../../assets/images/user.png";
+import { Link } from "react-router-dom";
 
-export default function Nav() {
-  const scrollToRef = (ref) => {
-    window.scrollTo({
-      top: ref.current.offsetTop,
-      behavior: "smooth",
-    });
-  };
+function Nav() {
+  //프로필 이미지 불러오기
+  const [profileImageUrl, setProfileImageUrl] = useState(null);
 
-  const nav1Ref = useRef(null);
-  const nav2Ref = useRef(null);
-  const nav3Ref = useRef(null);
+  // defaultProfileImageUrl 설정
+  const defaultProfileImageUrl = (
+    <img
+      src={DefaultProfileImage}
+      alt="Default Profile"
+      style={{ width: "70px", height: "60px" }} // 원하는 크기로 설정
+    />
+  );
+
+  // useEffect(() => {
+  //   fetchUserProfileImage(); // 이미지 가져오는 함수 호출
+  // }, []);
+
+  // const fetchUserProfileImage = async () => {
+  //   try {
+  //     const response = await fetch(`/api/profile-image/${userId}`); // userId는 변경필요
+  //     if (response.ok) {
+  //       const imageUrl = response.url;
+  //       setProfileImageUrl(imageUrl); // 프로필 이미지 URL 설정
+  //     } else {
+  //       console.error("프로필 이미지를 불러오는데 실패했습니다.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching profile image:", error);
+  //   }
+  // };
 
   return (
     <S.NavContainer>
-      <S.NavLogo>
-        <S.NavLogoImage src={LogoIcon} alt="Logo" />
-      </S.NavLogo>
-      <IoIosSearch className="search" />
-      <HorizonLine width="50%" marginTop="1rem" />
-      <BsChat className="chat" />
-      <HorizonLine width="50%" marginTop="1rem" />
+      <Link to="/home">
+        <S.NavLogo>
+          <S.NavLogoImage src={LogoIcon} alt="Logo" />
+        </S.NavLogo>
+      </Link>
+      <S.NavIcon>
+        <CiSearch className="search" />
+        <p>Search</p>
+      </S.NavIcon>
 
-      {/* <S.NavItem onClick={() => scrollToRef(nav1Ref)}>nav1</S.NavItem>
-      <S.NavItem onClick={() => scrollToRef(nav2Ref)}>nav2</S.NavItem>
-      <S.NavItem onClick={() => scrollToRef(nav3Ref)}>nav3</S.NavItem> */}
+      <HorizonLine width="50%" marginTop="0.5rem" opacity="30%" />
+      <S.NavIcon>
+        <BsChat className="chat" />
+        <p>Comuunity</p>
+      </S.NavIcon>
+
+      <HorizonLine width="50%" marginTop="0.8rem" opacity="30%" />
+
+      <S.NavIcon>
+        <BsBell className="bell" />
+        <p>Notice</p>
+      </S.NavIcon>
+      <HorizonLine width="50%" marginTop="0.8rem" opacity="30%" />
+
+      <S.NavIcon>
+        <Link
+          to="/expertList"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <BsPersonVcard className="Person" />
+          <p>Expert</p>
+        </Link>
+      </S.NavIcon>
+
+      <Link to="/signin">
+        <S.Profile>
+          {profileImageUrl && (
+            <img
+              className="profile-image"
+              src={profileImageUrl}
+              alt="Profile"
+            />
+          )}
+          {!profileImageUrl && defaultProfileImageUrl}
+        </S.Profile>
+      </Link>
     </S.NavContainer>
   );
 }
+
+export default Nav;

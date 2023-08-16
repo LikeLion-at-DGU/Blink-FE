@@ -1,10 +1,9 @@
 // Import necessary libraries
 import styled from "styled-components";
 import { MdLocationOn } from "react-icons/md";
-import HorizonLine from "./Line.jsx";
+import HorizonLine from "../Layout/Line";
 import React, { useState } from "react";
-
-// Define a styled component
+import { AiOutlinePaperClip } from "react-icons/ai";
 
 const Outer = styled.div`
   width: 1150px;
@@ -61,7 +60,6 @@ const CommentBox = styled.div`
   height: 332px;
   border-radius: 10px;
   display: flex;
-  background-color: beige;
   flex-direction: column;
 `;
 
@@ -84,25 +82,21 @@ const Context = styled.div`
   line-height: 1.4em;
 `;
 
-const Comment = styled.div`
-  border: 1px solid black;
-`;
-
 const CommentTitle = styled.div`
-  border: 1px solid black;
-  font-size: 25px;
-  margin: 20px;
+  font-size: 28px;
+  margin: 40px 20px 0px 30px;
   font-weight: bold;
 `;
 
 const PostDate = styled.div`
-  width: 250px;
+  width: 160px;
   font-size: 25px;
   height: 30px;
   font-weight: 400;
   position: fixed; /* Fix the position */
   top: 28%;
-  left: 63%;
+  left: 61%;
+  color: gray;
 `;
 
 const TitleBox = styled.div`
@@ -112,22 +106,30 @@ const TitleBox = styled.div`
 
 const CommentForm = styled.form`
   margin: 20px;
+  display: flex;
+  align-items: center;
 `;
 
 const CommentInput = styled.input`
-  width: 100%;
+  width: 740px;
+  height: 40px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
 `;
 
 const UploadButton = styled.button`
-  background-color: #007bff;
+  background-color: #C4C4C4;
   color: white;
   border: none;
-  padding: 8px 16px;
+  padding: 18px 16px;
+  height:54px;
   border-radius: 5px;
+  font-size: 16px;
   cursor: pointer;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 `;
 
 const CommentFooter = styled.div`
@@ -141,8 +143,20 @@ const UploadedComment = styled.div`
   font-weight: 500;
 `;
 
+const ClipIcon = styled(AiOutlinePaperClip)`
+  font-size: 24px;
+  color: #C4C4C4;
+  margin-right: 10px;
+`;
+
+
+
 // Define your main functional component
 const Post2 = () => {
+
+  const [attachments, setAttachments] = useState([]);
+
+
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
 
@@ -171,8 +185,7 @@ const Post2 = () => {
 
       <PostBox>
         <TitleBox>
-          <Title>제목</Title>
-          <PostDate>2023.10.10</PostDate>
+          <Title>제목<PostDate>2023.10.10</PostDate></Title>
         </TitleBox>
         <HorizonLine />
         <Context>
@@ -184,18 +197,28 @@ const Post2 = () => {
 
       <ClipBox>영상임베디드</ClipBox>
       <CommentBox>
-        <CommentTitle>Comment</CommentTitle>
+        <CommentTitle>댓글</CommentTitle>
         <CommentForm onSubmit={handleSubmitComment}>
-          <CommentFooter>
-            <UploadButton type="submit">Upload!</UploadButton>
-            <CommentInput
-              type="text"
-              placeholder="Write a comment..."
-              value={newComment}
-              onChange={handleCommentChange}
-            />
-          </CommentFooter>
-        </CommentForm>
+  <CommentFooter>
+    <CommentInput
+      type="text"
+      placeholder="Leave a comment!"
+      value={newComment}
+      onChange={handleCommentChange}
+    />
+    <label>
+      <input
+        type="file"
+        accept=".jpg,.jpeg,.png,.mp4"
+        style={{ display: "none" }}
+        onChange={(e) => setAttachments([...attachments, e.target.files[0]])}
+      />
+      <ClipIcon />
+    </label>
+    <UploadButton type="submit">Upload!</UploadButton>
+  </CommentFooter>
+</CommentForm>
+
         {comments.map((comment, index) => (
           <UploadedComment key={index}>{comment}</UploadedComment>
         ))}
