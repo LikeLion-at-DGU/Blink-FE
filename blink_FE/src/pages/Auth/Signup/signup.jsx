@@ -8,6 +8,7 @@ import {
   LoginInputComponent,
   LoginButton,
 } from "../../../components/Login/LoginForm/LoginForm";
+import axios from "../../../assets/api/axios";
 
 // import ExpertSignup from "../Signup/ExpertSignup";
 
@@ -23,31 +24,13 @@ function Signup() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("user.id:", user.id);
-    console.log("user.pw:", user.pw);
-    console.log("confirmPw:", confirmPw);
-    console.log("user.nickname:", user.nickname);
+  //유효성 검증 위함
+  const [isValid, setIsValid] = useState(false);
 
-    e.preventDefault();
-    // 모든 칸이 입력되었는가
-    if (user.id && user.pw && confirmPw && user.nickname) {
-      // 비밀번호 재입력
-      if (user.pw !== confirmPw) {
-        setPwMatchMessage("비밀번호를 다시 확인해주세요!");
-        return;
-      }
-      try {
-        // axios.post("/accounts/signup", user);
-        alert("회원가입이 완료되었습니다.");
-        navigate("/signin");
-      } catch (error) {
-        alert("회원가입에 실패했습니다.");
-      }
-    } else {
-      alert("모든 칸을 입력해주세요 :)");
-    }
+  const isValidEmail = (email) => {
+    // 정규 표현식을 사용하여 이메일 형식 검사
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(email);
   };
 
   // 비밀번호 입력
@@ -67,6 +50,91 @@ function Signup() {
       setPwMatchMessage("비밀번호를 다시 확인해주세요!");
     } else {
       setPwMatchMessage("확인 완료되었습니다 :)");
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // 모든 칸이 입력되었는가
+    if (user.id && user.pw && confirmPw && user.nickname) {
+      // 비밀번호 재입력
+      if (user.pw !== confirmPw) {
+        setPwMatchMessage("비밀번호를 다시 확인해주세요!");
+        return;
+      }
+    }
+  };
+  const handleLoginClick = async () => {
+    if (user.id === "") {
+      alert("이메일을 입력해주세요.");
+      return;
+    }
+
+    if (user.pw === "") {
+      alert("비밀번호를 입력해주세요.");
+      return;
+    }
+
+    if (confirmPw === "") {
+      alert("비밀번호를 다시 한번 입력해주세요.");
+      return;
+    }
+
+    if (user.nickname === "") {
+      alert("닉네임을 입력해주세요.");
+      return;
+    }
+
+    if (!isValidEmail(user.id)) {
+      alert("올바른 이메일 형식을 입력해주세요.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("/accounts/auth/signup", {
+        //백엔드로 보낼 데이터
+        nickname: user.nickname,
+        password: user.pw,
+        email: user.id,
+      }); // Replace "/accounts/signup" with your actual API endpoint
+
+      console.log(response);
+      // accessToken 받아오기
+      const accessToken = response.data.token.access;
+      const refreshToken = response.data.token.refresh;
+      console.log(response);
+      const nickname = response.data.user.nickname;
+
+      // 로그인 성공 시
+      setUserInfo({
+        email: email,
+        nickname: nickname,
+        accessToken: accessToken,
+        refreshToken: refreshToken, // 저장 추가
+      });
+
+      // 로컬스토리지에 저장
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({
+          email: email,
+          nickname: nickname,
+          accessToken: accessToken,
+          refreshToken: refreshToken, // 저장 추가
+        })
+      );
+
+      if (response.status === 201) {
+        //회원가입 성공
+        alert("회원가입이 완료되었습니다.");
+        navigate("/signin");
+      } else {
+        alert("회원가입에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("회원가입 오류:", error);
+      alert("회원가입에 실패했습니다.");
     }
   };
 
@@ -102,6 +170,7 @@ function Signup() {
             autocomplete="new-password"
             width="30rem"
             height="3rem"
+            handleLoginClick={handleLoginClick}
           />
         </S.SignUpInputWrapper>
 
@@ -114,7 +183,7 @@ function Signup() {
             name="confirmPw"
             onChange={handleConfirmPw}
             value={confirmPw}
-            isvaild={pw === confirmPw ? "true" : "false"}
+            isvaild={user.pw === confirmPw ? "true" : "false"}
             autocomplete="new-password"
             width="30rem"
             height="3rem"
@@ -141,6 +210,7 @@ function Signup() {
             name="nickname"
             onChange={(e) => setUser({ ...user, nickname: e.target.value })}
             value={user.nickname}
+            handleLoginClick={handleLoginClick}
             isvaild="true"
             width="30rem"
             height="3rem"
@@ -148,7 +218,11 @@ function Signup() {
         </S.SignUpInputWrapper>
 
         {/* 가입하기 버튼 */}
-        <LoginButton type="submit" buttonText="회원가입 완료하기" />
+        <LoginButton
+          type="submit"
+          onClick={handleLoginClick}
+          buttonText="회원가입 완료하기"
+        />
 
         <S.ExpertPageMove>
           <S.Expertint>
@@ -157,7 +231,7 @@ function Signup() {
             전문가 회원으로 전용 기능을 누려보세요!
           </S.Expertint>
           <S.Expertclick>
-            <Link to="/expertsignup">전문가 가입 '{">"}'</Link>
+            <Link to="/expertSignup">전문가 가입 {">"}</Link>
           </S.Expertclick>
         </S.ExpertPageMove>
       </S.SignUpInputContainer>

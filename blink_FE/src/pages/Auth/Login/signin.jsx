@@ -9,6 +9,7 @@ import { LoginTitleComponent } from "../../../components/Login/LoginForm/LoginTi
 import { LoginNavigates } from "../../../components/Login/LoginNavigateBar/LoginNavigates";
 import { Link } from "react-router-dom";
 import * as S from "./style";
+import axios from "../../../assets/api/axios";
 
 //style import
 
@@ -40,10 +41,6 @@ function Signin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("loginData.id:", loginData.id);
-    console.log("loginData.pw:", loginData.pw);
-
-    e.preventDefault();
     // 모든 필수 칸이 입력되었는지 확인
     if (loginData.id && loginData.pw) {
       if (!isValidEmail(loginData.id)) {
@@ -61,7 +58,7 @@ function Signin() {
 
   const handleLoginClick = async () => {
     if (loginData.id === "") {
-      alert("아이디를 입력해주세요.");
+      alert("이메일을 입력해주세요.");
       return;
     }
 
@@ -74,19 +71,50 @@ function Signin() {
       alert("올바른 이메일 형식을 입력해주세요.");
       return;
     }
+    console.log("로그인 정보:", loginData);
 
     // 여기에 로그인 처리 로직을 작성합니다.
     try {
-      const response = await axios.post("/accounts/signin", {
-        // 백엔드로 보낼 데이터
-        id: loginData.id,
-        pw: loginData.pw,
-      });
+      // const formData = {
+      //   email: loginData.id,
+      //   password: loginData.pw,
+      // };
+
+      // console.log(formData);
+
+      // const response = await axios.post("/accounts/auth/login", {
+      //   // 백엔드로 보낼 데이터
+      //   email: loginData.id,
+      //   password: loginData.pw,
+      // });
+      // // accessToken 받아오기
+
+      // const accessToken = response.data.token.access;
+      // const refreshToken = response.data.token.refresh;
+      // console.log(response);
+      // const nickname = response.data.user.nickname;
+
+      // // 로그인 성공 시
+      // setUserInfo({
+      //   nickname: nickname,
+      //   accessToken: accessToken,
+      //   refreshToken: refreshToken, // 저장 추가
+      // });
+
+      // // 로컬스토리지에 저장
+      // localStorage.setItem(
+      //   "userInfo",
+      //   JSON.stringify({
+      //     nickname: nickname,
+      //     accessToken: accessToken,
+      //     refreshToken: refreshToken, // 저장 추가
+      //   })
+      // );
 
       if (response.status === 200) {
         // 로그인 성공
         alert("로그인이 완료되었습니다.");
-        navigate("/");
+        navigate("/home");
       } else {
         // 로그인 실패
         alert("로그인에 실패했습니다.");
@@ -142,6 +170,11 @@ function Signin() {
           onClick={handleLoginClick}
           buttonText="로그인"
         />
+        {/* <LoginButton
+          type="submit"
+          onClick={console.log(loginData.id, loginData.pw)}
+          buttonText="로그인"
+        /> */}
       </S.SigninForm>
     </SigninWrapper>
     // </SigninWhole>

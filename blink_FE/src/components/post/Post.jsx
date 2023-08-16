@@ -27,6 +27,7 @@ const Outer = styled.div`
   align-items: center;
   justify-content: center;
   margin: 100px;
+  border: 1px solid white;
 `;
 
 const CheckDisplay = styled.div`
