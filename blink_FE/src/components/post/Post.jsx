@@ -210,6 +210,12 @@ const RegisterButton = styled.button`
 `;
 
 export default function Post() {
+
+  const handleAddressSearchClick = () => {
+    console.log("handleAddressSearchClick is triggered");
+    setShowAdrSearch(true);
+  };
+
   const [showAdrSearch, setShowAdrSearch] = useState(false);
   const [addressInfo, setAddressInfo] = useState({
     postcode: "",

@@ -3,15 +3,16 @@ import DaumPostcode from 'react-daum-postcode';
 import styled from 'styled-components';
 
 const AdrSearchContainer = styled.div`
-  position: absolute;
-  transform: translate(-50%, -28%);
-  background-color: white;
-  padding: 45px 20px 20px 20px;
-  border: 2px solid black;
-  border-radius: 10px;
-  width:310px;
+  position: fixed;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%);
+  z-index: 1000; /* Higher z-index to ensure it's above other elements */
+  background-color: white; /* Set the background color */
+  padding: 40px 20px 20px 20px; /* Add padding for spacing */
+  border: 2px solid black; /* Add a border */
+  border-radius: 10px; /* Rounded corners */
 `;
-
 
 const CloseButton = styled.button`
   position: absolute;
@@ -46,6 +47,7 @@ export default function AddressSearch({ onUpdateAddress, showAdrSearch, setShowA
   };
 
   const handleClose = () => {
+    console.log("handleClose is triggered");
     setShowAdrSearch(false); // Close the AdrSearch window
   };
 
