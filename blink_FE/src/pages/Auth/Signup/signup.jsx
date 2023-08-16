@@ -190,7 +190,9 @@ function Signup() {
           />
           {confirmPw ? (
             pw === confirmPw ? (
-              <S.MessageText isvaild="true">확인 완료</S.MessageText>
+              <S.MessageText isvaild="true">
+                비밀번호가 일치합니다 :)
+              </S.MessageText>
             ) : (
               <S.MessageText isvaild="false">
                 비밀번호가 일치하지 않습니다!

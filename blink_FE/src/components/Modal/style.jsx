@@ -45,7 +45,7 @@ export const ModalNoContent = styled.div`
   color: black;
   justify-content: center;
   display: flex;
-  margin-top: 150px;
+  margin-top: 100px;
   margin-right: 60px;
   width: 100%;
 `;
