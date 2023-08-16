@@ -105,7 +105,7 @@ function CustomGMap() {
     const mapOptions = {
       center: center,
       zoom: 16,
-      fullscreenControl: false,
+      fullscreenControl: false, // 맵 상에서 풀스크린(F11) 기능 삭제
       minZoom: 13, // 최소 줌 레벨 설정
       maxZoom: 20, // 최대 줌 레벨 설정
     };
@@ -214,7 +214,7 @@ function CustomGMap() {
 
   return (
     <>
-      {autocomplete && (
+      {/* {autocomplete && (
         <Autocomplete>
           <Input
             type="text"
@@ -223,7 +223,7 @@ function CustomGMap() {
             value={selectedPlace ? selectedPlace : ""}
           />
         </Autocomplete>
-      )}
+      )} */}
       <GMapContainer id="map">
         {map && (
           <LoadScript googleMapsApiKey={googleMapApiKey}>

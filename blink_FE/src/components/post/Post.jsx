@@ -30,6 +30,7 @@ const Outer = styled.div`
   align-items: center;
   justify-content: center;
   margin: 100px;
+  border: 1px solid white;
 `;
 
 const CheckDisplay = styled.div`
@@ -176,7 +177,6 @@ const TextArea = styled.textarea`
   font-size: 27px;
 `;
 
-
 const Thumbnail = styled.img`
   max-width: 250px;
   max-height: 150px;
@@ -190,7 +190,7 @@ const ThumbnailsContainer = styled.div`
 
 const CustomCloudUploadIcon = styled(AiOutlineCloudUpload)`
   font-size: 40px;
-  margin-left:40px;
+  margin-left: 40px;
 `;
 
 const UploadText = styled.div`
@@ -269,7 +269,7 @@ export default function Post() {
 
   const [isReportChecked, setIsReportChecked] = useState(true);
   const [isLookForChecked, setIsLookForChecked] = useState(false);
-  
+
   const handleReportCheckboxChange = () => {
     setIsReportChecked(!isReportChecked);
     setIsLookForChecked(false);

@@ -1,9 +1,10 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import KMap from "../../components/post/KMap";
 import GMap from "../../components/post/GMap";
-import Map from "../../components/post/Map";
 import PostList from "../../components/post/PostList";
+import Post from "../../components/post/Post";
+import MinWidthButtonGroup from "../../components/post/MinWidthButtonGroup";
 
 const HomeContainer = styled.div`
   margin-left: 220px;
@@ -15,9 +16,23 @@ const HomeContainer = styled.div`
 `;
 
 export default function Home() {
+  const [isPostActive, setIsPostActive] = useState(false);
+
+  const handlePostButtonClick = () => {
+    setIsPostActive(true);
+  };
+
+  const handlePostListButtonClick = () => {
+    setIsPostActive(false);
+  };
+
   return (
     <HomeContainer>
-      <PostList />
+      <MinWidthButtonGroup
+        onPostButtonClick={handlePostButtonClick}
+        onPostListButtonClick={handlePostListButtonClick}
+      />
+      {isPostActive ? <Post /> : <PostList />}
       <GMap />
     </HomeContainer>
   );

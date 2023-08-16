@@ -7,11 +7,20 @@ import ButtonGroup from "@mui/joy/ButtonGroup";
 import Typography from "@mui/joy/Typography";
 import { Link } from "react-router-dom";
 
-export default function MinWidthButtonGroup() {
+export default function MinWidthButtonGroup({
+  onPostButtonClick,
+  onPostListButtonClick,
+}) {
   const [selectedButton, setSelectedButton] = React.useState("전체 목록");
 
   const handleButtonClick = (label) => {
     setSelectedButton(label);
+
+    if (label === "전체 목록") {
+      onPostListButtonClick(); // Call the function to switch back to PostList
+    } else if (label === "글 등록하기") {
+      onPostButtonClick(); // Call the function to switch to Post
+    }
   };
 
   return (
@@ -40,19 +49,16 @@ export default function MinWidthButtonGroup() {
           >
             전체 목록
           </Button>
-          {/* 아래 버튼 클릭하면 글쓰기 폼 띄워야 함. */}
-          <Link to="/post">
-            <Button
-              onClick={() => handleButtonClick("글 등록하기")}
-              sx={{
-                backgroundColor:
-                  selectedButton === "글 등록하기" ? "#34446D" : "#BABABA",
-                color: "white",
-              }}
-            >
-              글 등록하기
-            </Button>
-          </Link>
+          <Button
+            onClick={() => handleButtonClick("글 등록하기")}
+            sx={{
+              backgroundColor:
+                selectedButton === "글 등록하기" ? "#34446D" : "#BABABA",
+              color: "white",
+            }}
+          >
+            글 등록하기
+          </Button>
         </ButtonGroup>
       </CardContent>
     </Card>
