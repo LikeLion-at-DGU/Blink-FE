@@ -78,6 +78,7 @@ function CustomGMap() {
   const [center, setCenter] = useState({ lat: 37.468352, lng: 127.039021 });
   const [markers, setMarkers] = useState([]);
   const [clickDisabled, setClickDisabled] = useState(false); // 클릭 이벤트 비활성화 상태
+  const [maxMarkersAlert, setMaxMarkersAlert] = useState(false);
 
   const containerStyle = {
     width: "100%",
@@ -105,11 +106,29 @@ function CustomGMap() {
       center: center,
       zoom: 16,
       fullscreenControl: false,
+      minZoom: 13, // 최소 줌 레벨 설정
+      maxZoom: 20, // 최대 줌 레벨 설정
     };
     const newMap = new window.google.maps.Map(
       document.getElementById("map"),
       mapOptions
     );
+
+    // 원하는 위치에 마커 추가
+    const markerLocations = [
+      { lat: 37.514438, lng: 127.037484 },
+      { lat: 37.514838, lng: 127.037084 },
+      { lat: 37.512438, lng: 127.030484 },
+    ];
+
+    markerLocations.forEach((location) => {
+      const marker = new window.google.maps.Marker({
+        position: location,
+        map: newMap,
+        title: "마커 위치",
+      });
+      setMarkers((prevMarkers) => [...prevMarkers, marker]);
+    });
 
     clickListener = newMap.addListener("click", (event) => {
       if (!clickDisabled) {
@@ -172,15 +191,13 @@ function CustomGMap() {
   };
 
   const temporarilyEnableClickEvent = () => {
-    // 클릭 이벤트 리스너를 다시 추가하여 클릭 이벤트 활성화
     if (clickDisabled) {
+      setMarker(null);
+      setMaxMarkersAlert(false);
+
       clickListener = map.addListener("click", (event) => {
         const clickedLatLng = event.latLng.toJSON();
         setClickedLocation(clickedLatLng);
-
-        if (marker) {
-          marker.setMap(null); // Remove the previous marker
-        }
 
         const newMarker = new window.google.maps.Marker({
           position: clickedLatLng,
@@ -188,8 +205,9 @@ function CustomGMap() {
           title: "선택한 위치",
         });
         setMarker(newMarker);
-        setMarkers([...markers, newMarker]);
+        setMarkers([newMarker]);
       });
+
       setClickDisabled(false);
     }
   };
