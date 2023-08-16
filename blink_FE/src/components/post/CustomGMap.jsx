@@ -114,6 +114,22 @@ function CustomGMap() {
       mapOptions
     );
 
+    // 원하는 위치에 마커 추가
+    const markerLocations = [
+      { lat: 37.514438, lng: 127.037484 },
+      { lat: 37.514838, lng: 127.037084 },
+      { lat: 37.512438, lng: 127.030484 },
+    ];
+
+    markerLocations.forEach((location) => {
+      const marker = new window.google.maps.Marker({
+        position: location,
+        map: newMap,
+        title: "마커 위치",
+      });
+      setMarkers((prevMarkers) => [...prevMarkers, marker]);
+    });
+
     clickListener = newMap.addListener("click", (event) => {
       if (!clickDisabled) {
         const clickedLatLng = event.latLng.toJSON();
