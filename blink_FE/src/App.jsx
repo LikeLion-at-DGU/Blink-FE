@@ -44,7 +44,7 @@ export default App;
 // import reset from "styled-reset";
 // import Home from "./pages/home/Home";
 // import { Layout } from "./components/Layout/Layout";
-// import Post from "./components/post/Post";
+import Post from "./components/post/Post";
 // import Signin from "./pages/Auth/Login/signin";
 // import KMap from "./components/post/KMap";
 // import ExpertList from "./pages/Expert/ExpertList";
