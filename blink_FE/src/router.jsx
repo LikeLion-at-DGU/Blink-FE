@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, useRoutes, Navigate } from "react-router-dom";
 // import Home from '../Pages/Home';
 // import App from './App';
 // import StyledComponentmemo from '../Pages/StyledComponentmemo';
@@ -19,6 +19,18 @@ import GMap from "./components/post/GMap";
 import React from "react";
 import Mypage from "./pages/Mypage/component";
 import ActiveRight from "./pages/Mypage/Myactive";
+
+// function AuthenticatedRoute({ element, children }) {
+//   // 로컬 스토리지에서 인증 토큰을 확인
+//   const authToken = localStorage.getItem("authToken");
+
+//   if (!authToken) {
+//     // 인증 토큰이 없을 경우 로그인 페이지로 이동
+//     return <Navigate to="/signin" />;
+//   }
+
+//   return element || children;
+// }
 
 const Router = createBrowserRouter([
   {

@@ -82,11 +82,34 @@ function Signin() {
 
       // console.log(formData);
 
-      const response = await axios.post("/accounts/auth/login", {
-        // 백엔드로 보낼 데이터
-        email: loginData.id,
-        password: loginData.pw,
-      });
+      // const response = await axios.post("/accounts/auth/login", {
+      //   // 백엔드로 보낼 데이터
+      //   email: loginData.id,
+      //   password: loginData.pw,
+      // });
+      // // accessToken 받아오기
+
+      // const accessToken = response.data.token.access;
+      // const refreshToken = response.data.token.refresh;
+      // console.log(response);
+      // const nickname = response.data.user.nickname;
+
+      // // 로그인 성공 시
+      // setUserInfo({
+      //   nickname: nickname,
+      //   accessToken: accessToken,
+      //   refreshToken: refreshToken, // 저장 추가
+      // });
+
+      // // 로컬스토리지에 저장
+      // localStorage.setItem(
+      //   "userInfo",
+      //   JSON.stringify({
+      //     nickname: nickname,
+      //     accessToken: accessToken,
+      //     refreshToken: refreshToken, // 저장 추가
+      //   })
+      // );
 
       if (response.status === 200) {
         // 로그인 성공
