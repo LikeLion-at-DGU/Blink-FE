@@ -41,7 +41,7 @@ function Signup() {
       try {
         // axios.post("/accounts/signup", user);
         alert("회원가입이 완료되었습니다.");
-        navigate("/accounts/signin");
+        navigate("/signin");
       } catch (error) {
         alert("회원가입에 실패했습니다.");
       }
@@ -166,6 +166,7 @@ function Signup() {
         LoginNavigatecotent="처음이신가요? 회원가입하고 멋진 블랙 박스 어쩌구 조정중"
         // handleLoginClick={handleLoginClick}
         buttonText="Login"
+        to="/signin"
       />
     </S.SignupWhole>
   );
