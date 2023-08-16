@@ -43,7 +43,7 @@ export const Logoutp = styled.p`
 // activity manage
 
 export const Background = styled.div`
-  width: 65vw;
+  width: 62vw;
   height: 1400px;
   padding-left: 50px;
   padding-top: 30px;
@@ -54,4 +54,27 @@ export const Listbar = styled.div`
   height: 200px;
   background-color: #f5f6f8;
   overflow-y: scroll;
+`;
+
+//account manage
+export const AccountBackground = styled.div`
+  width: 62vw;
+  height: 98vh;
+  padding-left: 50px;
+  padding-top: 30px;
+`;
+export const Textbox = styled.div`
+  background-color: #f6f6f7;
+  width: 57vw;
+  height: 75vh;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding-left: 50px;
+`;
+
+export const Middle = styled.p`
+  margin-left: auto;
+  margin-right: auto;
 `;
