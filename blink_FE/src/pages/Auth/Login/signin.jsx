@@ -7,7 +7,7 @@ import {
 import { SigninForm, SocialLogin, SigninWrapper } from "./style";
 import { LoginTitleComponent } from "../../../components/Login/LoginForm/LoginTitle";
 import { LoginNavigates } from "../../../components/Login/LoginNavigateBar/LoginNavigates";
-
+import { Link } from "react-router-dom";
 import * as S from "./style";
 
 //style import
@@ -107,7 +107,9 @@ function Signin() {
         handleLoginClick={handleLoginClick}
         buttonText="Sign up"
         width="200px"
+        to="/signup"
       />
+
       <S.SigninForm onSubmit={handleSubmit}>
         <LoginTitleComponent LogintitleText="Login to Blink!" />
         <S.SignInInputWrapper>
