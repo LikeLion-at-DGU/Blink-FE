@@ -7,6 +7,7 @@ import ExpertSignup from "./pages/Auth/Signup/ExpertSignup";
 import Mypage from "./pages/Mypage/component";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
+import Modal from "./components/Modal/Modal";
 
 function App() {
   const location = useLocation();
@@ -18,6 +19,7 @@ function App() {
     <>
       {!hideNavOnIntro && <Nav />}
       <Outlet />
+      {/* <Modal /> */}
     </>
   );
 }

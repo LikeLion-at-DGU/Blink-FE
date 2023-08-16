@@ -17,6 +17,7 @@ import App from "./App";
 import PostList from "./components/post/PostList";
 import GMap from "./components/post/GMap";
 import React from "react";
+import Notice from "./components/Modal/Notice";
 import Mypage from "./pages/Mypage/component";
 import ActiveRight from "./pages/Mypage/Myactive";
 import { Myaccount } from "./pages/Mypage/Myaccount";
