@@ -81,6 +81,11 @@ function Signup() {
       return;
     }
 
+    if (user.nickname === "") {
+      alert("닉네임을 입력해주세요.");
+      return;
+    }
+
     if (!isValidEmail(user.id)) {
       alert("올바른 이메일 형식을 입력해주세요.");
       return;
@@ -93,6 +98,32 @@ function Signup() {
         password: user.pw,
         email: user.id,
       }); // Replace "/accounts/signup" with your actual API endpoint
+
+      console.log(response);
+      // accessToken 받아오기
+      const accessToken = response.data.token.access;
+      const refreshToken = response.data.token.refresh;
+      console.log(response);
+      const nickname = response.data.user.nickname;
+
+      // 로그인 성공 시
+      setUserInfo({
+        email: email,
+        nickname: nickname,
+        accessToken: accessToken,
+        refreshToken: refreshToken, // 저장 추가
+      });
+
+      // 로컬스토리지에 저장
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({
+          email: email,
+          nickname: nickname,
+          accessToken: accessToken,
+          refreshToken: refreshToken, // 저장 추가
+        })
+      );
 
       if (response.status === 201) {
         //회원가입 성공
@@ -200,7 +231,7 @@ function Signup() {
             전문가 회원으로 전용 기능을 누려보세요!
           </S.Expertint>
           <S.Expertclick>
-            <Link to="/expertsignup">전문가 가입 '{">"}'</Link>
+            <Link to="/expertSignup">전문가 가입 {">"}</Link>
           </S.Expertclick>
         </S.ExpertPageMove>
       </S.SignUpInputContainer>
