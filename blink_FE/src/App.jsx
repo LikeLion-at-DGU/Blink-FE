@@ -9,15 +9,6 @@ import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import Modal from "./components/Modal/Modal";
 
-/* 추가적인 리셋이나 스타일 조정을 여기에 추가할 수 있습니다. */
-const GlobalStyleComponent = createGlobalStyle`
-  ${reset}
-  /* 추가적인 리셋이나 스타일 조정을 여기에 추가할 수 있습니다. */
-  width: 1920px;
-  height: 1080px;
-  background-color: blue;
-`;
-
 function App() {
   const location = useLocation();
 
@@ -26,7 +17,6 @@ function App() {
 
   return (
     <>
-      <GlobalStyleComponent />
       {!hideNavOnIntro && <Nav />}
       <Outlet />
       {/* <Modal /> */}
@@ -46,7 +36,7 @@ export default App;
 // import reset from "styled-reset";
 // import Home from "./pages/home/Home";
 // import { Layout } from "./components/Layout/Layout";
-// import Post from "./components/post/Post";
+import Post from "./components/post/Post";
 // import Signin from "./pages/Auth/Login/signin";
 // import KMap from "./components/post/KMap";
 // import ExpertList from "./pages/Expert/ExpertList";

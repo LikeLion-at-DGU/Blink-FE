@@ -18,6 +18,9 @@ import PostList from "./components/post/PostList";
 import GMap from "./components/post/GMap";
 import React from "react";
 import Notice from "./components/Modal/Notice";
+import Mypage from "./pages/Mypage/component";
+import ActiveRight from "./pages/Mypage/Myactive";
+import { Myaccount } from "./pages/Mypage/Myaccount";
 
 // function AuthenticatedRoute({ element, children }) {
 //   // 로컬 스토리지에서 인증 토큰을 확인
@@ -65,7 +68,7 @@ const Router = createBrowserRouter([
         element: <ExpertList />,
         children: [
           {
-            path: "expertList/detailId",
+            path: "expertList/:Id",
             element: <ExpertDetail />,
           },
         ],
@@ -80,6 +83,10 @@ const Router = createBrowserRouter([
           },
           { path: "/home/gMap", element: <GMap /> },
         ],
+      },
+      {
+        path: "/my",
+        element: <Myaccount />,
       },
     ],
   },

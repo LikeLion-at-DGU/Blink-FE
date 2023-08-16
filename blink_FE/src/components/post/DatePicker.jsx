@@ -1,5 +1,3 @@
-//DatePicker.jsx
-
 import React, { useState } from "react";
 import styled from "styled-components";
 import Calendar from "react-calendar";
@@ -14,27 +12,14 @@ const Container = styled.div`
   gap: 20px;
   background-color: black;
 `;
-const DotBox = styled.div`
-  width: 100%;
-  height: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
-export default function Calendartwo({ user, onSelectDate }) {
+export default function Calendartwo({ user }) {
   const [value, onChange] = useState(new Date());
-  const dateArr = ["2023. 08. 15.", "2023. 08. 17."];
-
-  const handleDateSelect = (date) => {
-    onChange(date);
-    onSelectDate(date); // Call the onSelectDate prop with the selected date
-  };
-
+  const dateArr = ["2023. 08. 15.", "2023. 08. 17.", "2023. 09. 02."];
   return (
     <Container>
       <Calendar
-        onChange={handleDateSelect} // Use the handleDateSelect function
+        onChange={onChange}
         value={value}
         formatDay={(locale, date) =>
           //xx일 -> xx 으로 format 변경
@@ -54,6 +39,10 @@ export default function Calendartwo({ user, onSelectDate }) {
                   day: "2-digit",
                 })
               )
+          );
+          return (
+            <>
+            </>
           );
         }}
       />

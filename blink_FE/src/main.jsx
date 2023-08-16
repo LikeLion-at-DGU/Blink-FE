@@ -10,9 +10,11 @@ import { RouterProvider } from "react-router-dom";
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <BrowserRouter basename="/">
   // <Reset />
+
   <React.StrictMode>
     {/* <App /> */}
     <RouterProvider router={Router} />
   </React.StrictMode>
+
   // </BrowserRouter>
 );
