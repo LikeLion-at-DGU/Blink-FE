@@ -3,9 +3,10 @@ import { Outlet, useLocation } from "react-router-dom";
 import Nav from "./components/Layout/Nav/Nav";
 import Intro from "./pages/Intro/intro";
 import Signup from "./pages/Auth/Signup/signup";
-import { Outlet } from "react-router-dom";
 import ExpertSignup from "./pages/Auth/Signup/ExpertSignup";
 import Mypage from "./pages/Mypage/component";
+import { createGlobalStyle } from "styled-components";
+import reset from "styled-reset";
 
 /* 추가적인 리셋이나 스타일 조정을 여기에 추가할 수 있습니다. */
 const GlobalStyleComponent = createGlobalStyle`
@@ -24,6 +25,7 @@ function App() {
 
   return (
     <>
+      <GlobalStyleComponent />
       {!hideNavOnIntro && <Nav />}
       <Outlet />
     </>
