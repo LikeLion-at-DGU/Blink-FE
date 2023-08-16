@@ -6,7 +6,7 @@ import PostListScroll from "./PostListScroll";
 
 const PostListContainer = styled.div`
   width: 523px;
-  height: 100%;
+  height: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +20,7 @@ const PostListContainer = styled.div`
 export default function PostList() {
   return (
     <PostListContainer>
-      <MinWidthButtonGroup />
+      {/* <MinWidthButtonGroup /> */}
       <SortStandard />
       <PostListScroll />
     </PostListContainer>
