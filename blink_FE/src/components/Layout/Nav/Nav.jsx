@@ -8,6 +8,7 @@ import { css } from "styled-components";
 import { PiUserCircleDuotone } from "react-icons/pi";
 import DefaultProfileImage from "../../../assets/images/user.png";
 import { Link } from "react-router-dom";
+import Badge from "@mui/material/Badge";
 
 function Nav() {
   //프로필 이미지 불러오기
@@ -18,7 +19,7 @@ function Nav() {
     <img
       src={DefaultProfileImage}
       alt="Default Profile"
-      style={{ width: "70px", height: "60px" }} // 원하는 크기로 설정
+      style={{ width: "70px", height: "60px" }}
     />
   );
 
@@ -61,7 +62,9 @@ function Nav() {
       <HorizonLine width="50%" marginTop="0.8rem" opacity="30%" />
 
       <S.NavIcon>
-        <BsBell className="bell" />
+        <Badge color="error" variant="dot">
+          <BsBell className="bell" />
+        </Badge>
         <p>Notice</p>
       </S.NavIcon>
       <HorizonLine width="50%" marginTop="0.8rem" opacity="30%" />
