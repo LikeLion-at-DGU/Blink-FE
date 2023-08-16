@@ -15,6 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import { CardData } from "../Expert/ExpertData";
 import { Link, Outlet } from "react-router-dom";
+import axios from "../../assets/api/axios";
 
 // 경력 설명 부분 문자열 엔터처리 함수
 const formatExperience = (experience) => {
