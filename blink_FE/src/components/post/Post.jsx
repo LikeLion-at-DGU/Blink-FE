@@ -11,7 +11,6 @@ import { BiSearchAlt2 } from "react-icons/bi";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import HorizonLine from "./Line";
 
-
 class Question extends React.Component {
   render() {
     return (
@@ -211,6 +210,12 @@ const RegisterButton = styled.button`
 `;
 
 export default function Post() {
+
+  const handleAddressSearchClick = () => {
+    console.log("handleAddressSearchClick is triggered");
+    setShowAdrSearch(true);
+  };
+
   const [showAdrSearch, setShowAdrSearch] = useState(false);
   const [addressInfo, setAddressInfo] = useState({
     postcode: "",
