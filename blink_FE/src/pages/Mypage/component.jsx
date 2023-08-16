@@ -9,7 +9,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Mypage() {
   return (
     <S.Outline>
-      <p style={{ fontSize: "40px", fontWeight: "600" }}>프로필</p>
+      <p style={{ fontSize: "40px", fontWeight: "600", marginTop: "0px" }}>
+        프로필
+      </p>
       <S.ImgBox />
       <S.Idp>여기가 아이디</S.Idp>
       <S.Settingp style={{ marginTop: "100px" }}>
@@ -22,7 +24,6 @@ export default function Mypage() {
         <FontAwesomeIcon
           icon={faRightFromBracket}
           style={{ marginRight: "20px" }}
-          size="30px"
         />
         로그아웃
       </S.Logoutp>

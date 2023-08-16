@@ -2,10 +2,10 @@ import styled from "styled-components";
 
 export const Outline = styled.div`
   width: 25vw;
-  height: 90vh;
+  height: auto;
   border: 1px solid black;
   border-radius: 10px;
-  padding: 40px;
+  padding: 30px;
   margin-left: 100px;
   display: flex;
   flex-direction: column;
@@ -15,7 +15,6 @@ export const ImgBox = styled.div`
   width: 200px;
   height: 200px;
   background-color: pink;
-  margin-top: 50px;
   border-radius: 60px;
   margin-right: auto;
   margin-left: auto;
@@ -39,4 +38,20 @@ export const Logoutp = styled.p`
   margin-left: auto;
   margin-top: auto;
   font-size: 30px;
+`;
+
+// activity manage
+
+export const Background = styled.div`
+  width: 65vw;
+  height: 1400px;
+  padding-left: 50px;
+  padding-top: 30px;
+`;
+
+export const Listbar = styled.div`
+  width: 60vw;
+  height: 200px;
+  background-color: #f5f6f8;
+  overflow-y: scroll;
 `;
