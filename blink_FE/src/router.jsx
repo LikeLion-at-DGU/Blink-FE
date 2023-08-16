@@ -17,6 +17,7 @@ import App from "./App";
 import PostList from "./components/post/PostList";
 import GMap from "./components/post/GMap";
 import React from "react";
+import Notice from "./components/Modal/Notice";
 
 // function AuthenticatedRoute({ element, children }) {
 //   // 로컬 스토리지에서 인증 토큰을 확인

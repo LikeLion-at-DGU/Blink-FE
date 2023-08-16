@@ -7,6 +7,7 @@ import ExpertSignup from "./pages/Auth/Signup/ExpertSignup";
 import Mypage from "./pages/Mypage/component";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
+import Modal from "./components/Modal/Modal";
 
 /* 추가적인 리셋이나 스타일 조정을 여기에 추가할 수 있습니다. */
 const GlobalStyleComponent = createGlobalStyle`
@@ -28,6 +29,7 @@ function App() {
       <GlobalStyleComponent />
       {!hideNavOnIntro && <Nav />}
       <Outlet />
+      {/* <Modal /> */}
     </>
   );
 }
