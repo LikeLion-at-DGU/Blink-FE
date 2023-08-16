@@ -157,7 +157,7 @@ function Signup() {
             전문가 회원으로 전용 기능을 누려보세요!
           </S.Expertint>
           <S.Expertclick>
-            <Link to="/expertsignup">전문가 가입 ></Link>
+            <Link to="/expertsignup">전문가 가입 '{">"}'</Link>
           </S.Expertclick>
         </S.ExpertPageMove>
       </S.SignUpInputContainer>
