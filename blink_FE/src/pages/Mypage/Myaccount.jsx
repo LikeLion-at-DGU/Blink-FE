@@ -19,7 +19,7 @@ export default function AccountRight() {
           <form action="/upload" method="post" enctype="multipart/form-data">
             <input type="file" id="photo" name="photo" />
           </form>
-          <form 
+          <form></form>
         </S.Middle>
       </S.Textbox>
     </S.AccountBackground>
