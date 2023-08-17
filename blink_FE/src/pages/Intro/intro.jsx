@@ -16,7 +16,7 @@ const Page1 = () => (
       <br />
       지도 기반 블랙박스 영상 공유 플랫폼
     </S.LogoText>
-    <S.LogoBlink>Blink</S.LogoBlink>
+    <S.LogoBlink>BLink</S.LogoBlink>
   </S.Container>
 );
 
