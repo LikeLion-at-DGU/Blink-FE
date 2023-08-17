@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react"; // Import useState and useEffect
 import * as S from "./style";
 import {
   faRightFromBracket,
@@ -8,20 +8,36 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "../../assets/api/axios";
 
 export default function Mypage() {
-  const apiUrl = "/api/mypage/profile";
+  const [name, setName] = useState(""); // Initialize with an appropriate value
 
-  axios
-    .get(apiUrl)
-    .then((response) => {
-      const data = response.data;
-      const profileImage = data.profile_image;
-      const nickname = data.nickname;
-      console.log("프로필 이미지:", profileImage);
-      console.log("닉네임:", nickname);
-    })
-    .catch((error) => {
-      console.error("API 호출 에러:", error);
-    });
+  useEffect(() => {
+    const apiUrl = "/api/mypage/profile";
+
+    async function fetchUserProfile() {
+      try {
+        const response = await axios.get(apiUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        console.log(response);
+        const data = response.data;
+        const profileImage = data.profile_image;
+        const nickname = data.nickname;
+
+        console.log("프로필 이미지:", profileImage);
+        console.log("닉네임:", nickname);
+
+        // Update the state if needed
+        setName(nickname);
+      } catch (error) {
+        console.error("API 호출 에러:", error);
+      }
+    }
+
+    fetchUserProfile(); // Call the fetchUserProfile function
+  }, []); // Empty dependency array to run once on component mount
 
   return (
     <S.Outline>
@@ -30,7 +46,7 @@ export default function Mypage() {
       </p>
 
       <S.ImgBox src="" alt="프로필 이미지" />
-      <S.Idp> {}</S.Idp>
+      <S.Idp>{name}</S.Idp>
       <S.Settingp style={{ marginTop: "100px" }}>
         내 계정 관리 <FontAwesomeIcon icon={faChevronRight} />
       </S.Settingp>

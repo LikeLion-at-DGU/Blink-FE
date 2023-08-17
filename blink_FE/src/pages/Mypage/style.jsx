@@ -38,6 +38,7 @@ export const Logoutp = styled.p`
   margin-left: auto;
   margin-top: auto;
   font-size: 30px;
+  margin-bottom: 0px;
 `;
 
 // activity manage
@@ -66,7 +67,7 @@ export const AccountBackground = styled.div`
 
 export const Textbox = styled.div`
   background-color: #f6f6f7;
-  width: 57vw;
+  width: 53vw;
   height: 100vh;
   margin-top: 50px;
   display: flex;
