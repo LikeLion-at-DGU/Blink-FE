@@ -8,7 +8,8 @@ import { BiSearchAlt2 } from "react-icons/bi";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import HorizonLine from "./Line";
 import Calendartwo from "./DatePicker";
-import axios from "../../assets/api/axios";
+import axios from "../../../assets/api/axios";
+import instance from "../../../assets/api/axios";
 
 class Question extends React.Component {
   render() {
@@ -275,7 +276,7 @@ export default function Post({ selectedLocation }) {
     };
 
     try {
-      const response = await axios.post("/api/mainposts", postData, {
+      const response = await instance.post("/api/mainposts", postData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`, // 헤더에 토큰 추가
@@ -480,7 +481,6 @@ export default function Post({ selectedLocation }) {
                 <p>경도: {selectedLocation.lng.toFixed(6)}</p>
               </div>
             )}
-            <div>시발</div>
           </SquareBox>
         </Lsquare>
 
