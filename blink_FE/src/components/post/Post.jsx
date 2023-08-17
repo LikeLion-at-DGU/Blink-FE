@@ -1,5 +1,5 @@
-// Post 도로명 주소 검색 가능(달력 불가)
-import React, { useState } from "react";
+// Post.jsx
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AdrSearch from "./AdrSearch";
 import { StyledSearchResult, SearchResultInputs } from "./SearchResult";
@@ -208,7 +208,6 @@ const Search2 = styled(Search)`
   cursor: pointer;
 `;
 
-
 const FloatingCalendarContainer = styled.div`
   position: fixed;
   top: 50%; /* Adjust the vertical position as needed */
@@ -221,7 +220,61 @@ const FloatingCalendarContainer = styled.div`
   border-radius: 10px;
 `;
 
-export default function Post() {
+export default function Post({ selectedLocation }) {
+  const [selectedLocationState, setSelectedLocationState] = useState(null);
+  // const [selectedLocation, setSelectedLocation] = useState(
+  //   initialSelectedLocation
+  // );
+
+  useEffect(() => {
+    setSelectedLocationState(selectedLocation);
+  }, [selectedLocation]);
+
+  const handleLocationUpdate = (location) => {
+    setSelectedLocation(location); // 클릭한 위치 정보 업데이트
+  };
+
+  const renderSelectedLocationInfo = (selectedLocation) => {
+    if (selectedLocation) {
+      console.log(selectedLocation);
+      return (
+        <div>
+          <p>선택한 위치 정보:</p>
+          <p>위도: {selectedLocation.lat.toFixed(6)}</p>
+          <p>경도: {selectedLocation.lng.toFixed(6)}</p>
+        </div>
+      );
+    } else {
+      return <p>선택한 위치가 없습니다.</p>;
+    }
+  };
+
+  const handleRegisterClick = async () => {
+    const postData = {
+      title: addressInfo.title, // Get title from your component's state
+      category: addressInfo.category, // Get category from your component's state
+      jebo_bool: isReportChecked, // Get the value from your component's state
+      lat: null, // Set the latitude value if needed
+      lng: null, // Set the longitude value if needed
+      location: addressInfo.address, // Get location from your component's state
+      content: addressInfo.content, // Get content from your component's state
+      medias: uploadedFiles, // Get uploaded files from your component's state
+    };
+
+    try {
+      const response = await axios.post("/api/mainposts", postData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Post request successful:", response.data);
+      // Reset the form or perform any other actions after successful submission
+    } catch (error) {
+      console.error("Error submitting post:", error);
+    }
+  };
+
   const handleAddressSearchClick = () => {
     console.log("handleAddressSearchClick is triggered");
     setShowAdrSearch(true);
@@ -295,8 +348,8 @@ export default function Post() {
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     return `${year}.${month}.${day}`;
   }
 
@@ -342,7 +395,10 @@ export default function Post() {
 
         {showDatePicker && (
           <FloatingCalendarContainer>
-            <Calendartwo user="your_user_here" onSelectDate={handleDatePickerSelect} />
+            <Calendartwo
+              user="your_user_here"
+              onSelectDate={handleDatePickerSelect}
+            />
           </FloatingCalendarContainer>
         )}
         {showAdrSearch && (
@@ -362,7 +418,6 @@ export default function Post() {
           </StyledSearchResult>
         )}
 
-
         <Lsquare>
           <SquareBox>
             <Display>
@@ -375,8 +430,8 @@ export default function Post() {
                     카테고리
                   </option>
                   <Option value="Traffic Accident">교통사고</Option>
-                  <Option value="Theft">도난, 절도</Option>
-                  <Option value="Report Missing">실종 신고</Option>
+                  <Option value="Theft">도난,절도</Option>
+                  <Option value="Report Missing">실종신고</Option>
                   <Option value="Other">기타</Option>
                 </Select>
               </FormRow>
@@ -385,6 +440,16 @@ export default function Post() {
             <FormRow>
               <TextArea rows="10" placeholder="내용을 입력해주세요." />
             </FormRow>
+            {/* 창준 추가 */}
+            {renderSelectedLocationInfo(selectedLocation)}
+            {selectedLocation && (
+              <div>
+                <p>선택한 위치 정보:</p>
+                <p>위도: {selectedLocation.lat.toFixed(6)}</p>
+                <p>경도: {selectedLocation.lng.toFixed(6)}</p>
+              </div>
+            )}
+            <div>시발</div>
           </SquareBox>
         </Lsquare>
 
@@ -411,7 +476,7 @@ export default function Post() {
           <br />
         </SquareBox2>
       </PostContainer>
-      <RegisterButton>등록하기</RegisterButton>
+      <RegisterButton onClick={handleRegisterClick}>등록하기</RegisterButton>
     </Outer>
   );
 }

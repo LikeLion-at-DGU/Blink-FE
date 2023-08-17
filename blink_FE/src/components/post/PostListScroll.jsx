@@ -1,8 +1,7 @@
-// PostListScroll.jsx
-
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import InnerPost from "./InnerPost";
+import axios from "axios";
 
 const PostListSlideContainer = styled.div`
   overflow: auto;
@@ -29,74 +28,95 @@ const postData = [
     title: "첫 번째 포스트",
     content: "첫 번째 포스트 내용...",
     inProgress: true,
-    isFound: true,
+    jebo: true,
   },
   {
     title: "두 번째 포스트",
     content: "두 번째 포스트 내용...",
     inProgress: false,
-    isFound: false,
+    jebo: false,
   },
   {
     title: "세 번째 포스트",
     content: "세 번째 포스트 내용...",
     inProgress: true,
-    isFound: false,
+    jebo: false,
   },
   {
     title: "네 번째 포스트",
     content: "네 번째 포스트 내용...",
     inProgress: false,
-    isFound: true,
+    jebo: true,
   },
   {
     title: "다섯 번째 포스트",
     content: "다섯 번째 포스트 내용...",
     inProgress: true,
-    isFound: false,
+    jebo: false,
   },
   {
     title: "여섯 번째 포스트",
     content: "여섯 번째 포스트 내용...",
     inProgress: false,
-    isFound: true,
+    jebo: true,
   },
   {
     title: "일곱 번째 포스트",
     content: "일곱 번째 포스트 내용...",
     inProgress: true,
-    isFound: true,
+    jebo: true,
   },
   {
     title: "여덟 번째 포스트",
     content: "여덟 번째 포스트 내용...",
     inProgress: true,
-    isFound: true,
+    jebo: true,
   },
   {
     title: "아홉 번째 포스트",
     content: "아홉 번째 포스트 내용...",
     inProgress: false,
-    isFound: false,
+    jebo: false,
   },
   {
     title: "열 번째 포스트",
     content: "열 번째 포스트 내용...",
     inProgress: false,
-    isFound: true,
+    jebo: true,
   },
 ];
 
 export default function PostListScroll() {
+  const [posts, setPosts] = useState([]); // 데이터를 저장할 state
+
+  useEffect(() => {
+    // 서버에서 데이터 가져오기
+    axios
+      .get("/api/mainposts")
+      .then((response) => {
+        setPosts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []); // useEffect는 컴포넌트가 마운트될 때 한 번만 실행됩니다.
+
   return (
     <PostListSlideContainer>
-      {postData.map((post, index) => (
+      {posts.map((post) => (
         <InnerPost
-          key={index}
+          key={post.id}
           title={post.title}
+          category={post.category}
           content={post.content}
-          inProgress={post.inProgress}
-          isFound={post.isFound}
+          // 제보해요 or 찾아요 나누는 항목
+          jebo={post.jebo_bool}
+          writer={post.writer}
+          lat={post.lat}
+          lng={post.lng}
+          location={post.location}
+          created_at={post.created_at}
+          comments_cnt={post.comments_cnt}
         />
       ))}
     </PostListSlideContainer>
