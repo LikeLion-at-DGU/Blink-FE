@@ -185,6 +185,27 @@ const ClipIcon = styled(AiOutlinePaperClip)`
 // Define your main functional component
 const Post2 = () => {
 
+  const handleSubmitReply = (event, parentIndex) => {
+    event.preventDefault();
+    const updatedComments = [...comments];
+    if (updatedComments[parentIndex].newReply.trim() !== "") {
+      const newReplyObj = {
+        text: updatedComments[parentIndex].newReply,
+        user: currentUser,
+      };
+      updatedComments[parentIndex].replies.push(newReplyObj);
+      updatedComments[parentIndex].newReply = ""; // Clear the reply input
+      setComments(updatedComments);
+    }
+  };
+  
+
+  const handleReplyInputChange = (event, parentIndex) => {
+    const updatedComments = [...comments];
+    updatedComments[parentIndex].newReply = event.target.value;
+    setComments(updatedComments);
+  };
+
   const handleDeleteComment = (index) => {
   const updatedComments = comments.filter((_, i) => i !== index);
   setComments(updatedComments);
@@ -277,52 +298,55 @@ const handleReplyButtonClick = (parentIndex) => {
             </CommentFooter>
           </CommentForm>
 
-
           {comments.map((comment, index) => (
           <div key={index}>
             <div>
               <OriginalComment>
                 <strong>{comment.user}:</strong> {comment.text}
                 <ReplyButton onClick={() => handleReplyButtonClick(index)}>
-                  답글달기
+                  Reply
                 </ReplyButton>
-                <DeleteButton onClick={() => handleDeleteComment(index)}>삭제하기</DeleteButton>
+                <DeleteButton onClick={() => handleDeleteComment(index)}>Delete</DeleteButton>
               </OriginalComment>
             </div>
+
+
             {comment.replies.map((reply, replyIndex) => (
-              <div key={replyIndex}>
-                <UploadedComment>
-                  <strong>{reply.user}:</strong> {reply.text}
-                  <DeleteButton onClick={() => handleDeleteCommentReply(index, replyIndex)}>
-                    삭제하기
-                  </DeleteButton>
-                </UploadedComment>
-              </div>
-            ))}
-            <div>
-              {comment.showReplyInput && (
-                <CommentForm onSubmit={(e) => handleSubmitComment(e, index)}>
-                  <CommentFooter>
-                    <CommentInput
-                      type="text"
-                      placeholder="답글을 작성해보세요!"
-                      value={newComment}
-                      onChange={handleCommentChange}
-                    />
-                    <label>
-                      <input
-                        type="file"
-                        accept=".jpg,.jpeg,.png,.mp4"
-                        style={{ display: "none" }}
-                        onChange={(e) => setAttachments([...attachments, e.target.files[0]])}
-                      />
-                      <ClipIcon />
-                    </label>
-                    <UploadButton type="submit">Reply</UploadButton>
-                  </CommentFooter>
-                </CommentForm>
-              )}
-            </div>
+  <div key={replyIndex}>
+    <UploadedComment>
+      <strong>{reply.user}:</strong> {reply.text}
+      <DeleteButton onClick={() => handleDeleteCommentReply(index, replyIndex)}>
+        Delete
+      </DeleteButton>
+    </UploadedComment>
+  </div>
+))}
+
+{comment.showReplyInput && (
+  <div>
+    <CommentForm onSubmit={(e) => handleSubmitReply(e, index)}>
+      <CommentFooter>
+        <CommentInput
+          type="text"
+          placeholder="Write a reply!"
+          value={comment.newReply}
+          onChange={(e) => handleReplyInputChange(e, index)}
+        />
+        <label>
+          <input
+            type="file"
+            accept=".jpg,.jpeg,.png,.mp4"
+            style={{ display: "none" }}
+            onChange={(e) => setAttachments([...attachments, e.target.files[0]])}
+          />
+          <ClipIcon />
+        </label>
+        <UploadButton type="submit">Reply</UploadButton>
+      </CommentFooter>
+    </CommentForm>
+  </div>
+)}
+
           </div>
         ))}
       </CommentBox>
