@@ -32,9 +32,10 @@ export const SignUpInput = styled.input`
 `;
 
 export const MessageText = styled.span`
-  margin-top: 10px;
   color: ${(props) => (props.isvaild == "true" ? "#00C24E" : "#FF5D47")};
   font-size: 13px;
+  position: relative;
+  top: -10px;
 `;
 
 export const SignUpInputContainer = styled.form`

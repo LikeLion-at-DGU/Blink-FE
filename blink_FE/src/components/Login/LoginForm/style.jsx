@@ -11,7 +11,7 @@ export const LoginInput = styled.input`
   border: none;
   border-radius: 10px;
   padding-left: 15px;
-  margin-bottom: 1rem;
+  margin-bottom: 1.3rem;
   border: ${(props) => (props.isvaild === "true" ? "none" : "1px solid red")};
 `;
 
@@ -24,6 +24,7 @@ export const StyledLoginButton = styled.button`
   height: 3rem;
   align-items: center;
   cursor: pointer;
+  margin-top: 44px;
   &:hover {
     box-shadow: 0 0 5px rgba(25, 33, 48, 0.6); /* 강조 효과를 위한 그림자 */
     outline: none;
