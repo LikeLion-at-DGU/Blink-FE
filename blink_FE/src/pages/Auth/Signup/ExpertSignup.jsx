@@ -84,7 +84,7 @@ export default function ExpertSignup() {
   return (
     <S.SignupWhole>
       <S.SignUpInputContainer onSubmit={handleSubmit}>
-        <LoginTitleComponent LogintitleText="Sign up to Blink!" />
+        <LoginTitleComponent LogintitleText="Sign up to BLink!" />
         <S.SignUpInputWrapper>
           {/* 아이디 입력 */}
           <LoginInputComponent

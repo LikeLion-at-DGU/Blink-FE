@@ -33,7 +33,7 @@ export const LoginNavigateContainer = styled.div`
 export const LoginNavigateButton = styled.button`
   margin-top: 70%;
   width: 9rem;
-  font-size: x-large;
+  font-size: large;
   font-weight: 500;
   height: 3rem;
   display: flex;
@@ -48,6 +48,7 @@ export const LoginNavigateText = styled.div`
 
 export const LNT = styled.div`
   margin-top: ${(props) => props.marginTop || ""};
+  font-size: x-large;
 `;
 
 export const email = styled.div`
