@@ -227,6 +227,16 @@ export default function Post({ selectedLocation }) {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [showAdrSearch, setShowAdrSearch] = useState(false);
+  const [addressInfo, setAddressInfo] = useState({
+    postcode: "",
+    address: "",
+  });
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [isReportChecked, setIsReportChecked] = useState(true);
+  const [isLookForChecked, setIsLookForChecked] = useState(false);
 
   useEffect(() => {
     setSelectedLocationState(selectedLocation);
@@ -268,14 +278,16 @@ export default function Post({ selectedLocation }) {
       const response = await axios.post("/api/mainposts", postData, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // 헤더에 토큰 추가
         },
       });
 
-      console.log("Post request successful:", response.data);
-      // 여기에 요청이 성공했을 때의 추가 로직을 넣을 수 있습니다. 예를 들면, 폼을 초기화하는 것 등.
+      if (response.status === 201) {
+        console.log("Post request successful:", response.data);
+        alert("게시글이 작성되었습니다.");
+      }
     } catch (error) {
-      console.error("Error submitting post:", error);
-      // 요청이 실패했을 때의 추가 로직을 넣을 수 있습니다. 예를 들면, 사용자에게 오류 메시지를 표시하는 것 등.
+      console.error("Post error:", error);
     }
   };
 
@@ -283,14 +295,6 @@ export default function Post({ selectedLocation }) {
     console.log("handleAddressSearchClick is triggered");
     setShowAdrSearch(true);
   };
-  const [showAdrSearch, setShowAdrSearch] = useState(false);
-  const [addressInfo, setAddressInfo] = useState({
-    postcode: "",
-    address: "",
-  });
-
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const toggleAdrSearch = () => {
     setShowAdrSearch(!showAdrSearch);
@@ -303,19 +307,32 @@ export default function Post({ selectedLocation }) {
   };
 
   const handleComplete = (data) => {
+    const fullAddress = `${data.zonecode} ${
+      data.roadAddress || data.jibunAddress
+    } ${data.userSelectedType === "R" ? data.bname || data.buildingName : ""}`;
     const updatedAddressInfo = {
       postcode: data.zonecode,
       address: data.roadAddress || data.jibunAddress,
       detailAddress: "",
       extraAddress:
         data.userSelectedType === "R" ? data.bname || data.buildingName : "",
+      location: fullAddress, // 여기에 합쳐진 주소 정보를 저장
     };
 
     setAddressInfo(updatedAddressInfo);
     setShowAdrSearch(false);
   };
 
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const handleDetailAddressChange = (e) => {
+    const detail = e.target.value;
+    const fullAddress = `${addressInfo.postcode} ${addressInfo.address} ${detail} ${addressInfo.extraAddress}`;
+
+    setAddressInfo({
+      ...addressInfo,
+      detailAddress: detail,
+      location: fullAddress, // 여기에 합쳐진 주소 정보를 저장
+    });
+  };
 
   const handleFileUpload = (files) => {
     if (files.length > 2) {
@@ -331,9 +348,6 @@ export default function Post({ selectedLocation }) {
     updatedFiles.splice(index, 1);
     setUploadedFiles(updatedFiles);
   };
-
-  const [isReportChecked, setIsReportChecked] = useState(true);
-  const [isLookForChecked, setIsLookForChecked] = useState(false);
 
   const handleReportCheckboxChange = () => {
     setIsReportChecked(!isReportChecked);
