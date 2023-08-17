@@ -1,6 +1,6 @@
 import React from "react";
 import * as S from "./style";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { DetailImg } from "./style";
 
@@ -10,6 +10,7 @@ export default function ExpertDetail({ CardData }) {
 
   const [isDetailOpen, setIsDetailOpen] = useState(true);
   const findItem = CardData.find((item) => item.Id === parseInt(Id));
+  const navigate = useNavigate();
 
   const formatExperience = (experience) => {
     const lines = experience.split(/\s(?=\d{4}~)/);
@@ -28,6 +29,7 @@ export default function ExpertDetail({ CardData }) {
   }
   const handleCloseDetail = () => {
     setIsDetailOpen(false);
+    navigate("/expertList");
   };
 
   return (
