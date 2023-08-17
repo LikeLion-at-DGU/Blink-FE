@@ -2,6 +2,12 @@ import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Nav from "./components/Layout/Nav/Nav";
 import Intro from "./pages/Intro/intro";
+import Signup from "./pages/Auth/Signup/signup";
+import ExpertSignup from "./pages/Auth/Signup/ExpertSignup";
+import Mypage from "./pages/Mypage/component";
+import { createGlobalStyle } from "styled-components";
+import reset from "styled-reset";
+import Modal from "./components/Modal/Modal";
 
 function App() {
   const location = useLocation();
@@ -13,6 +19,7 @@ function App() {
     <>
       {!hideNavOnIntro && <Nav />}
       <Outlet />
+      {/* <Modal /> */}
     </>
   );
 }
@@ -29,7 +36,7 @@ export default App;
 // import reset from "styled-reset";
 // import Home from "./pages/home/Home";
 // import { Layout } from "./components/Layout/Layout";
-// import Post from "./components/post/Post";
+import Post from "./components/post/Post";
 // import Signin from "./pages/Auth/Login/signin";
 // import KMap from "./components/post/KMap";
 // import ExpertList from "./pages/Expert/ExpertList";
