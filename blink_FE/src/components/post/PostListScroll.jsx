@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import InnerPost from "./InnerPost";
 import axios from "axios";
+import instance from "../../assets/api/axios"; // 변경된 부분
 
 const PostListSlideContainer = styled.div`
   overflow: auto;
@@ -91,10 +92,11 @@ export default function PostListScroll() {
 
   useEffect(() => {
     // 서버에서 데이터 가져오기
-    axios
-      .get("/api/mainposts")
+    instance
+      .get("/api/mainposts") // 변경된 부분
       .then((response) => {
         setPosts(response.data);
+        console.log(response);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
