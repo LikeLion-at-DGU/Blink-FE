@@ -1,6 +1,5 @@
-//post.jsx
-
-import React, { useEffect, useState } from "react";
+// Post 도로명 주소 검색 가능(달력 불가)
+import React, { useState } from "react";
 import styled from "styled-components";
 import AdrSearch from "./AdrSearch";
 import { StyledSearchResult, SearchResultInputs } from "./SearchResult";
@@ -30,6 +29,7 @@ const Outer = styled.div`
   justify-content: center;
   margin: 100px;
   border: 1px solid white;
+  background-color: gray;
 `;
 
 const CheckDisplay = styled.div`
@@ -222,57 +222,10 @@ const FloatingCalendarContainer = styled.div`
 `;
 
 export default function Post() {
-  const [postReg, setpostReg] = useState({
-    title:"",
-  })
-
-  const handlePostClick = async() => {
-  if (postReg.title === ""){
-    alert("제목 입력해라 이잣기아");
-    return;
-  }
-
-  try {
-    // const postData = {
-    //   title: postReg.title,
-
-    // };
-
-    // console.log(postData);
-
-    //백에게 보낼 데이터
-    const response = await axios.post("/api/mainposts", {
-      title: postReg.title,
-    });
-
-    if(response.status === 200 ){
-      alert("등록되었습니다.");
-    } else {
-      alert("등록 실패");
-    } 
-  } catch (error) {
-    console.error("등록 오류:", error);
-alert("등록 오류")
-
-};
-  }
-// // Inside your component function
-// const handleRegister = async () => {
-//   const data = {
-//     // Gather all the data you want to send
-//     // For example, title, category, content, attachments, etc.
-//   };
-
-//   try {
-//     const response = await axios.post("/api/mainposts", {
-//     title: apititle,
-//     });
-//     // Handle the response, e.g., show a success message or navigate to a new page
-//   } catch (error) {
-//     // Handle errors, e.g., show an error message to the user
-//   }
-// };
-
+  const handleAddressSearchClick = () => {
+    console.log("handleAddressSearchClick is triggered");
+    setShowAdrSearch(true);
+  };
   const [showAdrSearch, setShowAdrSearch] = useState(false);
   const [addressInfo, setAddressInfo] = useState({
     postcode: "",
@@ -291,7 +244,6 @@ alert("등록 오류")
     setSelectedDate(date); // Update the selected date
     setShowDatePicker(false); // Hide the date picker
   };
-  
 
   const handleComplete = (data) => {
     const updatedAddressInfo = {
@@ -335,7 +287,7 @@ alert("등록 오류")
     setIsLookForChecked(!isLookForChecked);
     setIsReportChecked(false);
   };
-  
+
   const handleDatePickerClick = () => {
     setShowDatePicker(!showDatePicker);
   };
@@ -347,7 +299,6 @@ alert("등록 오류")
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}.${month}.${day}`;
   }
-  
 
   return (
     <Outer>
@@ -362,45 +313,64 @@ alert("등록 오류")
         </Check>
       </CheckDisplay>
       <PostContainer>
-      <TopRow>
-      <Search onClick={toggleAdrSearch} selectedAddress={addressInfo.address}>
-          {addressInfo.address
-            ? addressInfo.address
-            : "지역명, 도로명, 주소를 입력해주세요."}
-          <BiSearchAlt2 />
-        </Search>
-        <Search2 onClick={handleDatePickerClick}>
+        <TopRow>
+          <Search
+            onClick={toggleAdrSearch}
+            selectedAddress={addressInfo.address}
+          >
+            {addressInfo.address
+              ? addressInfo.address
+              : "지역명, 도로명, 주소를 입력해주세요."}
+            <BiSearchAlt2 />
+          </Search>
+
+          <Search2 onClick={handleDatePickerClick}>
             {selectedDate ? formatDate(selectedDate) : "촬영 or 요청 일자"}
             <BiSearchAlt2 />
           </Search2>
         </TopRow>
 
-
-      {showAdrSearch && (
         <AdrSearchContainer show={showAdrSearch}>
-          {/* ... (existing code) */}
+          {showAdrSearch && (
+            <AdrSearch
+              onUpdateAddress={setAddressInfo}
+              showAdrSearch={showAdrSearch}
+              setShowAdrSearch={setShowAdrSearch}
+            />
+          )}
         </AdrSearchContainer>
-      )}
 
-      {/* Render the floating calendar container when showDatePicker is true */}
-      {showDatePicker && (
+        {showDatePicker && (
           <FloatingCalendarContainer>
             <Calendartwo user="your_user_here" onSelectDate={handleDatePickerSelect} />
           </FloatingCalendarContainer>
         )}
+        {showAdrSearch && (
+          <StyledSearchResult>
+            <SearchResultInputs
+              postcode={addressInfo.postcode}
+              address={addressInfo.address}
+              detailAddress={addressInfo.detailAddress}
+              extraAddress={addressInfo.extraAddress}
+              handleDetailAddressChange={(e) =>
+                setAddressInfo({
+                  ...addressInfo,
+                  detailAddress: e.target.value,
+                })
+              }
+            />
+          </StyledSearchResult>
+        )}
+
+
         <Lsquare>
           <SquareBox>
             <Display>
               <FormRow>
-              <TitleInput
-        value={postReg.title}
-        onChange={(e) => setpostReg({ ...postReg, title: e.target.value })} // 객체의 title 속성 업데이트
-        type="text"
-        placeholder="제목을 입력해주세요."
-      />
+                <TitleInput type="text" placeholder="제목을 입력해주세요." />
               </FormRow>
               <FormRow>
-              <Select>
+                <Select>
                   <option value="" disabled selected hidden>
                     카테고리
                   </option>
@@ -423,7 +393,7 @@ alert("등록 오류")
             <>
               <CustomCloudUploadIcon />
               <UploadText>
-              .mov, .mp4 .png, .jpg, .jpeg, .pdf 파일을 업로드해주세요.
+                .mov, .mp4 .png, .jpg, .jpeg, .pdf 파일을 업로드해주세요.
                 <br />
                 <br />
                 최대 2장까지 업로드할 수 있습니다.
@@ -441,7 +411,7 @@ alert("등록 오류")
           <br />
         </SquareBox2>
       </PostContainer>
-      <RegisterButton onClick={handlePostClick}>등록하기</RegisterButton>
+      <RegisterButton>등록하기</RegisterButton>
     </Outer>
   );
-          }
+}
