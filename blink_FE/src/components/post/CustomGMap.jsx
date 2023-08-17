@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import {
   GoogleMap,
@@ -68,7 +68,7 @@ const LeftDiv = styled.div`
 
 let clickListener; // 클릭 이벤트 리스너 저장 변수
 
-function CustomGMap() {
+function CustomGMap({ onUpdateLocation }) {
   const googleMapApiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
   const [map, setMap] = useState(null);
   const [autocomplete, setAutocomplete] = useState(null);
@@ -101,39 +101,32 @@ function CustomGMap() {
     loadGoogleMapsScript();
   }, []);
 
+  const clickListenerRef = useRef(null); // useRef를 이용한 클릭 이벤트 리스너 저장
+
   const initMap = () => {
     const mapOptions = {
       center: center,
       zoom: 16,
-      fullscreenControl: false, // 맵 상에서 풀스크린(F11) 기능 삭제
-      minZoom: 13, // 최소 줌 레벨 설정
-      maxZoom: 20, // 최대 줌 레벨 설정
+      fullscreenControl: false,
+      minZoom: 13,
+      maxZoom: 20,
     };
     const newMap = new window.google.maps.Map(
       document.getElementById("map"),
       mapOptions
     );
 
-    // 원하는 위치에 마커 추가
-    const markerLocations = [
-      { lat: 37.514438, lng: 127.037484 },
-      { lat: 37.514838, lng: 127.037084 },
-      { lat: 37.512438, lng: 127.030484 },
-    ];
+    // 기존에 등록된 클릭 이벤트 리스너가 있다면 제거
+    if (clickListenerRef.current) {
+      clickListenerRef.current.remove();
+    }
 
-    markerLocations.forEach((location) => {
-      const marker = new window.google.maps.Marker({
-        position: location,
-        map: newMap,
-        title: "마커 위치",
-      });
-      setMarkers((prevMarkers) => [...prevMarkers, marker]);
-    });
-
-    clickListener = newMap.addListener("click", (event) => {
+    // 새로운 클릭 이벤트 리스너 생성 및 저장
+    const newClickListener = newMap.addListener("click", (event) => {
       if (!clickDisabled) {
         const clickedLatLng = event.latLng.toJSON();
         setClickedLocation(clickedLatLng);
+        onUpdateLocation(clickedLatLng);
 
         if (marker) {
           marker.setMap(null); // Remove the previous marker
@@ -149,6 +142,9 @@ function CustomGMap() {
       }
     });
 
+    // 클릭 이벤트 리스너 저장
+    clickListenerRef.current = newClickListener;
+
     newMap.addListener("center_changed", () => {
       const newCenter = newMap.getCenter().toJSON();
       setCenter(newCenter);
@@ -161,6 +157,26 @@ function CustomGMap() {
     if (window.google && window.google.maps) {
       setAutocomplete(new window.google.maps.places.AutocompleteService());
     }
+  };
+
+  const handleMapClick = (event) => {
+    // console.log(event.latLng.toJSON());
+    const clickedLatLng = event.latLng.toJSON();
+    setClickedLocation(clickedLatLng);
+
+    if (marker) {
+      marker.setMap(null); // Remove the previous marker
+    }
+
+    const newMarker = new window.google.maps.Marker({
+      position: clickedLatLng,
+      map: map,
+      title: "선택한 위치",
+    });
+    setMarker(newMarker);
+    setMarkers([...markers, newMarker]);
+
+    // onUpdateLocation(clickedLatLng); // 위치 정보 업데이트해서 부모로 보내기
   };
 
   const handleInputChange = (e) => {
@@ -224,7 +240,7 @@ function CustomGMap() {
           />
         </Autocomplete>
       )} */}
-      <GMapContainer id="map">
+      <GMapContainer id="map" onClick={handleMapClick}>
         {map && (
           <LoadScript googleMapsApiKey={googleMapApiKey}>
             <GoogleMap
@@ -242,8 +258,8 @@ function CustomGMap() {
           </LoadScript>
         )}
       </GMapContainer>
-
-      {clickedLocation && (
+      {/* 이제 맵에 lat, lng 나타낼 필요 없으니까 지움.
+       {clickedLocation && (
         <div>
           <p>선택한 위치:</p>
           <p>위도: {clickedLocation.lat.toFixed(6)}</p>
@@ -254,7 +270,7 @@ function CustomGMap() {
         <p>현재 지도 중심 위치:</p>
         <p>위도: {center.lat.toFixed(6)}</p>
         <p>경도: {center.lng.toFixed(6)}</p>
-      </div>
+      </div> */}
       <LeftDiv>
         <ClearMarkersButton3 onClick={clearAllMarkers}>
           마커 제거

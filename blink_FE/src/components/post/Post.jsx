@@ -1,6 +1,10 @@
 //post.jsx
 
+<<<<<<< HEAD
+import React, { useState, useEffect } from "react";
+=======
 import React, { useEffect, useState } from "react";
+>>>>>>> 215e3d46867f29da66e2e1632f1b92f60e2515b4
 import styled from "styled-components";
 import AdrSearch from "./AdrSearch";
 import { StyledSearchResult, SearchResultInputs } from "./SearchResult";
@@ -8,8 +12,12 @@ import FileUpload from "./FileUpload";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import HorizonLine from "./Line";
+<<<<<<< HEAD
+import GMap from "./GMap";
+=======
 import Calendartwo from "./DatePicker";
 import axios from "../../assets/api/axios";
+>>>>>>> 215e3d46867f29da66e2e1632f1b92f60e2515b4
 
 class Question extends React.Component {
   render() {
@@ -197,6 +205,21 @@ const RegisterButton = styled.button`
   box-shadow: 3px 3px 3px gray;
 `;
 
+<<<<<<< HEAD
+export default function Post({ selectedLocation }) {
+  const [selectedLocationState, setSelectedLocationState] = useState(null);
+  // const [selectedLocation, setSelectedLocation] = useState(
+  //   initialSelectedLocation
+  // );
+
+  useEffect(() => {
+    setSelectedLocationState(selectedLocation);
+  }, [selectedLocation]);
+
+  const handleLocationUpdate = (location) => {
+    setSelectedLocation(location); // 클릭한 위치 정보 업데이트
+  };
+=======
 const Search2 = styled(Search)`
   width: 295px;
   height: 56px;
@@ -207,6 +230,7 @@ const Search2 = styled(Search)`
   font-size: 27px;
   cursor: pointer;
 `;
+>>>>>>> 215e3d46867f29da66e2e1632f1b92f60e2515b4
 
 
 const FloatingCalendarContainer = styled.div`
@@ -349,6 +373,35 @@ alert("등록 오류")
   }
   
 
+  ///////// test 1
+  // const renderSelectedLocationInfo = () => {
+  //   if (selectedLocation) {
+  //     return (
+  //       <div>
+  //         <p>선택한 위치 정보:</p>
+  //         <p>위도: {selectedLocation.lat.toFixed(6)}</p>
+  //         <p>경도: {selectedLocation.lng.toFixed(6)}</p>
+  //       </div>
+  //     );
+  //   } else {
+  //     return <p>선택한 위치가 없습니다.</p>;
+  //   }
+  // };
+
+  const renderSelectedLocationInfo = (selectedLocation) => {
+    if (selectedLocation) {
+      console.log(selectedLocation);
+      return (
+        <div>
+          <p>선택한 위치 정보:</p>
+          <p>위도: {selectedLocation.lat.toFixed(6)}</p>
+          <p>경도: {selectedLocation.lng.toFixed(6)}</p>
+        </div>
+      );
+    } else {
+      return <p>선택한 위치가 없습니다.</p>;
+    }
+  };
   return (
     <Outer>
       <CheckDisplay>
@@ -360,8 +413,49 @@ alert("등록 오류")
           찾아요
           <Checkbox type="checkbox" checked={isLookForChecked} />
         </Check>
+        {/* 지도 추가. 위치는 임의로. */}
+        {/* <GMap onUpdateLocation={handleLocationUpdate} /> */}
       </CheckDisplay>
       <PostContainer>
+<<<<<<< HEAD
+        <TopRow>
+          <div>
+            {/* {selectedLocation && (
+              <div>
+                <p>선택한 위치 정보:</p>
+                <p>위도: {selectedLocation.lat.toFixed(6)}</p>
+                <p>경도: {selectedLocation.lng.toFixed(6)}</p>
+              </div>
+            )} */}
+            {/* {renderSelectedLocationInfo()} */}
+
+            {/* selectedLocation 값을 사용하여 위치 정보를 보여줌 */}
+            {renderSelectedLocationInfo(selectedLocation)}
+            {selectedLocation && (
+              <div>
+                <p>선택한 위치 정보:</p>
+                <p>위도: {selectedLocation.lat.toFixed(6)}</p>
+                <p>경도: {selectedLocation.lng.toFixed(6)}</p>
+              </div>
+            )}
+            <div>시발</div>
+          </div>
+
+          <Search
+            onClick={toggleAdrSearch}
+            selectedAddress={addressInfo.address} // Pass the selected address
+          >
+            {addressInfo.address
+              ? addressInfo.address
+              : "지역명, 도로명, 주소를 입력해주세요."}
+            <BiSearchAlt2 />
+          </Search>
+
+          <Search2 onClick={() => setShowDatePicker(!showDatePicker)}>
+            {selectedDate
+              ? selectedDate.toLocaleDateString()
+              : "촬영 or 요청일자"}
+=======
       <TopRow>
       <Search onClick={toggleAdrSearch} selectedAddress={addressInfo.address}>
           {addressInfo.address
@@ -371,6 +465,7 @@ alert("등록 오류")
         </Search>
         <Search2 onClick={handleDatePickerClick}>
             {selectedDate ? formatDate(selectedDate) : "촬영 or 요청 일자"}
+>>>>>>> 215e3d46867f29da66e2e1632f1b92f60e2515b4
             <BiSearchAlt2 />
           </Search2>
         </TopRow>
