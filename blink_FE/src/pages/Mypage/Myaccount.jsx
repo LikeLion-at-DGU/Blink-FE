@@ -70,6 +70,7 @@ export default function AccountRight() {
             value={nickname}
             onChange={(event) => setNickname(event.target.value)}
           />
+          <form></form>
         </S.Middle>
       </S.Textbox>
     </S.AccountBackground>

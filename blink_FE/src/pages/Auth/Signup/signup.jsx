@@ -141,7 +141,7 @@ function Signup() {
   return (
     <S.SignupWhole>
       <S.SignUpInputContainer onSubmit={handleSubmit}>
-        <LoginTitleComponent LogintitleText="Sign up to Blink!" />
+        <LoginTitleComponent LogintitleText="Sign up to BLink!" />
         <S.SignUpInputWrapper>
           {/* 아이디 입력 */}
           <LoginInputComponent
@@ -190,7 +190,9 @@ function Signup() {
           />
           {confirmPw ? (
             pw === confirmPw ? (
-              <S.MessageText isvaild="true">확인 완료</S.MessageText>
+              <S.MessageText isvaild="true">
+                비밀번호가 일치합니다 :)
+              </S.MessageText>
             ) : (
               <S.MessageText isvaild="false">
                 비밀번호가 일치하지 않습니다!
@@ -236,10 +238,23 @@ function Signup() {
         </S.ExpertPageMove>
       </S.SignUpInputContainer>
       <LoginNavigates
-        LoginNavigatetitle="안녕하세요! Blink입니다!"
-        LoginNavigatecotent="처음이신가요? 회원가입하고 멋진 블랙 박스 어쩌구 조정중"
-        // handleLoginClick={handleLoginClick}
-        buttonText="Login"
+        LoginNavigatetitle={
+          <>
+            이미 계정이 <br /> 있으신가요?
+          </>
+        }
+        LoginNavigatecotent={
+          <>
+            이미 계정이 있다면, <br />
+            BLink에 로그인해서 <br />
+            누군가의 눈과 귀가
+            <br />
+            되어주세요! <br />
+            그리고 여러분도 도움을
+            <br /> 받아보세요 :)
+          </>
+        }
+        buttonText="로그인하기"
         to="/signin"
       />
     </S.SignupWhole>
