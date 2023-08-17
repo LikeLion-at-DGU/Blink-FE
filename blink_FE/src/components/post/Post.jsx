@@ -221,10 +221,22 @@ const FloatingCalendarContainer = styled.div`
 `;
 
 export default function Post({ selectedLocation }) {
+  //지도에서 선택한 위치 받아오기 위한 useState
   const [selectedLocationState, setSelectedLocationState] = useState(null);
-  // const [selectedLocation, setSelectedLocation] = useState(
-  //   initialSelectedLocation
-  // );
+  // post 전달하기용 useState
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [content, setContent] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [showAdrSearch, setShowAdrSearch] = useState(false);
+  const [addressInfo, setAddressInfo] = useState({
+    postcode: "",
+    address: "",
+  });
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [isReportChecked, setIsReportChecked] = useState(true);
+  const [isLookForChecked, setIsLookForChecked] = useState(false);
 
   useEffect(() => {
     setSelectedLocationState(selectedLocation);
@@ -251,27 +263,31 @@ export default function Post({ selectedLocation }) {
 
   const handleRegisterClick = async () => {
     const postData = {
-      title: addressInfo.title, // Get title from your component's state
-      category: addressInfo.category, // Get category from your component's state
-      jebo_bool: isReportChecked, // Get the value from your component's state
-      lat: null, // Set the latitude value if needed
-      lng: null, // Set the longitude value if needed
-      location: addressInfo.address, // Get location from your component's state
-      content: addressInfo.content, // Get content from your component's state
-      medias: uploadedFiles, // Get uploaded files from your component's state
+      title: title,
+      filmed_at: selectedDate, // 가정: selectedDate는 이미 올바른 형식으로 저장됨
+      category: category,
+      jebo_bool: isReportChecked,
+      lat: selectedLocation ? selectedLocation.lat : null,
+      lng: selectedLocation ? selectedLocation.lng : null,
+      location: addressInfo.address,
+      content: content,
+      media: uploadedFiles,
     };
 
     try {
       const response = await axios.post("/api/mainposts", postData, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // 헤더에 토큰 추가
         },
       });
 
-      console.log("Post request successful:", response.data);
-      // Reset the form or perform any other actions after successful submission
+      if (response.status === 201) {
+        console.log("Post request successful:", response.data);
+        alert("게시글이 작성되었습니다.");
+      }
     } catch (error) {
-      console.error("Error submitting post:", error);
+      console.error("Post error:", error);
     }
   };
 
@@ -279,14 +295,6 @@ export default function Post({ selectedLocation }) {
     console.log("handleAddressSearchClick is triggered");
     setShowAdrSearch(true);
   };
-  const [showAdrSearch, setShowAdrSearch] = useState(false);
-  const [addressInfo, setAddressInfo] = useState({
-    postcode: "",
-    address: "",
-  });
-
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const toggleAdrSearch = () => {
     setShowAdrSearch(!showAdrSearch);
@@ -299,19 +307,32 @@ export default function Post({ selectedLocation }) {
   };
 
   const handleComplete = (data) => {
+    const fullAddress = `${data.zonecode} ${
+      data.roadAddress || data.jibunAddress
+    } ${data.userSelectedType === "R" ? data.bname || data.buildingName : ""}`;
     const updatedAddressInfo = {
       postcode: data.zonecode,
       address: data.roadAddress || data.jibunAddress,
       detailAddress: "",
       extraAddress:
         data.userSelectedType === "R" ? data.bname || data.buildingName : "",
+      location: fullAddress, // 여기에 합쳐진 주소 정보를 저장
     };
 
     setAddressInfo(updatedAddressInfo);
     setShowAdrSearch(false);
   };
 
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const handleDetailAddressChange = (e) => {
+    const detail = e.target.value;
+    const fullAddress = `${addressInfo.postcode} ${addressInfo.address} ${detail} ${addressInfo.extraAddress}`;
+
+    setAddressInfo({
+      ...addressInfo,
+      detailAddress: detail,
+      location: fullAddress, // 여기에 합쳐진 주소 정보를 저장
+    });
+  };
 
   const handleFileUpload = (files) => {
     if (files.length > 2) {
@@ -327,9 +348,6 @@ export default function Post({ selectedLocation }) {
     updatedFiles.splice(index, 1);
     setUploadedFiles(updatedFiles);
   };
-
-  const [isReportChecked, setIsReportChecked] = useState(true);
-  const [isLookForChecked, setIsLookForChecked] = useState(false);
 
   const handleReportCheckboxChange = () => {
     setIsReportChecked(!isReportChecked);
@@ -422,11 +440,19 @@ export default function Post({ selectedLocation }) {
           <SquareBox>
             <Display>
               <FormRow>
-                <TitleInput type="text" placeholder="제목을 입력해주세요." />
+                <TitleInput
+                  type="text"
+                  placeholder="제목을 입력해주세요."
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
               </FormRow>
               <FormRow>
-                <Select>
-                  <option value="" disabled selected hidden>
+                <Select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option value="" disabled>
                     카테고리
                   </option>
                   <Option value="Traffic Accident">교통사고</Option>
@@ -438,7 +464,12 @@ export default function Post({ selectedLocation }) {
             </Display>
             <HorizonLine />
             <FormRow>
-              <TextArea rows="10" placeholder="내용을 입력해주세요." />
+              <TextArea
+                rows="10"
+                placeholder="내용을 입력해주세요."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
             </FormRow>
             {/* 창준 추가 */}
             {renderSelectedLocationInfo(selectedLocation)}
