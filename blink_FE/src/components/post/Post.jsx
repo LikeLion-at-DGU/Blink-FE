@@ -348,7 +348,7 @@ export default function Post({ selectedLocation }) {
                 <p>경도: {selectedLocation.lng.toFixed(6)}</p>
               </div>
             )} */}
-            <div>위함수</div>
+            {/* <div>위함수</div> */}
           </div>
 
           <Search

@@ -7,7 +7,7 @@ const Home2Container = styled.div`
   /* margin-left: 220 px; */
   width: 100%;
   height: 100%;
-  background-color: brown;
+  background-color: white;
   display: flex;
   justify-content: flex-start;
 `;

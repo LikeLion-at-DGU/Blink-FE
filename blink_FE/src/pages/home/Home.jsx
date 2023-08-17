@@ -13,7 +13,7 @@ const HomeContainer = styled.div`
   /* margin-left: 220px; */
   width: 1920px;
   height: 1080px;
-  background-color: blue;
+  background-color: white;
 `;
 
 export default function Home() {
