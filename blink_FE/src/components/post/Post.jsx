@@ -223,6 +223,10 @@ const FloatingCalendarContainer = styled.div`
 export default function Post({ selectedLocation }) {
   //지도에서 선택한 위치 받아오기 위한 useState
   const [selectedLocationState, setSelectedLocationState] = useState(null);
+  // post 전달하기용 useState
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [content, setContent] = useState("");
 
   useEffect(() => {
     setSelectedLocationState(selectedLocation);
@@ -249,14 +253,15 @@ export default function Post({ selectedLocation }) {
 
   const handleRegisterClick = async () => {
     const postData = {
-      title: addressInfo.title, // Get title from your component's state
-      category: addressInfo.category, // Get category from your component's state
-      jebo_bool: isReportChecked, // Get the value from your component's state
-      lat: null, // Set the latitude value if needed
-      lng: null, // Set the longitude value if needed
-      location: addressInfo.address, // Get location from your component's state
-      content: addressInfo.content, // Get content from your component's state
-      medias: uploadedFiles, // Get uploaded files from your component's state
+      title: title,
+      filmed_at: selectedDate, // 가정: selectedDate는 이미 올바른 형식으로 저장됨
+      category: category,
+      jebo_bool: isReportChecked,
+      lat: selectedLocation ? selectedLocation.lat : null,
+      lng: selectedLocation ? selectedLocation.lng : null,
+      location: addressInfo.address,
+      content: content,
+      media: uploadedFiles,
     };
 
     try {
@@ -267,9 +272,10 @@ export default function Post({ selectedLocation }) {
       });
 
       console.log("Post request successful:", response.data);
-      // Reset the form or perform any other actions after successful submission
+      // 여기에 요청이 성공했을 때의 추가 로직을 넣을 수 있습니다. 예를 들면, 폼을 초기화하는 것 등.
     } catch (error) {
       console.error("Error submitting post:", error);
+      // 요청이 실패했을 때의 추가 로직을 넣을 수 있습니다. 예를 들면, 사용자에게 오류 메시지를 표시하는 것 등.
     }
   };
 
@@ -420,11 +426,19 @@ export default function Post({ selectedLocation }) {
           <SquareBox>
             <Display>
               <FormRow>
-                <TitleInput type="text" placeholder="제목을 입력해주세요." />
+                <TitleInput
+                  type="text"
+                  placeholder="제목을 입력해주세요."
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
               </FormRow>
               <FormRow>
-                <Select>
-                  <option value="" disabled selected hidden>
+                <Select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option value="" disabled>
                     카테고리
                   </option>
                   <Option value="Traffic Accident">교통사고</Option>
@@ -436,7 +450,12 @@ export default function Post({ selectedLocation }) {
             </Display>
             <HorizonLine />
             <FormRow>
-              <TextArea rows="10" placeholder="내용을 입력해주세요." />
+              <TextArea
+                rows="10"
+                placeholder="내용을 입력해주세요."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
             </FormRow>
             {/* 창준 추가 */}
             {renderSelectedLocationInfo(selectedLocation)}
