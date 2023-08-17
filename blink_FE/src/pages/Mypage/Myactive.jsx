@@ -1,6 +1,7 @@
 import React from "react";
 import Mypage from "./component";
 import * as S from "./style";
+import axios from "axios"; 
 
 export default function ActiveRight() {
   return (

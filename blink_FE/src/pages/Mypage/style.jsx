@@ -11,7 +11,7 @@ export const Outline = styled.div`
   flex-direction: column;
 `;
 
-export const ImgBox = styled.div`
+export const ImgBox = styled.img`
   width: 200px;
   height: 200px;
   background-color: pink;

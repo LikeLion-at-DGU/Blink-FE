@@ -21,6 +21,7 @@ import Notice from "./components/Modal/Notice";
 import Mypage from "./pages/Mypage/component";
 import ActiveRight from "./pages/Mypage/Myactive";
 import { Myaccount } from "./pages/Mypage/Myaccount";
+import { CardData } from "../src/pages/Expert/ExpertData";
 
 // function AuthenticatedRoute({ element, children }) {
 //   // 로컬 스토리지에서 인증 토큰을 확인
@@ -64,12 +65,12 @@ const Router = createBrowserRouter([
         element: <Post2 />,
       },
       {
-        path: "/expertList",
+        path: "/expertlist",
         element: <ExpertList />,
         children: [
           {
-            path: "expertList/:Id",
-            element: <ExpertDetail />,
+            path: ":Id",
+            element: <ExpertDetail CardData={CardData} />,
           },
         ],
       },

@@ -5,18 +5,15 @@ export const Upper = styled.div`
   display: flex;
 `;
 
-export const Close = styled.p`
+export const Close = styled.div`
   font-size: 30px;
   margin-left: 390px;
 `;
 
 export const Container = styled.div`
-  margin-left: ${(props) => (props.selectedCardData !== null ? "" : "200px")};
-  width: ${(props) =>
-    props.selectedCardData !== null
-      ? "calc(100vw - 720px)"
-      : "calc(100vw - 220px)"};
+  width: calc(100vw - 220px);
   flex-wrap: wrap;
+  margin-left: 100px;
 `;
 
 export const Explain = styled.p`
@@ -112,6 +109,7 @@ export const DetailImg = styled.img`
   margin-right: auto;
   border: 1px solid black;
 `;
+
 export const Section = styled.div`
   margin-left: auto;
   margin-right: auto;

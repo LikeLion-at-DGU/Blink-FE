@@ -88,12 +88,14 @@ import Post from "./components/post/Post";
 //         {/* <Route index element={<Signup />}> */}
 //         {/* <Route index element={<ExpertSignup />}> */}
 //         {/* #4 변호사 페이지 렌더링 코드 */}
-//         {/* <Route path="/expert" element={<ExpertList />}> */}
-//         {/* <Route
-//             path="detail/:Id"
-//             element={<ExpertDetail CardData={CardData} />}
-//           /> */}
-//         {/* </Route> */}
+//       <Route path="/expert" element={<ExpertList />}>
+// <Route
+//     path="detail/:Id"
+//     element={<ExpertDetail CardData={CardData} />}
+//   />
+{
+  /* </Route> */
+}
 //       </Routes>
 //     </>
 //   );
