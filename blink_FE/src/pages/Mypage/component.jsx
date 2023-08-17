@@ -36,8 +36,8 @@ export default function Mypage() {
       }
     }
 
-    fetchUserProfile(); // Call the fetchUserProfile function
-  }, []); // Empty dependency array to run once on component mount
+    fetchUserProfile();
+  }, []);
 
   return (
     <S.Outline>
