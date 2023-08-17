@@ -82,12 +82,12 @@ function Signin() {
 
       // console.log(formData);
 
-      // const response = await axios.post("/accounts/auth/login", {
-      //   // 백엔드로 보낼 데이터
-      //   email: loginData.id,
-      //   password: loginData.pw,
-      // });
-      // // accessToken 받아오기
+      const response = await axios.post("/api/auth/login", {
+        // 백엔드로 보낼 데이터
+        email: loginData.id,
+        password: loginData.pw,
+      });
+      // accessToken 받아오기
 
       // const accessToken = response.data.token.access;
       // const refreshToken = response.data.token.refresh;
@@ -130,29 +130,16 @@ function Signin() {
     // <SigninWhole>
     <SigninWrapper>
       <LoginNavigates
-        LoginNavigatetitle={
-          <>
-            블랙박스로 <br />
-            세상을 Link하는
-            <br />
-            BLink입니다
-          </>
-        }
-        LoginNavigatecotent={
-          <>
-            BLink에 처음이신가요? <br />
-            여러분의 블랙박스를 <br />
-            공유하고 공유받아보세요!
-          </>
-        }
+        LoginNavigatetitle="안녕하세요! Blink입니다!"
+        LoginNavigatecotent="처음이신가요? 회원가입하고 멋진 블랙 박스 어쩌구 조정중"
         handleLoginClick={handleLoginClick}
-        buttonText="회원가입하기"
+        buttonText="Sign up"
         width="200px"
         to="/signup"
       />
 
       <S.SigninForm onSubmit={handleSubmit}>
-        <LoginTitleComponent LogintitleText="Login to BLink!" />
+        <LoginTitleComponent LogintitleText="Login to Blink!" />
         <S.SignInInputWrapper>
           <LoginInputComponent
             required

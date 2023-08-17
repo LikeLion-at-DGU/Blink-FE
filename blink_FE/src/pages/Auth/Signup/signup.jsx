@@ -92,38 +92,38 @@ function Signup() {
     }
 
     try {
-      const response = await axios.post("/accounts/auth/signup", {
-        //백엔드로 보낼 데이터
+      const response = await axios.post("/api/auth/signup", {
+        // 백엔드로 보낼 데이터
         nickname: user.nickname,
         password: user.pw,
         email: user.id,
       }); // Replace "/accounts/signup" with your actual API endpoint
 
-      console.log(response);
-      // accessToken 받아오기
-      const accessToken = response.data.token.access;
-      const refreshToken = response.data.token.refresh;
-      console.log(response);
-      const nickname = response.data.user.nickname;
+      // console.log(response);
+      // // accessToken 받아오기
+      // const accessToken = response.data.token.access;
+      // const refreshToken = response.data.token.refresh;
+      // console.log(response);
+      // const nickname = response.data.user.nickname;
 
-      // 로그인 성공 시
-      setUserInfo({
-        email: email,
-        nickname: nickname,
-        accessToken: accessToken,
-        refreshToken: refreshToken, // 저장 추가
-      });
+      // // 로그인 성공 시
+      // setUserInfo({
+      //   email: email,
+      //   nickname: nickname,
+      //   accessToken: accessToken,
+      //   refreshToken: refreshToken, // 저장 추가
+      // });
 
-      // 로컬스토리지에 저장
-      localStorage.setItem(
-        "userInfo",
-        JSON.stringify({
-          email: email,
-          nickname: nickname,
-          accessToken: accessToken,
-          refreshToken: refreshToken, // 저장 추가
-        })
-      );
+      // // 로컬스토리지에 저장
+      // localStorage.setItem(
+      //   "userInfo",
+      //   JSON.stringify({
+      //     email: email,
+      //     nickname: nickname,
+      //     accessToken: accessToken,
+      //     refreshToken: refreshToken, // 저장 추가
+      //   })
+      // );
 
       if (response.status === 201) {
         //회원가입 성공
@@ -141,7 +141,7 @@ function Signup() {
   return (
     <S.SignupWhole>
       <S.SignUpInputContainer onSubmit={handleSubmit}>
-        <LoginTitleComponent LogintitleText="Sign up to BLink!" />
+        <LoginTitleComponent LogintitleText="Sign up to Blink!" />
         <S.SignUpInputWrapper>
           {/* 아이디 입력 */}
           <LoginInputComponent
@@ -190,9 +190,7 @@ function Signup() {
           />
           {confirmPw ? (
             pw === confirmPw ? (
-              <S.MessageText isvaild="true">
-                비밀번호가 일치합니다 :)
-              </S.MessageText>
+              <S.MessageText isvaild="true">확인 완료</S.MessageText>
             ) : (
               <S.MessageText isvaild="false">
                 비밀번호가 일치하지 않습니다!
@@ -238,23 +236,10 @@ function Signup() {
         </S.ExpertPageMove>
       </S.SignUpInputContainer>
       <LoginNavigates
-        LoginNavigatetitle={
-          <>
-            이미 계정이 <br /> 있으신가요?
-          </>
-        }
-        LoginNavigatecotent={
-          <>
-            이미 계정이 있다면, <br />
-            BLink에 로그인해서 <br />
-            누군가의 눈과 귀가
-            <br />
-            되어주세요! <br />
-            그리고 여러분도 도움을
-            <br /> 받아보세요 :)
-          </>
-        }
-        buttonText="로그인하기"
+        LoginNavigatetitle="안녕하세요! Blink입니다!"
+        LoginNavigatecotent="처음이신가요? 회원가입하고 멋진 블랙 박스 어쩌구 조정중"
+        // handleLoginClick={handleLoginClick}
+        buttonText="Login"
         to="/signin"
       />
     </S.SignupWhole>
