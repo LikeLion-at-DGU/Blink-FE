@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 export default function MinWidthButtonGroup({
   onPostButtonClick,
   onPostListButtonClick,
+  minWidth,
 }) {
   const [selectedButton, setSelectedButton] = React.useState("전체 목록");
 
@@ -27,7 +28,8 @@ export default function MinWidthButtonGroup({
     <Card
       variant="outlined"
       sx={{
-        width: "500px",
+        // width: "100%", // Card의 width를 100%로 설정
+        width: minWidth, // 최소 너비를 지정한 minWidth로 설정
         height: "50px",
         overflow: "auto",
       }}

@@ -41,11 +41,24 @@ export default function Home() {
 
   return (
     <HomeContainer>
-      <MinWidthButtonGroup
-        onPostButtonClick={handlePostButtonClick}
-        onPostListButtonClick={handlePostListButtonClick}
-      ></MinWidthButtonGroup>
-      {isPostActive ? <HomeComponent2 /> : <HomeComponent1 />}
+      {isPostActive ? (
+        <MinWidthButtonGroup
+          onPostButtonClick={handlePostButtonClick}
+          onPostListButtonClick={handlePostListButtonClick}
+          minWidth={1120}
+        />
+      ) : (
+        <MinWidthButtonGroup
+          onPostButtonClick={handlePostButtonClick}
+          onPostListButtonClick={handlePostListButtonClick}
+          minWidth={500}
+        />
+      )}
+      {isPostActive ? (
+        <HomeComponent2 minWidth={532} />
+      ) : (
+        <HomeComponent1 minWidth={1150} />
+      )}
     </HomeContainer>
   );
 }
