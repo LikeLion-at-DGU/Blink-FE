@@ -1,3 +1,4 @@
+// Post 도로명 주소 검색 가능(달력 불가)
 import React, { useState } from "react";
 import styled from "styled-components";
 import AdrSearch from "./AdrSearch";
@@ -7,6 +8,7 @@ import { BiSearchAlt2 } from "react-icons/bi";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import HorizonLine from "./Line";
 import Calendartwo from "./DatePicker";
+import axios from "../../assets/api/axios";
 
 class Question extends React.Component {
   render() {
@@ -18,7 +20,6 @@ class Question extends React.Component {
   }
 }
 
-
 const Outer = styled.div`
   height: 1080px;
   width: 1150px;
@@ -28,6 +29,7 @@ const Outer = styled.div`
   justify-content: center;
   margin: 100px;
   border: 1px solid white;
+  background-color: gray;
 `;
 
 const CheckDisplay = styled.div`
@@ -206,26 +208,41 @@ const Search2 = styled(Search)`
   cursor: pointer;
 `;
 
+
+const FloatingCalendarContainer = styled.div`
+  position: fixed;
+  top: 50%; /* Adjust the vertical position as needed */
+  left: 50%; /* Adjust the horizontal position as needed */
+  transform: translate(-50%, -50%);
+  z-index: 1000; /* Make sure the calendar appears above other content */
+  background-color: white;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 10px;
+`;
+
 export default function Post() {
   const handleAddressSearchClick = () => {
     console.log("handleAddressSearchClick is triggered");
     setShowAdrSearch(true);
   };
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [showDatePicker, setShowDatePicker] = useState(false);
   const [showAdrSearch, setShowAdrSearch] = useState(false);
   const [addressInfo, setAddressInfo] = useState({
     postcode: "",
     address: "",
   });
 
-  const handleDateSelection = (date) => {
-    setSelectedDate(date);
-    setShowDatePicker(false); // Close the calendar
-  };
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const toggleAdrSearch = () => {
     setShowAdrSearch(!showAdrSearch);
+    setShowDatePicker(false);
+  };
+
+  const handleDatePickerSelect = (date) => {
+    setSelectedDate(date); // Update the selected date
+    setShowDatePicker(false); // Hide the date picker
   };
 
   const handleComplete = (data) => {
@@ -270,10 +287,18 @@ export default function Post() {
     setIsLookForChecked(!isLookForChecked);
     setIsReportChecked(false);
   };
-  
+
   const handleDatePickerClick = () => {
     setShowDatePicker(!showDatePicker);
   };
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}.${month}.${day}`;
+  }
 
   return (
     <Outer>
@@ -298,8 +323,12 @@ export default function Post() {
               : "지역명, 도로명, 주소를 입력해주세요."}
             <BiSearchAlt2 />
           </Search>
-          <Search2 onClick={handleDatePickerClick}>촬영 or 요청일자<BiSearchAlt2 /></Search2>
-      </TopRow>
+
+          <Search2 onClick={handleDatePickerClick}>
+            {selectedDate ? formatDate(selectedDate) : "촬영 or 요청 일자"}
+            <BiSearchAlt2 />
+          </Search2>
+        </TopRow>
 
         <AdrSearchContainer show={showAdrSearch}>
           {showAdrSearch && (
@@ -310,7 +339,12 @@ export default function Post() {
             />
           )}
         </AdrSearchContainer>
-        {showDatePicker && <Calendartwo user="your_user_here" />}
+
+        {showDatePicker && (
+          <FloatingCalendarContainer>
+            <Calendartwo user="your_user_here" onSelectDate={handleDatePickerSelect} />
+          </FloatingCalendarContainer>
+        )}
         {showAdrSearch && (
           <StyledSearchResult>
             <SearchResultInputs
@@ -327,6 +361,8 @@ export default function Post() {
             />
           </StyledSearchResult>
         )}
+
+
         <Lsquare>
           <SquareBox>
             <Display>
@@ -334,7 +370,7 @@ export default function Post() {
                 <TitleInput type="text" placeholder="제목을 입력해주세요." />
               </FormRow>
               <FormRow>
-              <Select>
+                <Select>
                   <option value="" disabled selected hidden>
                     카테고리
                   </option>
@@ -357,7 +393,7 @@ export default function Post() {
             <>
               <CustomCloudUploadIcon />
               <UploadText>
-              .mov, .mp4 .png, .jpg, .jpeg, .pdf 파일을 업로드해주세요.
+                .mov, .mp4 .png, .jpg, .jpeg, .pdf 파일을 업로드해주세요.
                 <br />
                 <br />
                 최대 2장까지 업로드할 수 있습니다.
@@ -375,7 +411,7 @@ export default function Post() {
           <br />
         </SquareBox2>
       </PostContainer>
-      <RegisterButton>Register</RegisterButton>
+      <RegisterButton>등록하기</RegisterButton>
     </Outer>
   );
 }

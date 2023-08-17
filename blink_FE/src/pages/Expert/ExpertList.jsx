@@ -12,10 +12,9 @@ import {
   Wrapping,
   Upper,
 } from "./style";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CardData } from "../Expert/ExpertData";
 import { Link, Outlet } from "react-router-dom";
-import axios from "../../assets/api/axios";
 
 // 경력 설명 부분 문자열 엔터처리 함수
 const formatExperience = (experience) => {
@@ -39,7 +38,7 @@ export default function ExpertList() {
   return (
     <Upper>
       <Outlet />
-      <Container selectedCardData={selectedCardData}>
+      <Container>
         <Explain>당신에게 맞는 전문가를 찾아보세요!</Explain>
         <Range>
           <option value="latest">최신 순</option>
@@ -47,8 +46,8 @@ export default function ExpertList() {
         </Range>
         <input type="submit" value="적용" />
         <Outline>
-          {CardData.map((card, index) => (
-            <Link key={index} to={`/expert/detail/${card.Id}`}>
+          {CardData.map((card) => (
+            <Link key={card.Id} to={`/expertList/${card.Id}`}>
               <Card onClick={() => handleCardClick(card)}>
                 <CardImage src={card.imageUrl} alt="변호사 이미지" />
                 <Wrap>

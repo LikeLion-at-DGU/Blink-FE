@@ -118,6 +118,42 @@ const CommentInput = styled.input`
   border-radius: 5px;
 `;
 
+//답글
+const UploadedComment = styled.div`
+  font-size: 18px;
+  font-weight: 500;
+  margin-left:20px;
+  color:red;
+`;
+
+//오리지널댓글
+const OriginalComment = styled(UploadedComment)`
+  font-size: 20px;
+  color:blue;
+  cursor: pointer;
+`;
+
+const ReplyButton = styled.button`
+  background-color: #C4C4C4;
+  color: white;
+  border: none;
+  padding: 4px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  cursor: pointer;
+  margin-left: 5px;
+`;
+
+const DeleteButton = styled.button`
+  background-color: #C4C4C4;
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+`;
+
 const UploadButton = styled.button`
   background-color: #C4C4C4;
   color: white;
@@ -138,11 +174,6 @@ const CommentFooter = styled.div`
   align-items: center;
 `;
 
-const UploadedComment = styled.div`
-  font-size: 18px;
-  font-weight: 500;
-`;
-
 const ClipIcon = styled(AiOutlinePaperClip)`
   font-size: 24px;
   color: #C4C4C4;
@@ -154,78 +185,173 @@ const ClipIcon = styled(AiOutlinePaperClip)`
 // Define your main functional component
 const Post2 = () => {
 
-  const [attachments, setAttachments] = useState([]);
+  const handleSubmitReply = (event, parentIndex) => {
+    event.preventDefault();
+    const updatedComments = [...comments];
+    if (updatedComments[parentIndex].newReply.trim() !== "") {
+      const newReplyObj = {
+        text: updatedComments[parentIndex].newReply,
+        user: currentUser,
+      };
+      updatedComments[parentIndex].replies.push(newReplyObj);
+      updatedComments[parentIndex].newReply = ""; // Clear the reply input
+      setComments(updatedComments);
+    }
+  };
+  
 
+  const handleReplyInputChange = (event, parentIndex) => {
+    const updatedComments = [...comments];
+    updatedComments[parentIndex].newReply = event.target.value;
+    setComments(updatedComments);
+  };
+
+  const handleDeleteComment = (index) => {
+  const updatedComments = comments.filter((_, i) => i !== index);
+  setComments(updatedComments);
+};
+
+const handleDeleteCommentReply = (parentIndex, replyIndex) => {
+  const updatedComments = [...comments];
+  updatedComments[parentIndex].replies.splice(replyIndex, 1);
+  setComments(updatedComments);
+};
+
+const handleReplyButtonClick = (parentIndex) => {
+  const updatedComments = [...comments];
+  updatedComments[parentIndex].showReplyInput = !updatedComments[parentIndex].showReplyInput;
+  setComments(updatedComments);
+};
+
+
+  const [attachments, setAttachments] = useState([]);
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
-
+  const [currentUser, setCurrentUser] = useState("유저이름"); // Set the initial user name
+  
+  
   const handleCommentChange = (event) => {
     setNewComment(event.target.value);
   };
 
-  const handleSubmitComment = (event) => {
+  const handleSubmitComment = (event, parentIndex = null) => {
     event.preventDefault();
     if (newComment.trim() !== "") {
-      setComments([...comments, newComment]);
+      const newCommentObj = { text: newComment, user: currentUser, replies: [] };
+      if (parentIndex === null) {
+        setComments([...comments, newCommentObj]);
+      } else {
+        const updatedComments = [...comments];
+        updatedComments[parentIndex].replies.push(newCommentObj);
+        setComments(updatedComments);
+      }
       setNewComment("");
     }
   };
+  
 
-  return (
-    <Outer>
-      <Text>요청 상세 페이지</Text>
-      <HereBox>
-        <>
-          &nbsp; <MdLocationOn size={30} />
-          요청 위치
-        </>
-        <Here>: 실제위치</Here>
-      </HereBox>
+    return (
+      <Outer>
+        <Text>요청 상세 페이지</Text>
+        <HereBox>
+          <>
+            <MdLocationOn size={30} />
+            요청 위치
+          </>
+          <Here>: 실제위치 </Here>
+        </HereBox>
+    
+        <PostBox>
+          <TitleBox>
+            <Title>제목</Title>
+          </TitleBox>
+          <HorizonLine />
+          <Context>
+            첫줄
+            <br />
+            둘쨋줄
+          </Context>
+        </PostBox>
+    
+        <ClipBox>첨부파일 자리</ClipBox>
+        <CommentBox>
+          <CommentTitle>댓글</CommentTitle>
+          <CommentForm onSubmit={handleSubmitComment}>
+            <CommentFooter>
+              <CommentInput
+                type="text"
+                placeholder="댓글을 남겨보세요."
+                value={newComment}
+                onChange={handleCommentChange}
+              />
+              <label>
+                <input
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.mp4"
+                  style={{ display: "none" }}
+                  onChange={(e) => setAttachments([...attachments, e.target.files[0]])}
+                />
+                <ClipIcon />
+              </label>
+              <UploadButton type="submit">업로드</UploadButton>
+            </CommentFooter>
+          </CommentForm>
 
-      <PostBox>
-        <TitleBox>
-          <Title>제목<PostDate>2023.10.10</PostDate></Title>
-        </TitleBox>
-        <HorizonLine />
-        <Context>
-          내용
-          <br />
-          둘쨋줄
-        </Context>
-      </PostBox>
+          {comments.map((comment, index) => (
+          <div key={index}>
+            <div>
+              <OriginalComment>
+                <strong>{comment.user}:</strong> {comment.text}
+                <ReplyButton onClick={() => handleReplyButtonClick(index)}>
+                  Reply
+                </ReplyButton>
+                <DeleteButton onClick={() => handleDeleteComment(index)}>Delete</DeleteButton>
+              </OriginalComment>
+            </div>
 
-      <ClipBox>영상임베디드</ClipBox>
-      <CommentBox>
-        <CommentTitle>댓글</CommentTitle>
-        <CommentForm onSubmit={handleSubmitComment}>
-  <CommentFooter>
-    <CommentInput
-      type="text"
-      placeholder="Leave a comment!"
-      value={newComment}
-      onChange={handleCommentChange}
-    />
-    <label>
-      <input
-        type="file"
-        accept=".jpg,.jpeg,.png,.mp4"
-        style={{ display: "none" }}
-        onChange={(e) => setAttachments([...attachments, e.target.files[0]])}
-      />
-      <ClipIcon />
-    </label>
-    <UploadButton type="submit">Upload!</UploadButton>
-  </CommentFooter>
-</CommentForm>
 
-        {comments.map((comment, index) => (
-          <UploadedComment key={index}>{comment}</UploadedComment>
+            {comment.replies.map((reply, replyIndex) => (
+  <div key={replyIndex}>
+    <UploadedComment>
+      <strong>{reply.user}:</strong> {reply.text}
+      <DeleteButton onClick={() => handleDeleteCommentReply(index, replyIndex)}>
+        Delete
+      </DeleteButton>
+    </UploadedComment>
+  </div>
+))}
+
+{comment.showReplyInput && (
+  <div>
+    <CommentForm onSubmit={(e) => handleSubmitReply(e, index)}>
+      <CommentFooter>
+        <CommentInput
+          type="text"
+          placeholder="Write a reply!"
+          value={comment.newReply}
+          onChange={(e) => handleReplyInputChange(e, index)}
+        />
+        <label>
+          <input
+            type="file"
+            accept=".jpg,.jpeg,.png,.mp4"
+            style={{ display: "none" }}
+            onChange={(e) => setAttachments([...attachments, e.target.files[0]])}
+          />
+          <ClipIcon />
+        </label>
+        <UploadButton type="submit">Reply</UploadButton>
+      </CommentFooter>
+    </CommentForm>
+  </div>
+)}
+
+          </div>
         ))}
       </CommentBox>
     </Outer>
   );
 };
 
-// Export your component
 export default Post2;
