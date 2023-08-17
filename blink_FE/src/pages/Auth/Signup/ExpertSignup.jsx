@@ -8,15 +8,7 @@ import {
   LoginInputComponent,
   LoginButton,
 } from "../../../components/Login/LoginForm/LoginForm";
-
-//image import
-import GoogleIcon from "../../../assets/images/google.png";
-import KakaoIcon from "../../../assets/images/kakao.png";
-import NaverIcon from "../../..//assets/images/naver.png";
-
-import { Line } from "../../../components/Login/LoginLine/Line";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "../../../assets/api/axios";
 
 export default function ExpertSignup() {
   const [user, setUser] = useState({
@@ -27,38 +19,21 @@ export default function ExpertSignup() {
   const [pw, setPw] = useState("");
   const [pwMatchMessage, setPwMatchMessage] = useState("");
   const [confirmPw, setConfirmPw] = useState("");
-  const [selectedPath, setSelectedPath] = useState(""); // 선택된 값을 상태로 관리
+  const [path, setPath] = useState(""); // 가입 경로를 관리하는 state
+
   const handlePathChange = (e) => {
-    setSelectedPath(e.target.value); // 선택된 값을 상태에 업데이트
+    setPath(e.target.value);
   };
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("user.id:", user.id);
-    console.log("user.pw:", user.pw);
-    console.log("confirmPw:", confirmPw);
-    console.log("user.nickname:", user.nickname);
+  //유효성 검증 위함
+  const [isValid, setIsValid] = useState(false);
 
-    e.preventDefault();
-    // 모든 칸이 입력되었는가
-    if (user.id && user.pw && confirmPw && user.nickname) {
-      // 비밀번호 재입력
-      if (user.pw !== confirmPw) {
-        setPwMatchMessage("비밀번호를 다시 확인해주세요!");
-        return;
-      }
-      try {
-        // axios.post("/accounts/signup", user);
-        alert("회원가입이 완료되었습니다.");
-        navigate("/accounts/signup");
-      } catch (error) {
-        alert("회원가입에 실패했습니다.");
-      }
-    } else {
-      alert("모든 칸을 입력해주세요 :)");
-    }
+  const isValidEmail = (email) => {
+    // 정규 표현식을 사용하여 이메일 형식 검사
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(email);
   };
 
   // 비밀번호 입력
@@ -81,6 +56,90 @@ export default function ExpertSignup() {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // 모든 칸이 입력되었는가
+    if (user.id && user.pw && confirmPw && user.nickname) {
+      // 비밀번호 재입력
+      if (user.pw !== confirmPw) {
+        setPwMatchMessage("비밀번호를 다시 확인해주세요!");
+        return;
+      }
+    }
+  };
+  const handleLoginClick = async () => {
+    if (user.id === "") {
+      alert("이메일을 입력해주세요.");
+      return;
+    }
+
+    if (user.pw === "") {
+      alert("비밀번호를 입력해주세요.");
+      return;
+    }
+
+    if (confirmPw === "") {
+      alert("비밀번호를 다시 한번 입력해주세요.");
+      return;
+    }
+
+    if (user.nickname === "") {
+      alert("닉네임을 입력해주세요.");
+      return;
+    }
+
+    if (!isValidEmail(user.id)) {
+      alert("올바른 이메일 형식을 입력해주세요.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("/api/auth/signup", {
+        // 백엔드로 보낼 데이터
+        nickname: user.nickname,
+        password: user.pw,
+        email: user.id,
+      }); // Replace "/accounts/signup" with your actual API endpoint
+
+      // console.log(response);
+      // // accessToken 받아오기
+      // const accessToken = response.data.token.access;
+      // const refreshToken = response.data.token.refresh;
+      // console.log(response);
+      // const nickname = response.data.user.nickname;
+
+      // // 로그인 성공 시
+      // setUserInfo({
+      //   email: email,
+      //   nickname: nickname,
+      //   accessToken: accessToken,
+      //   refreshToken: refreshToken, // 저장 추가
+      // });
+
+      // // 로컬스토리지에 저장
+      // localStorage.setItem(
+      //   "userInfo",
+      //   JSON.stringify({
+      //     email: email,
+      //     nickname: nickname,
+      //     accessToken: accessToken,
+      //     refreshToken: refreshToken, // 저장 추가
+      //   })
+      // );
+
+      if (response.status === 201) {
+        //회원가입 성공
+        alert("회원가입이 완료되었습니다.");
+        navigate("/signin");
+      } else {
+        alert("회원가입에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("회원가입 오류:", error);
+      alert("회원가입에 실패했습니다.");
+    }
+  };
   return (
     <S.SignupWhole>
       <S.SignUpInputContainer onSubmit={handleSubmit}>
@@ -113,6 +172,7 @@ export default function ExpertSignup() {
             autocomplete="new-password"
             width="30rem"
             height="3rem"
+            handleLoginClick={handleLoginClick}
           />
         </S.SignUpInputWrapper>
 
@@ -152,6 +212,7 @@ export default function ExpertSignup() {
             name="nickname"
             onChange={(e) => setUser({ ...user, nickname: e.target.value })}
             value={user.nickname}
+            handleLoginClick={handleLoginClick}
             isvaild="true"
             width="30rem"
             height="3rem"
@@ -160,7 +221,7 @@ export default function ExpertSignup() {
 
         <S.HowSignup>
           <S.HowSignuptext>가입하게 된 경로를 알려주세요!</S.HowSignuptext>
-          <S.select required value={selectedPath} onChange={handlePathChange}>
+          <S.select required value={path} onChange={handlePathChange}>
             <option value="">가입경로를 선택해주세요 :) </option>
             <option value="social">유튜브, 인스타그램 등 SNS</option>
             <option value="friend">지인 추천</option>
@@ -170,7 +231,12 @@ export default function ExpertSignup() {
           </S.select>
         </S.HowSignup>
         {/* 가입하기 버튼 */}
-        <LoginButton type="submit" buttonText="전문가로 회원가입하기" />
+        <LoginButton
+          type="submit"
+          onClick={handleLoginClick}
+          buttonText="전문가로 회원가입하기"
+          to="/signin"
+        />
       </S.SignUpInputContainer>
       <LoginNavigates
         showIcon={true}
