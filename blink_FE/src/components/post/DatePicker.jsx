@@ -12,7 +12,6 @@ const Container = styled.div`
   gap: 20px;
   background-color: black;
 `;
-
 const DotBox = styled.div`
   width: 100%;
   height: 10px;
@@ -20,7 +19,6 @@ const DotBox = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const CalendarDot = styled.div`
   margin-top: 5px;
   width: 10px;
@@ -42,7 +40,7 @@ export default function Calendartwo({ user, onSelectDate }) {
     });
     onSelectDate(formattedDate); // Call the onSelectDate prop with the selected date
   };
-
+  
   return (
     <Container>
       <Calendar
@@ -75,3 +73,4 @@ export default function Calendartwo({ user, onSelectDate }) {
     </Container>
   );
 }
+
