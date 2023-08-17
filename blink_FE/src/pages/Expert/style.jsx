@@ -91,8 +91,8 @@ export const Box = styled.div`
   height: auto;
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
-  margin-left: 200px;
   background-color: #ebe6e6;
+  margin-left: 100px;
   display: flex;
   padding-top: 20px;
   padding-left: 40px;
