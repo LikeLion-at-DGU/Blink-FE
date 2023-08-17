@@ -10,12 +10,10 @@ import HomeComponent1 from "../../components/post/HomeComponent1";
 import HomeComponent2 from "../../components/post/HomeComponent2";
 
 const HomeContainer = styled.div`
-  margin-left: 220px;
+  /* margin-left: 220px; */
   width: 1920px;
   height: 1080px;
-  background-color: green;
-  display: flex;
-  justify-content: flex-start;
+  background-color: blue;
 `;
 
 export default function Home() {
@@ -46,7 +44,7 @@ export default function Home() {
       <MinWidthButtonGroup
         onPostButtonClick={handlePostButtonClick}
         onPostListButtonClick={handlePostListButtonClick}
-      />
+      ></MinWidthButtonGroup>
       {isPostActive ? <HomeComponent2 /> : <HomeComponent1 />}
     </HomeContainer>
   );

@@ -30,8 +30,9 @@ const Outer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 100px;
+  /* margin: 100px; */
   border: 1px solid white;
+  background-color: lightgray;
 `;
 
 const CheckDisplay = styled.div`
