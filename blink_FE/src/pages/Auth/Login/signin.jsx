@@ -82,12 +82,12 @@ function Signin() {
 
       // console.log(formData);
 
-      // const response = await axios.post("/accounts/auth/login", {
-      //   // 백엔드로 보낼 데이터
-      //   email: loginData.id,
-      //   password: loginData.pw,
-      // });
-      // // accessToken 받아오기
+      const response = await axios.post("/api/auth/login", {
+        // 백엔드로 보낼 데이터
+        email: loginData.id,
+        password: loginData.pw,
+      });
+      // accessToken 받아오기
 
       // const accessToken = response.data.token.access;
       // const refreshToken = response.data.token.refresh;

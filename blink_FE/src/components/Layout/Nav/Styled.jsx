@@ -107,3 +107,5 @@ export const Profile = styled.div`
     opacity: 0.7;
   }
 `;
+
+export const NoticeWrap = styled.div``;
