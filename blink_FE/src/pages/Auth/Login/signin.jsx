@@ -21,6 +21,7 @@ function Signin() {
 
   const [pw, setPw] = useState("");
   const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState("");
 
   //유효성 검증 위함
   const [isValid, setIsValid] = useState(false);
@@ -89,25 +90,28 @@ function Signin() {
       });
       // accessToken 받아오기
 
-      // const accessToken = response.data.token.access;
-      // const refreshToken = response.data.token.refresh;
-      // console.log(response);
-      // const nickname = response.data.user.nickname;
+      const accessToken = response.data.token.access;
+      console.log(response);
+      const nickname = response.data.user.nickname;
 
-      // // 로그인 성공 시
-      // setUserInfo({
-      //   nickname: nickname,
-      //   accessToken: accessToken,
-      //   refreshToken: refreshToken, // 저장 추가
-      // });
+      console.log(response.data.token);
 
-      // // 로컬스토리지에 저장
+      // 로그인 성공 시
+      setUserInfo({
+        nickname: nickname,
+        accessToken: accessToken,
+
+        // 저장 추가
+      });
+
+      // 로컬스토리지에 저장
+      localStorage.setItem("token", response.data.token.access);
       // localStorage.setItem(
       //   "userInfo",
       //   JSON.stringify({
-      //     nickname: nickname,
-      //     accessToken: accessToken,
-      //     refreshToken: refreshToken, // 저장 추가
+      //     nickname: response.data.user.nickname,
+      //     email: response.data.user.email,
+      //     accessToken: response.data.user.accessToken,
       //   })
       // );
 
