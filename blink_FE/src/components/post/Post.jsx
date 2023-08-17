@@ -21,7 +21,6 @@ class Question extends React.Component {
   }
 }
 
-
 const Outer = styled.div`
   height: 1080px;
   width: 1150px;
