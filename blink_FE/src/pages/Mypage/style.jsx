@@ -38,6 +38,7 @@ export const Logoutp = styled.p`
   margin-left: auto;
   margin-top: auto;
   font-size: 30px;
+  cursor: pointer;
 `;
 
 // activity manage

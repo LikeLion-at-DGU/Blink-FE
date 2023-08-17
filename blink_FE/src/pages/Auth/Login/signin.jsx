@@ -105,7 +105,6 @@ function Signin() {
       });
 
       // 로컬스토리지에 저장
-      localStorage.setItem("token", response.data.token.access);
       // localStorage.setItem(
       //   "userInfo",
       //   JSON.stringify({
@@ -114,6 +113,8 @@ function Signin() {
       //     accessToken: response.data.user.accessToken,
       //   })
       // );
+
+      localStorage.setItem("token", response.data.token.access);
 
       if (response.status === 200) {
         // 로그인 성공
