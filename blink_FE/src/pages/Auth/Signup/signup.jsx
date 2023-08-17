@@ -238,17 +238,18 @@ function Signup() {
       <LoginNavigates
         LoginNavigatetitle={
           <>
-            블랙박스로 <br />
-            세상을 Link하는
-            <br />
-            BLink입니다
+            이미 계정이 <br /> 있으신가요?
           </>
         }
         LoginNavigatecotent={
           <>
-            BLink에 처음이신가요? <br />
-            여러분의 블랙박스를 <br />
-            공유하고 공유받아보세요!
+            이미 계정이 있다면, <br />
+            BLink에 로그인해서 <br />
+            누군가의 눈과 귀가
+            <br />
+            되어주세요! <br />
+            그리고 여러분도 도움을
+            <br /> 받아보세요 :)
           </>
         }
         // handleLoginClick={handleLoginClick}

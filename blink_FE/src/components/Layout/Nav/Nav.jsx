@@ -59,6 +59,17 @@ function Nav({ title, id }) {
     }
   };
 
+  const handleExpertClick = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      // 토큰이 있다면 로그인된 상태로 판단하고 /expert로 이동
+      window.location.href = "/expertList";
+    } else {
+      // 토큰이 없다면 로그인 안된 상태로 판단하고 로그인 페이지로 이동
+      window.location.href = "/signin";
+    }
+  };
+
   return (
     <>
       <S.NavContainer>
@@ -95,7 +106,7 @@ function Nav({ title, id }) {
           <Link
             to="/expertList"
             style={{ textDecoration: "none", color: "inherit" }}
-            onClick={handleProfileClick}
+            onClick={handleExpertClick}
           >
             <BsPersonVcard className="Person" />
             <p>Expert</p>
