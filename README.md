@@ -1,4 +1,4 @@
-<div><img src="https://capsule-render.vercel.app/api?type=waving&color=0:99cc99,100:009630&height=200&section=header&text=BLink&fontSize=90" /></div>
+<div><img src="https://capsule-render.vercel.app/api?type=waving&color=0:99cc99,100:009630&height=200&section=header&text=B:Link&fontSize=90" /></div>
 
 B:Link
 
