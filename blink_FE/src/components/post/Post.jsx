@@ -221,10 +221,8 @@ const FloatingCalendarContainer = styled.div`
 `;
 
 export default function Post({ selectedLocation }) {
+  //지도에서 선택한 위치 받아오기 위한 useState
   const [selectedLocationState, setSelectedLocationState] = useState(null);
-  // const [selectedLocation, setSelectedLocation] = useState(
-  //   initialSelectedLocation
-  // );
 
   useEffect(() => {
     setSelectedLocationState(selectedLocation);
