@@ -46,6 +46,18 @@ function Nav({ title, id }) {
   //     console.error("Error fetching profile image:", error);
   //   }
   // };
+  // 로그인 여부를 판별하는 함수
+  // 로그인 여부를 판별하는 함수
+  const handleProfileClick = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      // 토큰이 있다면 로그인된 상태로 판단하고 마이페이지로 이동
+      window.location.href = "/my";
+    } else {
+      // 토큰이 없다면 로그인 안된 상태로 판단하고 로그인 페이지로 이동
+      window.location.href = "/signin";
+    }
+  };
 
   return (
     <>
@@ -89,18 +101,16 @@ function Nav({ title, id }) {
           </Link>
         </S.NavIcon>
 
-        <Link to="/signin">
-          <S.Profile>
-            {profileImageUrl && (
-              <img
-                className="profile-image"
-                src={profileImageUrl}
-                alt="Profile"
-              />
-            )}
-            {!profileImageUrl && defaultProfileImageUrl}
-          </S.Profile>
-        </Link>
+        <S.Profile onClick={handleProfileClick}>
+          {profileImageUrl && (
+            <img
+              className="profile-image"
+              src={profileImageUrl}
+              alt="Profile"
+            />
+          )}
+          {!profileImageUrl && defaultProfileImageUrl}
+        </S.Profile>
       </S.NavContainer>
       {/* Notice 모달 컴포넌트
       {modalOpen && <Notice setModalOpen={setModalOpen} />} */}

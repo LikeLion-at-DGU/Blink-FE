@@ -57,6 +57,10 @@ const Router = createBrowserRouter([
         element: <ExpertSignup />,
       },
       {
+        path: "/my",
+        element: <Myaccount />,
+      },
+      {
         path: "/post",
         element: <Post />,
       },
@@ -84,10 +88,6 @@ const Router = createBrowserRouter([
           },
           { path: "/home/gMap", element: <GMap /> },
         ],
-      },
-      {
-        path: "/my",
-        element: <Myaccount />,
       },
     ],
   },
