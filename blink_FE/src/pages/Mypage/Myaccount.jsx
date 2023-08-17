@@ -5,23 +5,6 @@ import * as S from "./style";
 import { useEffect, useState } from "react";
 
 export default function AccountRight() {
-  const [profileImage, setProfileImage] = useState(null);
-  const [nickname, setNickname] = useState("");
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const handleImageUpload = (event) => {
-    const uploadedImage = event.target.files[0];
-    setProfileImage(uploadedImage);
-  };
-
-  const handleImageDelete = () => {
-    setProfileImage(null);
-  };
-
-  const handleSubmit = () => {};
-
   return (
     <S.AccountBackground>
       <p style={{ fontSize: "35px", fontWeight: "600", margin: "0px" }}>
@@ -42,7 +25,6 @@ export default function AccountRight() {
           <S.Explain>닉네임</S.Explain>
           <S.Inputt
             type="text"
-            value={nickname}
             onChange={(event) => setNickname(event.target.value)}
           />
         </S.Middle>
@@ -50,7 +32,6 @@ export default function AccountRight() {
           <S.Explain>현재 비밀번호</S.Explain>
           <S.Inputt
             type="text"
-            value={nickname}
             onChange={(event) => setNickname(event.target.value)}
           />
         </S.Middle>
@@ -58,7 +39,6 @@ export default function AccountRight() {
           <S.Explain>변경할 비밀번호</S.Explain>
           <S.Inputt
             type="text"
-            value={nickname}
             onChange={(event) => setNickname(event.target.value)}
           />
         </S.Middle>
@@ -67,7 +47,6 @@ export default function AccountRight() {
           <S.Explain>비밀번호 확인</S.Explain>
           <S.Inputt
             type="text"
-            value={nickname}
             onChange={(event) => setNickname(event.target.value)}
           />
           <form></form>
