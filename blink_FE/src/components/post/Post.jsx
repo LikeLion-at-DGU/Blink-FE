@@ -18,7 +18,6 @@ class Question extends React.Component {
   }
 }
 
-
 const Outer = styled.div`
   height: 1080px;
   width: 1150px;
@@ -270,7 +269,7 @@ export default function Post() {
     setIsLookForChecked(!isLookForChecked);
     setIsReportChecked(false);
   };
-  
+
   const handleDatePickerClick = () => {
     setShowDatePicker(!showDatePicker);
   };
@@ -298,8 +297,11 @@ export default function Post() {
               : "지역명, 도로명, 주소를 입력해주세요."}
             <BiSearchAlt2 />
           </Search>
-          <Search2 onClick={handleDatePickerClick}>촬영 or 요청일자<BiSearchAlt2 /></Search2>
-      </TopRow>
+          <Search2 onClick={handleDatePickerClick}>
+            촬영 or 요청일자
+            <BiSearchAlt2 />
+          </Search2>
+        </TopRow>
 
         <AdrSearchContainer show={showAdrSearch}>
           {showAdrSearch && (
@@ -334,7 +336,7 @@ export default function Post() {
                 <TitleInput type="text" placeholder="제목을 입력해주세요." />
               </FormRow>
               <FormRow>
-              <Select>
+                <Select>
                   <option value="" disabled selected hidden>
                     카테고리
                   </option>
@@ -357,7 +359,7 @@ export default function Post() {
             <>
               <CustomCloudUploadIcon />
               <UploadText>
-              .mov, .mp4 .png, .jpg, .jpeg, .pdf 파일을 업로드해주세요.
+                .mov, .mp4 .png, .jpg, .jpeg, .pdf 파일을 업로드해주세요.
                 <br />
                 <br />
                 최대 2장까지 업로드할 수 있습니다.

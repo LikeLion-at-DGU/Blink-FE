@@ -88,12 +88,22 @@ function Signin() {
         email: loginData.id,
         password: loginData.pw,
       });
+<<<<<<< HEAD
 
       // accessToken 받아오기
 
       const accessToken = response.data.token.access;
       console.log(response);
       const nickname = response.data.user.nickname;
+=======
+      // accessToken 받아오기
+
+      const accessToken = response.data.token.access;
+      console.log(response);
+      const nickname = response.data.user.nickname;
+
+      console.log(response.data.token);
+>>>>>>> 2be1ab9e8d545a02383dcce9ba7981240b6a31b9
 
       // 로그인 성공 시
       setUserInfo({
@@ -104,6 +114,7 @@ function Signin() {
       });
 
       // 로컬스토리지에 저장
+<<<<<<< HEAD
       localStorage.setItem(
         "userInfo",
         JSON.stringify({
@@ -112,6 +123,17 @@ function Signin() {
           accessToken: response.data.user.accessToken,
         })
       );
+=======
+      localStorage.setItem("token", response.data.token.access);
+      // localStorage.setItem(
+      //   "userInfo",
+      //   JSON.stringify({
+      //     nickname: response.data.user.nickname,
+      //     email: response.data.user.email,
+      //     accessToken: response.data.user.accessToken,
+      //   })
+      // );
+>>>>>>> 2be1ab9e8d545a02383dcce9ba7981240b6a31b9
 
       if (response.status === 200) {
         // 로그인 성공
