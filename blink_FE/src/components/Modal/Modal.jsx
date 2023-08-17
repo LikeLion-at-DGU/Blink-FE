@@ -16,8 +16,26 @@ export default function Modal({ setModalOpen, Id, title }) {
   useEffect(() => {
     async function fetchNotifications() {
       try {
-        const response = await axios.get(`/api/mainposts/notification${Id}`);
-        setNotifications(response.data); // 가져온 알림 데이터를 설정
+        // 로컬스토리지에서 토큰을 가져옴
+        // const storedUserInfo = JSON.parse(localStorage.getItem("authToken"));
+        // const accessToken = storedUserInfo ? storedUserInfo.access : "";
+        // console.log(localStorage.getItem("authToken"));
+        // console.log(storedUserInfo);
+        // console.log(accessToken);
+
+        console.log(localStorage.getItem("token"));
+
+        // console.log(localStorage.getItem("token"));
+
+        const response = await axios.get("/api/mainposts/notification", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // 헤더에 토큰 추가
+          },
+        });
+        console.log(response);
+        // console.log(accessToken);
+        // setNotifications(response.data); // 가져온 알림 데이터를 설정
       } catch (error) {
         console.error("알림창 에러:", error);
       }
@@ -44,7 +62,7 @@ export default function Modal({ setModalOpen, Id, title }) {
             notifications.map((notification) => (
               <Link
                 key={notification.id}
-                to={`/post/${notification.postId}`} // 포스트 디테일 페이지 URL로 이동
+                to={`/expertList/${notification.postId}`} // 포스트 디테일 페이지 URL로 이동
               >
                 <NotificationItem
                   notification={{
