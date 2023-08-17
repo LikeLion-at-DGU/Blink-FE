@@ -36,8 +36,9 @@ const Outer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 100px;
-  border: 1px solid white;
+  /* margin: 100px; */
+  /* border: 1px solid white; */
+  background-color: lightgray;
 `;
 
 const CheckDisplay = styled.div`
@@ -420,6 +421,7 @@ alert("등록 오류")
 <<<<<<< HEAD
         <TopRow>
           <div>
+            {/* {renderSelectedLocationInfo(selectedLocation)} */}
             {/* {selectedLocation && (
               <div>
                 <p>선택한 위치 정보:</p>
@@ -427,18 +429,7 @@ alert("등록 오류")
                 <p>경도: {selectedLocation.lng.toFixed(6)}</p>
               </div>
             )} */}
-            {/* {renderSelectedLocationInfo()} */}
-
-            {/* selectedLocation 값을 사용하여 위치 정보를 보여줌 */}
-            {renderSelectedLocationInfo(selectedLocation)}
-            {selectedLocation && (
-              <div>
-                <p>선택한 위치 정보:</p>
-                <p>위도: {selectedLocation.lat.toFixed(6)}</p>
-                <p>경도: {selectedLocation.lng.toFixed(6)}</p>
-              </div>
-            )}
-            <div>시발</div>
+            {/* <div>위함수</div> */}
           </div>
 
           <Search

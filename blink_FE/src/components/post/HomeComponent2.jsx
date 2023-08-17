@@ -3,13 +3,19 @@ import styled from "styled-components";
 import Post from "./Post";
 import CustomGMap from "./CustomGMap";
 
-const Home1Container = styled.div`
-  margin-left: 220px;
-  width: 80%;
+const Home2Container = styled.div`
+  /* margin-left: 220 px; */
+  width: 100%;
   height: 100%;
-  background-color: green;
+  background-color: white;
   display: flex;
   justify-content: flex-start;
+`;
+
+const PostStyled = styled(Post)`
+  width: 800px;
+  height: 100%;
+  background-color: yellow;
 `;
 
 function HomeComponent2() {
@@ -20,10 +26,10 @@ function HomeComponent2() {
   };
 
   return (
-    <Home1Container>
-      <Post selectedLocation={selectedLocation} />
+    <Home2Container>
+      <PostStyled selectedLocation={selectedLocation} />
       <CustomGMap onUpdateLocation={handleLocationUpdate} />
-    </Home1Container>
+    </Home2Container>
   );
 }
 

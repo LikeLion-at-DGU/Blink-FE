@@ -4,10 +4,10 @@ import CustomGMap from "./CustomGMap";
 import PostList from "./PostList";
 
 const Home1Container = styled.div`
-  margin-left: 220px;
-  width: 80%;
+  /* margin-left: 220 px; */
+  width: 100%;
   height: 100%;
-  background-color: green;
+  background-color: white;
   display: flex;
   justify-content: flex-start;
 `;

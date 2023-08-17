@@ -9,7 +9,8 @@ import {
 
 const GMapContainer = styled.div`
   position: relative;
-  width: 1390px;
+  width: 100%;
+  max-width: 1390px;
   height: 1080px;
 `;
 
@@ -79,10 +80,16 @@ function CustomGMap({ onUpdateLocation }) {
   const [markers, setMarkers] = useState([]);
   const [clickDisabled, setClickDisabled] = useState(false); // 클릭 이벤트 비활성화 상태
   const [maxMarkersAlert, setMaxMarkersAlert] = useState(false);
+  const [loadingFailed, setLoadingFailed] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const containerStyle = {
     width: "100%",
     height: "100%",
+  };
+
+  const handleMapLoadFailure = () => {
+    setLoadingFailed(true);
   };
 
   useEffect(() => {
@@ -91,14 +98,29 @@ function CustomGMap({ onUpdateLocation }) {
       script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapApiKey}&libraries=places`;
       script.async = true;
       script.defer = true;
+
+      // 스크립트 로딩 성공 시
       script.onload = () => {
         initMap();
         initAutocomplete();
+        setIsMapError(false); // 에러 상태를 false로 설정
       };
+
+      // 스크립트 로딩 실패 시
+      script.onerror = () => {
+        setIsMapError(true); // 에러 상태를 true로 설정
+      };
+
       document.head.appendChild(script);
     };
 
-    loadGoogleMapsScript();
+    // 스크립트가 이미 로드되었는지 확인
+    if (!window.google) {
+      loadGoogleMapsScript();
+    } else {
+      initMap();
+      initAutocomplete();
+    }
   }, []);
 
   const clickListenerRef = useRef(null); // useRef를 이용한 클릭 이벤트 리스너 저장
@@ -241,7 +263,8 @@ function CustomGMap({ onUpdateLocation }) {
         </Autocomplete>
       )} */}
       <GMapContainer id="map" onClick={handleMapClick}>
-        {map && (
+        {/* {map && ( */}
+        {!loading && (
           <LoadScript googleMapsApiKey={googleMapApiKey}>
             <GoogleMap
               mapContainerStyle={containerStyle}
