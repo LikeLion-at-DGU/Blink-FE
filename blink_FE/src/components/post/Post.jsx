@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-// Post 도로명 주소 검색 가능(달력 불가)
-import React, { useState } from "react";
-=======
-import React, { useEffect, useState } from "react";
->>>>>>> lcj
+// Post.jsx
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AdrSearch from "./AdrSearch";
 import { StyledSearchResult, SearchResultInputs } from "./SearchResult";
@@ -212,10 +208,6 @@ const Search2 = styled(Search)`
   cursor: pointer;
 `;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> lcj
 const FloatingCalendarContainer = styled.div`
   position: fixed;
   top: 50%; /* Adjust the vertical position as needed */
@@ -228,60 +220,65 @@ const FloatingCalendarContainer = styled.div`
   border-radius: 10px;
 `;
 
-export default function Post() {
-  const [postReg, setpostReg] = useState({
-    title: "",
-  });
+export default function Post({ selectedLocation }) {
+  const [selectedLocationState, setSelectedLocationState] = useState(null);
+  // const [selectedLocation, setSelectedLocation] = useState(
+  //   initialSelectedLocation
+  // );
 
-  const handlePostClick = async () => {
-    if (postReg.title === "") {
-      alert("제목 입력해라 이잣기아");
-      return;
-    }
+  useEffect(() => {
+    setSelectedLocationState(selectedLocation);
+  }, [selectedLocation]);
 
-    try {
-      // const postData = {
-      //   title: postReg.title,
+  const handleLocationUpdate = (location) => {
+    setSelectedLocation(location); // 클릭한 위치 정보 업데이트
+  };
 
-      // };
-
-      // console.log(postData);
-
-      //백에게 보낼 데이터
-      const response = await axios.post("/api/mainposts", {
-        title: postReg.title,
-      });
-
-      if (response.status === 200) {
-        alert("등록되었습니다.");
-      } else {
-        alert("등록 실패");
-      }
-    } catch (error) {
-      console.error("등록 오류:", error);
-      alert("등록 오류");
+  const renderSelectedLocationInfo = (selectedLocation) => {
+    if (selectedLocation) {
+      console.log(selectedLocation);
+      return (
+        <div>
+          <p>선택한 위치 정보:</p>
+          <p>위도: {selectedLocation.lat.toFixed(6)}</p>
+          <p>경도: {selectedLocation.lng.toFixed(6)}</p>
+        </div>
+      );
+    } else {
+      return <p>선택한 위치가 없습니다.</p>;
     }
   };
-<<<<<<< HEAD
-=======
-  // // Inside your component function
-  // const handleRegister = async () => {
-  //   const data = {
-  //     // Gather all the data you want to send
-  //     // For example, title, category, content, attachments, etc.
-  //   };
 
-  //   try {
-  //     const response = await axios.post("/api/mainposts", {
-  //     title: apititle,
-  //     });
-  //     // Handle the response, e.g., show a success message or navigate to a new page
-  //   } catch (error) {
-  //     // Handle errors, e.g., show an error message to the user
-  //   }
-  // };
+  const handleRegisterClick = async () => {
+    const postData = {
+      title: addressInfo.title, // Get title from your component's state
+      category: addressInfo.category, // Get category from your component's state
+      jebo_bool: isReportChecked, // Get the value from your component's state
+      lat: null, // Set the latitude value if needed
+      lng: null, // Set the longitude value if needed
+      location: addressInfo.address, // Get location from your component's state
+      content: addressInfo.content, // Get content from your component's state
+      medias: uploadedFiles, // Get uploaded files from your component's state
+    };
 
->>>>>>> lcj
+    try {
+      const response = await axios.post("/api/mainposts", postData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Post request successful:", response.data);
+      // Reset the form or perform any other actions after successful submission
+    } catch (error) {
+      console.error("Error submitting post:", error);
+    }
+  };
+
+  const handleAddressSearchClick = () => {
+    console.log("handleAddressSearchClick is triggered");
+    setShowAdrSearch(true);
+  };
   const [showAdrSearch, setShowAdrSearch] = useState(false);
   const [addressInfo, setAddressInfo] = useState({
     postcode: "",
@@ -351,13 +348,8 @@ export default function Post() {
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
-<<<<<<< HEAD
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-=======
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
->>>>>>> lcj
     return `${year}.${month}.${day}`;
   }
 
@@ -391,7 +383,6 @@ export default function Post() {
           </Search2>
         </TopRow>
 
-<<<<<<< HEAD
         <AdrSearchContainer show={showAdrSearch}>
           {showAdrSearch && (
             <AdrSearch
@@ -404,40 +395,34 @@ export default function Post() {
 
         {showDatePicker && (
           <FloatingCalendarContainer>
-            <Calendartwo user="your_user_here" onSelectDate={handleDatePickerSelect} />
-          </FloatingCalendarContainer>
-        )}
-=======
->>>>>>> lcj
-        {showAdrSearch && (
-          <AdrSearchContainer show={showAdrSearch}>
-            {/* ... (existing code) */}
-          </AdrSearchContainer>
-        )}
-
-        {/* Render the floating calendar container when showDatePicker is true */}
-        {showDatePicker && (
-          <FloatingCalendarContainer>
             <Calendartwo
               user="your_user_here"
               onSelectDate={handleDatePickerSelect}
             />
           </FloatingCalendarContainer>
         )}
-
+        {showAdrSearch && (
+          <StyledSearchResult>
+            <SearchResultInputs
+              postcode={addressInfo.postcode}
+              address={addressInfo.address}
+              detailAddress={addressInfo.detailAddress}
+              extraAddress={addressInfo.extraAddress}
+              handleDetailAddressChange={(e) =>
+                setAddressInfo({
+                  ...addressInfo,
+                  detailAddress: e.target.value,
+                })
+              }
+            />
+          </StyledSearchResult>
+        )}
 
         <Lsquare>
           <SquareBox>
             <Display>
               <FormRow>
-                <TitleInput
-                  value={postReg.title}
-                  onChange={(e) =>
-                    setpostReg({ ...postReg, title: e.target.value })
-                  } // 객체의 title 속성 업데이트
-                  type="text"
-                  placeholder="제목을 입력해주세요."
-                />
+                <TitleInput type="text" placeholder="제목을 입력해주세요." />
               </FormRow>
               <FormRow>
                 <Select>
@@ -445,8 +430,8 @@ export default function Post() {
                     카테고리
                   </option>
                   <Option value="Traffic Accident">교통사고</Option>
-                  <Option value="Theft">도난, 절도</Option>
-                  <Option value="Report Missing">실종 신고</Option>
+                  <Option value="Theft">도난,절도</Option>
+                  <Option value="Report Missing">실종신고</Option>
                   <Option value="Other">기타</Option>
                 </Select>
               </FormRow>
@@ -455,6 +440,16 @@ export default function Post() {
             <FormRow>
               <TextArea rows="10" placeholder="내용을 입력해주세요." />
             </FormRow>
+            {/* 창준 추가 */}
+            {renderSelectedLocationInfo(selectedLocation)}
+            {selectedLocation && (
+              <div>
+                <p>선택한 위치 정보:</p>
+                <p>위도: {selectedLocation.lat.toFixed(6)}</p>
+                <p>경도: {selectedLocation.lng.toFixed(6)}</p>
+              </div>
+            )}
+            <div>시발</div>
           </SquareBox>
         </Lsquare>
 
@@ -481,11 +476,7 @@ export default function Post() {
           <br />
         </SquareBox2>
       </PostContainer>
-<<<<<<< HEAD
-      <RegisterButton>등록하기</RegisterButton>
-=======
-      <RegisterButton onClick={handlePostClick}>등록하기</RegisterButton>
->>>>>>> lcj
+      <RegisterButton onClick={handleRegisterClick}>등록하기</RegisterButton>
     </Outer>
   );
 }
