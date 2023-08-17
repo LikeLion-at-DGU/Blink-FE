@@ -11,12 +11,8 @@ import { Link } from "react-router-dom";
 const Page1 = () => (
   <S.Container bgColor="#1B2130" textColor="white" isFadingIn={true}>
     <S.LogoImage src={Logo} alt="Logo" />
-    <S.LogoText>
-      블랙박스로 세상을 연결해봐요!
-      <br />
-      지도 기반 블랙박스 영상 공유 플랫폼
-    </S.LogoText>
-    <S.LogoBlink>BLink</S.LogoBlink>
+    <S.LogoText>블랙박스, 세상을 연결하는 눈이 되다</S.LogoText>
+    <S.LogoBlink>B:Link!</S.LogoBlink>
   </S.Container>
 );
 

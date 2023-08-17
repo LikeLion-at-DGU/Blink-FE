@@ -6,6 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "../../assets/api/axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Mypage() {
   const [name, setName] = useState(""); // Initialize with an appropriate value
@@ -35,7 +36,6 @@ export default function Mypage() {
         console.error("API 호출 에러:", error);
       }
     }
-
     fetchUserProfile();
   }, []);
 
@@ -53,7 +53,7 @@ export default function Mypage() {
       <S.Settingp>
         내 활동 관리 <FontAwesomeIcon icon={faChevronRight} />
       </S.Settingp>
-      <S.Logoutp>
+      <S.Logoutp onClick={handleLogout}>
         <FontAwesomeIcon
           icon={faRightFromBracket}
           style={{ marginRight: "20px" }}

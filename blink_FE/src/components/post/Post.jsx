@@ -1,5 +1,5 @@
-// Post 도로명 주소 검색 가능(달력 불가)
-import React, { useState } from "react";
+// Post.jsx
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AdrSearch from "./AdrSearch";
 import { StyledSearchResult, SearchResultInputs } from "./SearchResult";
@@ -208,7 +208,6 @@ const Search2 = styled(Search)`
   cursor: pointer;
 `;
 
-
 const FloatingCalendarContainer = styled.div`
   position: fixed;
   top: 50%; /* Adjust the vertical position as needed */
@@ -221,19 +220,81 @@ const FloatingCalendarContainer = styled.div`
   border-radius: 10px;
 `;
 
-export default function Post() {
-  const handleAddressSearchClick = () => {
-    console.log("handleAddressSearchClick is triggered");
-    setShowAdrSearch(true);
-  };
+export default function Post({ selectedLocation }) {
+  //지도에서 선택한 위치 받아오기 위한 useState
+  const [selectedLocationState, setSelectedLocationState] = useState(null);
+  // post 전달하기용 useState
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [content, setContent] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState([]);
   const [showAdrSearch, setShowAdrSearch] = useState(false);
   const [addressInfo, setAddressInfo] = useState({
     postcode: "",
     address: "",
   });
-
   const [selectedDate, setSelectedDate] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [isReportChecked, setIsReportChecked] = useState(true);
+  const [isLookForChecked, setIsLookForChecked] = useState(false);
+
+  useEffect(() => {
+    setSelectedLocationState(selectedLocation);
+  }, [selectedLocation]);
+
+  const handleLocationUpdate = (location) => {
+    setSelectedLocation(location); // 클릭한 위치 정보 업데이트
+  };
+
+  const renderSelectedLocationInfo = (selectedLocation) => {
+    if (selectedLocation) {
+      console.log(selectedLocation);
+      return (
+        <div>
+          <p>선택한 위치 정보:</p>
+          <p>위도: {selectedLocation.lat.toFixed(6)}</p>
+          <p>경도: {selectedLocation.lng.toFixed(6)}</p>
+        </div>
+      );
+    } else {
+      return <p>선택한 위치가 없습니다.</p>;
+    }
+  };
+
+  const handleRegisterClick = async () => {
+    const postData = {
+      title: title,
+      filmed_at: selectedDate, // 가정: selectedDate는 이미 올바른 형식으로 저장됨
+      category: category,
+      jebo_bool: isReportChecked,
+      lat: selectedLocation ? selectedLocation.lat : null,
+      lng: selectedLocation ? selectedLocation.lng : null,
+      location: addressInfo.address,
+      content: content,
+      media: uploadedFiles,
+    };
+
+    try {
+      const response = await axios.post("/api/mainposts", postData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // 헤더에 토큰 추가
+        },
+      });
+
+      if (response.status === 201) {
+        console.log("Post request successful:", response.data);
+        alert("게시글이 작성되었습니다.");
+      }
+    } catch (error) {
+      console.error("Post error:", error);
+    }
+  };
+
+  const handleAddressSearchClick = () => {
+    console.log("handleAddressSearchClick is triggered");
+    setShowAdrSearch(true);
+  };
 
   const toggleAdrSearch = () => {
     setShowAdrSearch(!showAdrSearch);
@@ -246,19 +307,32 @@ export default function Post() {
   };
 
   const handleComplete = (data) => {
+    const fullAddress = `${data.zonecode} ${
+      data.roadAddress || data.jibunAddress
+    } ${data.userSelectedType === "R" ? data.bname || data.buildingName : ""}`;
     const updatedAddressInfo = {
       postcode: data.zonecode,
       address: data.roadAddress || data.jibunAddress,
       detailAddress: "",
       extraAddress:
         data.userSelectedType === "R" ? data.bname || data.buildingName : "",
+      location: fullAddress, // 여기에 합쳐진 주소 정보를 저장
     };
 
     setAddressInfo(updatedAddressInfo);
     setShowAdrSearch(false);
   };
 
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const handleDetailAddressChange = (e) => {
+    const detail = e.target.value;
+    const fullAddress = `${addressInfo.postcode} ${addressInfo.address} ${detail} ${addressInfo.extraAddress}`;
+
+    setAddressInfo({
+      ...addressInfo,
+      detailAddress: detail,
+      location: fullAddress, // 여기에 합쳐진 주소 정보를 저장
+    });
+  };
 
   const handleFileUpload = (files) => {
     if (files.length > 2) {
@@ -274,9 +348,6 @@ export default function Post() {
     updatedFiles.splice(index, 1);
     setUploadedFiles(updatedFiles);
   };
-
-  const [isReportChecked, setIsReportChecked] = useState(true);
-  const [isLookForChecked, setIsLookForChecked] = useState(false);
 
   const handleReportCheckboxChange = () => {
     setIsReportChecked(!isReportChecked);
@@ -295,8 +366,8 @@ export default function Post() {
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     return `${year}.${month}.${day}`;
   }
 
@@ -342,7 +413,10 @@ export default function Post() {
 
         {showDatePicker && (
           <FloatingCalendarContainer>
-            <Calendartwo user="your_user_here" onSelectDate={handleDatePickerSelect} />
+            <Calendartwo
+              user="your_user_here"
+              onSelectDate={handleDatePickerSelect}
+            />
           </FloatingCalendarContainer>
         )}
         {showAdrSearch && (
@@ -362,29 +436,51 @@ export default function Post() {
           </StyledSearchResult>
         )}
 
-
         <Lsquare>
           <SquareBox>
             <Display>
               <FormRow>
-                <TitleInput type="text" placeholder="제목을 입력해주세요." />
+                <TitleInput
+                  type="text"
+                  placeholder="제목을 입력해주세요."
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
               </FormRow>
               <FormRow>
-                <Select>
-                  <option value="" disabled selected hidden>
+                <Select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option value="" disabled>
                     카테고리
                   </option>
                   <Option value="Traffic Accident">교통사고</Option>
-                  <Option value="Theft">도난, 절도</Option>
-                  <Option value="Report Missing">실종 신고</Option>
+                  <Option value="Theft">도난,절도</Option>
+                  <Option value="Report Missing">실종신고</Option>
                   <Option value="Other">기타</Option>
                 </Select>
               </FormRow>
             </Display>
             <HorizonLine />
             <FormRow>
-              <TextArea rows="10" placeholder="내용을 입력해주세요." />
+              <TextArea
+                rows="10"
+                placeholder="내용을 입력해주세요."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
             </FormRow>
+            {/* 창준 추가 */}
+            {renderSelectedLocationInfo(selectedLocation)}
+            {selectedLocation && (
+              <div>
+                <p>선택한 위치 정보:</p>
+                <p>위도: {selectedLocation.lat.toFixed(6)}</p>
+                <p>경도: {selectedLocation.lng.toFixed(6)}</p>
+              </div>
+            )}
+            <div>시발</div>
           </SquareBox>
         </Lsquare>
 
@@ -411,7 +507,7 @@ export default function Post() {
           <br />
         </SquareBox2>
       </PostContainer>
-      <RegisterButton>등록하기</RegisterButton>
+      <RegisterButton onClick={handleRegisterClick}>등록하기</RegisterButton>
     </Outer>
   );
 }
