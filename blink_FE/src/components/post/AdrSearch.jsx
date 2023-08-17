@@ -40,16 +40,17 @@ export default function AddressSearch({ onUpdateAddress, showAdrSearch, setShowA
       detailAddress: '',
       extraAddress: data.userSelectedType === 'R' ? data.bname || data.buildingName : '',
     };
-
-    setAddressInfo(updatedAddressInfo);
-    onUpdateAddress(updatedAddressInfo);
+  
+    setAddressInfo(updatedAddressInfo); // You can remove this line
+    onUpdateAddress(updatedAddressInfo); // Call the callback function
     setShowAdrSearch(false); // Close the AdrSearch window after address selection
   };
 
   const handleClose = () => {
-    console.log("handleClose is triggered");
     setShowAdrSearch(false); // Close the AdrSearch window
   };
+
+  
 
   return (
     <AdrSearchContainer show={showAdrSearch}>
