@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import KMap from "../../components/post/KMap";
-import GMap from "../../components/post/GMap";
-import CustomGMap from "../../components/post/CustomGMap";
-import PostList from "../../components/post/PostList";
-import Post from "../../components/post/Post";
-import MinWidthButtonGroup from "../../components/post/MinWidthButtonGroup";
-import HomeComponent1 from "../../components/post/HomeComponent1";
-import HomeComponent2 from "../../components/post/HomeComponent2";
+// import KMap from "../../components/post/KMap";
+// import GMap from "../../components/post/Post/GMap";
+import CustomGMap from "../../components/post/Post/CustomGMap";
+import PostList from "../../components/post/PostList/PostList";
+import Post from "../../components/post/PostWrite/Post";
+import MinWidthButtonGroup from "../../components/post/PostList/MinWidthButtonGroup";
+import HomeComponent1 from "../../components/post/Post/HomeComponent1";
+import HomeComponent2 from "../../components/post/Post/HomeComponent2";
 
 const HomeContainer = styled.div`
   /* margin-left: 220px; */

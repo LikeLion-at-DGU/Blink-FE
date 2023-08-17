@@ -106,7 +106,7 @@ function Nav({ title, id }) {
           <Link
             to="/expertList"
             style={{ textDecoration: "none", color: "inherit" }}
-            onClick={handleExpertClick}
+            // onClick={handleProfileClick}
           >
             <BsPersonVcard className="Person" />
             <p>Expert</p>

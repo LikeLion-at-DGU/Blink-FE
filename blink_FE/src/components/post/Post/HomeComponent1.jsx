@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import CustomGMap from "./CustomGMap";
-import PostList from "./PostList";
+import CustomGMap from "../Post/CustomGMap";
+import PostList from "../PostList/PostList";
 
 const Home1Container = styled.div`
   /* margin-left: 220 px; */
