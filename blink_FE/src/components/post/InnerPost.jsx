@@ -67,15 +67,30 @@ const PostListContent = styled.p`
   font-size: 15px;
 `;
 
-export default function InnerPost({ title, content, inProgress, isFound }) {
+export default function InnerPost({
+  key,
+  title,
+  category, // 오타 수정: catefory -> category
+  content,
+  jebo,
+  writer,
+  lat,
+  lng,
+  location,
+  created_at,
+  comments_cnt,
+}) {
   return (
     <PostListBox>
       <PostListBtnContainer>
-        <CompleteBtn>{inProgress ? "진행중" : "진행 완료"}</CompleteBtn>
-        <CateBtn>{isFound ? "찾아요" : "제보해요"}</CateBtn>
+        <CateBtn>{jebo ? "찾아요" : "제보해요"}</CateBtn>
       </PostListBtnContainer>
       <PostListTitle>{title}</PostListTitle>
+      <div>{location}</div>
+      <div>{category}</div>
+      <div>{created_at}</div>
       <PostListContent>{content}</PostListContent>
+      <div>{writer}</div>
     </PostListBox>
   );
 }

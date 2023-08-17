@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 // Post 도로명 주소 검색 가능(달력 불가)
 import React, { useState } from "react";
+=======
+import React, { useEffect, useState } from "react";
+>>>>>>> lcj
 import styled from "styled-components";
 import AdrSearch from "./AdrSearch";
 import { StyledSearchResult, SearchResultInputs } from "./SearchResult";
@@ -208,7 +212,10 @@ const Search2 = styled(Search)`
   cursor: pointer;
 `;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> lcj
 const FloatingCalendarContainer = styled.div`
   position: fixed;
   top: 50%; /* Adjust the vertical position as needed */
@@ -222,10 +229,59 @@ const FloatingCalendarContainer = styled.div`
 `;
 
 export default function Post() {
-  const handleAddressSearchClick = () => {
-    console.log("handleAddressSearchClick is triggered");
-    setShowAdrSearch(true);
+  const [postReg, setpostReg] = useState({
+    title: "",
+  });
+
+  const handlePostClick = async () => {
+    if (postReg.title === "") {
+      alert("제목 입력해라 이잣기아");
+      return;
+    }
+
+    try {
+      // const postData = {
+      //   title: postReg.title,
+
+      // };
+
+      // console.log(postData);
+
+      //백에게 보낼 데이터
+      const response = await axios.post("/api/mainposts", {
+        title: postReg.title,
+      });
+
+      if (response.status === 200) {
+        alert("등록되었습니다.");
+      } else {
+        alert("등록 실패");
+      }
+    } catch (error) {
+      console.error("등록 오류:", error);
+      alert("등록 오류");
+    }
   };
+<<<<<<< HEAD
+=======
+  // // Inside your component function
+  // const handleRegister = async () => {
+  //   const data = {
+  //     // Gather all the data you want to send
+  //     // For example, title, category, content, attachments, etc.
+  //   };
+
+  //   try {
+  //     const response = await axios.post("/api/mainposts", {
+  //     title: apititle,
+  //     });
+  //     // Handle the response, e.g., show a success message or navigate to a new page
+  //   } catch (error) {
+  //     // Handle errors, e.g., show an error message to the user
+  //   }
+  // };
+
+>>>>>>> lcj
   const [showAdrSearch, setShowAdrSearch] = useState(false);
   const [addressInfo, setAddressInfo] = useState({
     postcode: "",
@@ -295,8 +351,13 @@ export default function Post() {
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
+<<<<<<< HEAD
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
+=======
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+>>>>>>> lcj
     return `${year}.${month}.${day}`;
   }
 
@@ -330,6 +391,7 @@ export default function Post() {
           </Search2>
         </TopRow>
 
+<<<<<<< HEAD
         <AdrSearchContainer show={showAdrSearch}>
           {showAdrSearch && (
             <AdrSearch
@@ -345,21 +407,22 @@ export default function Post() {
             <Calendartwo user="your_user_here" onSelectDate={handleDatePickerSelect} />
           </FloatingCalendarContainer>
         )}
+=======
+>>>>>>> lcj
         {showAdrSearch && (
-          <StyledSearchResult>
-            <SearchResultInputs
-              postcode={addressInfo.postcode}
-              address={addressInfo.address}
-              detailAddress={addressInfo.detailAddress}
-              extraAddress={addressInfo.extraAddress}
-              handleDetailAddressChange={(e) =>
-                setAddressInfo({
-                  ...addressInfo,
-                  detailAddress: e.target.value,
-                })
-              }
+          <AdrSearchContainer show={showAdrSearch}>
+            {/* ... (existing code) */}
+          </AdrSearchContainer>
+        )}
+
+        {/* Render the floating calendar container when showDatePicker is true */}
+        {showDatePicker && (
+          <FloatingCalendarContainer>
+            <Calendartwo
+              user="your_user_here"
+              onSelectDate={handleDatePickerSelect}
             />
-          </StyledSearchResult>
+          </FloatingCalendarContainer>
         )}
 
 
@@ -367,7 +430,14 @@ export default function Post() {
           <SquareBox>
             <Display>
               <FormRow>
-                <TitleInput type="text" placeholder="제목을 입력해주세요." />
+                <TitleInput
+                  value={postReg.title}
+                  onChange={(e) =>
+                    setpostReg({ ...postReg, title: e.target.value })
+                  } // 객체의 title 속성 업데이트
+                  type="text"
+                  placeholder="제목을 입력해주세요."
+                />
               </FormRow>
               <FormRow>
                 <Select>
@@ -411,7 +481,11 @@ export default function Post() {
           <br />
         </SquareBox2>
       </PostContainer>
+<<<<<<< HEAD
       <RegisterButton>등록하기</RegisterButton>
+=======
+      <RegisterButton onClick={handlePostClick}>등록하기</RegisterButton>
+>>>>>>> lcj
     </Outer>
   );
 }
