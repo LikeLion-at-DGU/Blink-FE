@@ -14,7 +14,6 @@ export const Outline = styled.div`
 export const ImgBox = styled.img`
   width: 200px;
   height: 200px;
-  background-color: pink;
   border-radius: 60px;
   margin-right: auto;
   margin-left: auto;
@@ -52,7 +51,7 @@ export const Background = styled.div`
 
 export const Listbar = styled.div`
   width: 60vw;
-  height: 200px;
+  height: 1000px;
   background-color: #f5f6f8;
   overflow-y: scroll;
 `;
@@ -67,8 +66,8 @@ export const AccountBackground = styled.div`
 
 export const Textbox = styled.div`
   background-color: #f6f6f7;
-  width: 57vw;
-  height: 100vh;
+  width: 53vw;
+  height: 1000px;
   margin-top: 50px;
   display: flex;
   flex-direction: column;
@@ -82,14 +81,15 @@ export const Middle = styled.p`
 `;
 
 export const Explain = styled.p`
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 600;
-  margin-left: 250px;
+  margin-left: 100px;
   text-align: right;
   margin-right: 20px;
 `;
 
 export const Inputt = styled.input`
   height: 50px;
-  width: 500px;
+  width: 400px;
+  font-size: 20px;
 `;
