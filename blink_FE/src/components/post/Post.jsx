@@ -1,7 +1,7 @@
 //Post.jsx
 // #1 메인 - 글쓰기 페이지 총괄
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AdrSearch from "./AdrSearch";
 import { StyledSearchResult, SearchResultInputs } from "./SearchResult";
@@ -10,6 +10,7 @@ import FileUpload from "./FileUpload";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import HorizonLine from "./Line";
+import GMap from "./GMap";
 
 class Question extends React.Component {
   render() {
@@ -209,7 +210,19 @@ const RegisterButton = styled.button`
   box-shadow: 3px 3px 3px gray;
 `;
 
-export default function Post() {
+export default function Post({ selectedLocation }) {
+  const [selectedLocationState, setSelectedLocationState] = useState(null);
+  // const [selectedLocation, setSelectedLocation] = useState(
+  //   initialSelectedLocation
+  // );
+
+  useEffect(() => {
+    setSelectedLocationState(selectedLocation);
+  }, [selectedLocation]);
+
+  const handleLocationUpdate = (location) => {
+    setSelectedLocation(location); // 클릭한 위치 정보 업데이트
+  };
 
   const handleAddressSearchClick = () => {
     console.log("handleAddressSearchClick is triggered");
@@ -280,6 +293,35 @@ export default function Post() {
     setIsReportChecked(false);
   };
 
+  ///////// test 1
+  // const renderSelectedLocationInfo = () => {
+  //   if (selectedLocation) {
+  //     return (
+  //       <div>
+  //         <p>선택한 위치 정보:</p>
+  //         <p>위도: {selectedLocation.lat.toFixed(6)}</p>
+  //         <p>경도: {selectedLocation.lng.toFixed(6)}</p>
+  //       </div>
+  //     );
+  //   } else {
+  //     return <p>선택한 위치가 없습니다.</p>;
+  //   }
+  // };
+
+  const renderSelectedLocationInfo = (selectedLocation) => {
+    if (selectedLocation) {
+      console.log(selectedLocation);
+      return (
+        <div>
+          <p>선택한 위치 정보:</p>
+          <p>위도: {selectedLocation.lat.toFixed(6)}</p>
+          <p>경도: {selectedLocation.lng.toFixed(6)}</p>
+        </div>
+      );
+    } else {
+      return <p>선택한 위치가 없습니다.</p>;
+    }
+  };
   return (
     <Outer>
       <CheckDisplay>
@@ -291,9 +333,33 @@ export default function Post() {
           찾아요 &nbsp;&nbsp;
           <Checkbox type="checkbox" checked={isLookForChecked} />
         </Check>
+        {/* 지도 추가. 위치는 임의로. */}
+        {/* <GMap onUpdateLocation={handleLocationUpdate} /> */}
       </CheckDisplay>
       <PostContainer>
         <TopRow>
+          <div>
+            {/* {selectedLocation && (
+              <div>
+                <p>선택한 위치 정보:</p>
+                <p>위도: {selectedLocation.lat.toFixed(6)}</p>
+                <p>경도: {selectedLocation.lng.toFixed(6)}</p>
+              </div>
+            )} */}
+            {/* {renderSelectedLocationInfo()} */}
+
+            {/* selectedLocation 값을 사용하여 위치 정보를 보여줌 */}
+            {renderSelectedLocationInfo(selectedLocation)}
+            {selectedLocation && (
+              <div>
+                <p>선택한 위치 정보:</p>
+                <p>위도: {selectedLocation.lat.toFixed(6)}</p>
+                <p>경도: {selectedLocation.lng.toFixed(6)}</p>
+              </div>
+            )}
+            <div>시발</div>
+          </div>
+
           <Search
             onClick={toggleAdrSearch}
             selectedAddress={addressInfo.address} // Pass the selected address
