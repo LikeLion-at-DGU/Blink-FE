@@ -83,7 +83,7 @@ export default function InnerPost({
   return (
     <PostListBox>
       <PostListBtnContainer>
-        <CateBtn>{jebo ? "찾아요" : "제보해요"}</CateBtn>
+        <CateBtn>{jebo ? "제보해요" : "찾아요"}</CateBtn>
       </PostListBtnContainer>
       <PostListTitle>{title}</PostListTitle>
       <div>{location}</div>
