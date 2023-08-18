@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Post from "./Post";
+import Post from "../PostWrite/Post";
 import CustomGMap from "./CustomGMap";
 
 const Home2Container = styled.div`

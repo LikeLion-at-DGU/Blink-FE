@@ -8,7 +8,8 @@ import { BiSearchAlt2 } from "react-icons/bi";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import HorizonLine from "./Line";
 import Calendartwo from "./DatePicker";
-import axios from "../../assets/api/axios";
+import axios from "../../../assets/api/axios";
+import instance from "../../../assets/api/axios";
 
 class Question extends React.Component {
   render() {
@@ -262,9 +263,13 @@ export default function Post({ selectedLocation }) {
   };
 
   const handleRegisterClick = async () => {
+    console.log(selectedDate);
+    console.log(category);
     const postData = {
       title: title,
-      filmed_at: selectedDate, // 가정: selectedDate는 이미 올바른 형식으로 저장됨
+      filmed_at: selectedDate
+        ? Math.floor(new Date(selectedDate).getTime() / 1000)
+        : null,
       category: category,
       jebo_bool: isReportChecked,
       lat: selectedLocation ? selectedLocation.lat : null,
@@ -275,7 +280,7 @@ export default function Post({ selectedLocation }) {
     };
 
     try {
-      const response = await axios.post("/api/mainposts", postData, {
+      const response = await instance.post("/api/mainposts", postData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`, // 헤더에 토큰 추가
@@ -288,6 +293,7 @@ export default function Post({ selectedLocation }) {
       }
     } catch (error) {
       console.error("Post error:", error);
+      console.error("Server response:", error.response.data);
     }
   };
 
@@ -302,7 +308,8 @@ export default function Post({ selectedLocation }) {
   };
 
   const handleDatePickerSelect = (date) => {
-    setSelectedDate(date); // Update the selected date
+    const formattedDate = convertToYYYYMMDD(date);
+    setSelectedDate(formattedDate); // 변환된 형식으로 날짜 업데이트
     setShowDatePicker(false); // Hide the date picker
   };
 
@@ -363,12 +370,21 @@ export default function Post({ selectedLocation }) {
     setShowDatePicker(!showDatePicker);
   };
 
+  function convertToYYYYMMDD(dateString) {
+    const parts = dateString.split("/");
+    const newDate = `${parts[2]}${parts[0].padStart(2, "0")}${parts[1].padStart(
+      2,
+      "0"
+    )}`;
+    return newDate;
+  }
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
-    return `${year}.${month}.${day}`;
+    return `${year}${month}${day}`; // 점(.)을 제거하여 형식 변경
   }
 
   return (
@@ -455,10 +471,10 @@ export default function Post({ selectedLocation }) {
                   <option value="" disabled>
                     카테고리
                   </option>
-                  <Option value="Traffic Accident">교통사고</Option>
-                  <Option value="Theft">도난,절도</Option>
-                  <Option value="Report Missing">실종신고</Option>
-                  <Option value="Other">기타</Option>
+                  <Option value="교통사고">교통사고</Option>
+                  <Option value="도난,절도">도난,절도</Option>
+                  <Option value="실종신고">실종신고</Option>
+                  <Option value="기타">기타</Option>
                 </Select>
               </FormRow>
             </Display>
@@ -480,7 +496,6 @@ export default function Post({ selectedLocation }) {
                 <p>경도: {selectedLocation.lng.toFixed(6)}</p>
               </div>
             )}
-            <div>시발</div>
           </SquareBox>
         </Lsquare>
 

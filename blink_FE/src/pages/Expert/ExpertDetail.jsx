@@ -22,15 +22,23 @@ export default function ExpertDetail({ CardData }) {
     ));
   };
 
-  function insertNewlinesBeforeNumbers(text) {
-    const pattern = /(\D)(\d)/g;
-    const newText = text.replace(pattern, "$1\n$2");
-    return newText;
-  }
   const handleCloseDetail = () => {
     setIsDetailOpen(false);
     navigate("/expertList");
   };
+  //경력에서 문자열 파싱함수
+  function addEnterOnNumberChange(inputText) {
+    const splitText = inputText.split(/(\d+\.\s)/).filter(Boolean);
+
+    const textWithEnters = splitText.map((part, index) => {
+      if (index % 2 === 0) {
+        return part;
+      } else {
+        return part + "\n";
+      }
+    });
+    return textWithEnters.join("");
+  }
 
   return (
     <>
@@ -71,8 +79,8 @@ export default function ExpertDetail({ CardData }) {
             <S.CommentSub>
               제공될 상담
               <br />
-              <S.Commentmore>
-                {insertNewlinesBeforeNumbers(findItem.content)}
+              <S.Commentmore style={{ whiteSpace: "pre-line" }}>
+                {addEnterOnNumberChange(findItem.content)}
               </S.Commentmore>
             </S.CommentSub>
           </S.Commentbox>

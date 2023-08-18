@@ -148,6 +148,7 @@ export const Commentbox = styled.div`
 export const CommentSub = styled.p`
   font-weight: 700;
   font-size: 25px;
+  margin-top: 0px;
 `;
 
 export const Commentmore = styled.p`

@@ -40,7 +40,7 @@ export default function Calendartwo({ user, onSelectDate }) {
     });
     onSelectDate(formattedDate); // Call the onSelectDate prop with the selected date
   };
-
+  
   return (
     <Container>
       <Calendar
