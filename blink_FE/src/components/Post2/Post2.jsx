@@ -1,9 +1,11 @@
-// Import necessary libraries
+// post2.jsx
 import styled from "styled-components";
 import { MdLocationOn } from "react-icons/md";
 import HorizonLine from "../Layout/Line";
 import React, { useState } from "react";
 import { AiOutlinePaperClip } from "react-icons/ai";
+import "react-calendar/dist/Calendar.css";
+import axios from "../../assets/api/axios";
 
 const Outer = styled.div`
   width: 1150px;
@@ -13,6 +15,7 @@ const Outer = styled.div`
   justify-content: center;
   border: 1px solid black;
   margin-left: 150px;
+  padding-bottom: 80px;
   font-size: 50px;
   font-weight: bold;
   gap: 0.5em;
@@ -57,7 +60,7 @@ const PostBox = styled.div`
 const CommentBox = styled.div`
   border: 1px solid black;
   width: 920px;
-  height: 332px;
+  height: auto;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -68,11 +71,6 @@ const ClipBox = styled.div`
   width: 920px;
   height: 338px;
   border-radius: 10px;
-`;
-
-const Title = styled.div`
-  font-size: 38px;
-  margin: 30px;
 `;
 
 const Context = styled.div`
@@ -99,11 +97,6 @@ const PostDate = styled.div`
   color: gray;
 `;
 
-const TitleBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const CommentForm = styled.form`
   margin: 20px;
   display: flex;
@@ -111,7 +104,7 @@ const CommentForm = styled.form`
 `;
 
 const CommentInput = styled.input`
-  width: 740px;
+  width: 700px;
   height: 40px;
   padding: 10px;
   border: 1px solid #ccc;
@@ -121,37 +114,46 @@ const CommentInput = styled.input`
 //답글
 const UploadedComment = styled.div`
   font-size: 18px;
+  color:gray;
   font-weight: 500;
   margin-left:20px;
-  color:red;
+  display:flex;
+  margin-left:20px;
 `;
 
 //오리지널댓글
 const OriginalComment = styled(UploadedComment)`
-  font-size: 20px;
-  color:blue;
+  font-size: 22px;
   cursor: pointer;
+  display:flex;
+  align-items:center;
+  gap:2px;
+  color:black;
+  margin-bottom:20px;
 `;
 
+
+//답글버튼
 const ReplyButton = styled.button`
   background-color: #C4C4C4;
   color: white;
   border: none;
   padding: 4px 6px;
   border-radius: 3px;
-  font-size: 10px;
-  cursor: pointer;
-  margin-left: 5px;
-`;
-
-const DeleteButton = styled.button`
-  background-color: #C4C4C4;
-  color: white;
-  border: none;
-  padding: 8px 10px;
-  border-radius: 5px;
   font-size: 14px;
   cursor: pointer;
+  width:49px;
+  height:20px;
+  text-align:center;
+  align-items:center;
+  display:flex;
+  justify-content:center;
+  margin-right:10px;
+  `;
+
+//삭제버튼
+const DeleteButton = styled(ReplyButton)`
+margin-right:180px;
 `;
 
 const UploadButton = styled.button`
@@ -166,6 +168,7 @@ const UploadButton = styled.button`
   display:flex;
   justify-content:center;
   align-items:center;
+  width:90px;
 `;
 
 const CommentFooter = styled.div`
@@ -175,10 +178,21 @@ const CommentFooter = styled.div`
 `;
 
 const ClipIcon = styled(AiOutlinePaperClip)`
-  font-size: 24px;
   color: #C4C4C4;
-  margin-right: 10px;
+  margin:4px 6px 0 6px;
 `;
+
+const TitleBox = styled.div`
+  display: flex;
+`;
+
+const Title = styled.div`
+  font-size: 38px;
+  margin: 10px 15px 10px 0;
+`;
+const Category = styled(Title)`
+  margin: 10px 5px 10px 20px;
+`
 
 
 
@@ -255,7 +269,7 @@ const handleReplyButtonClick = (parentIndex) => {
       <Outer>
         <Text>요청 상세 페이지</Text>
         <HereBox>
-          <>
+          <> 
             <MdLocationOn size={30} />
             요청 위치
           </>
@@ -264,6 +278,7 @@ const handleReplyButtonClick = (parentIndex) => {
     
         <PostBox>
           <TitleBox>
+          <Category>카테고리<>/</></Category>
             <Title>제목</Title>
           </TitleBox>
           <HorizonLine />
@@ -294,61 +309,61 @@ const handleReplyButtonClick = (parentIndex) => {
                 />
                 <ClipIcon />
               </label>
-              <UploadButton type="submit">업로드</UploadButton>
+              <UploadButton type="submit">댓글</UploadButton>
             </CommentFooter>
           </CommentForm>
 
           {comments.map((comment, index) => (
-          <div key={index}>
-            <div>
-              <OriginalComment>
-                <strong>{comment.user}:</strong> {comment.text}
-                <ReplyButton onClick={() => handleReplyButtonClick(index)}>
-                  Reply
-                </ReplyButton>
-                <DeleteButton onClick={() => handleDeleteComment(index)}>Delete</DeleteButton>
-              </OriginalComment>
-            </div>
+  <div key={index}>
+    <OriginalComment>
+      <div style={{ flex: 1 }}>
+        <strong>{comment.user}:</strong> {comment.text}
+      </div>
+      <div style={{ display: "flex", alignItems: "center", marginRight: "10px" }}>
+  <ReplyButton onClick={() => handleReplyButtonClick(index)}>답글</ReplyButton>
+  <DeleteButton onClick={() => handleDeleteComment(index)}>삭제</DeleteButton>
+</div>
 
+    </OriginalComment>
 
-            {comment.replies.map((reply, replyIndex) => (
-  <div key={replyIndex}>
-    <UploadedComment>
-      <strong>{reply.user}:</strong> {reply.text}
-      <DeleteButton onClick={() => handleDeleteCommentReply(index, replyIndex)}>
-        Delete
-      </DeleteButton>
-    </UploadedComment>
+    {comment.replies.map((reply, replyIndex) => (
+      <UploadedComment key={replyIndex}>
+        <div style={{ flex: 1 }}>
+          <strong>{reply.user}:</strong> {reply.text}
+        </div>
+        <div style={{ marginRight:"10px"}}>
+        <DeleteButton onClick={() => handleDeleteCommentReply(index, replyIndex)}>
+          삭제
+        </DeleteButton></div>
+      </UploadedComment>
+    ))}
+
+    {comment.showReplyInput && (
+      <div>
+        <CommentForm onSubmit={(e) => handleSubmitReply(e, index)}>
+          <CommentFooter>
+            <CommentInput
+              type="text"
+              placeholder="답글을 남겨보세요."
+              value={comment.newReply}
+              onChange={(e) => handleReplyInputChange(e, index)}
+            />
+            <label>
+              <input
+                type="file"
+                accept=".jpg,.jpeg,.png,.mp4"
+                style={{ display: "none" }}
+                onChange={(e) => setAttachments([...attachments, e.target.files[0]])}
+              />
+            </label>
+            <UploadButton type="submit">등록</UploadButton>
+          </CommentFooter>
+        </CommentForm>
+      </div>
+    )}
   </div>
 ))}
 
-{comment.showReplyInput && (
-  <div>
-    <CommentForm onSubmit={(e) => handleSubmitReply(e, index)}>
-      <CommentFooter>
-        <CommentInput
-          type="text"
-          placeholder="Write a reply!"
-          value={comment.newReply}
-          onChange={(e) => handleReplyInputChange(e, index)}
-        />
-        <label>
-          <input
-            type="file"
-            accept=".jpg,.jpeg,.png,.mp4"
-            style={{ display: "none" }}
-            onChange={(e) => setAttachments([...attachments, e.target.files[0]])}
-          />
-          <ClipIcon />
-        </label>
-        <UploadButton type="submit">Reply</UploadButton>
-      </CommentFooter>
-    </CommentForm>
-  </div>
-)}
-
-          </div>
-        ))}
       </CommentBox>
     </Outer>
   );

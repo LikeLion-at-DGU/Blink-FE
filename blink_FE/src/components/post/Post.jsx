@@ -1,4 +1,4 @@
-// Post 도로명 주소 검색 가능(달력 불가)
+// Post.jsx
 import React, { useState } from "react";
 import styled from "styled-components";
 import AdrSearch from "./AdrSearch";
@@ -222,7 +222,37 @@ const FloatingCalendarContainer = styled.div`
 `;
 
 export default function Post() {
+
+  const handleRegisterClick = async () => {
+    const postData = {
+      title: addressInfo.title, // Get title from your component's state
+      category: addressInfo.category, // Get category from your component's state
+      jebo_bool: isReportChecked, // Get the value from your component's state
+      lat: null, // Set the latitude value if needed
+      lng: null, // Set the longitude value if needed
+      location: addressInfo.address, // Get location from your component's state
+      content: addressInfo.content, // Get content from your component's state
+      medias: uploadedFiles, // Get uploaded files from your component's state
+    };
+
+    try {
+      const response = await axios.post("/api/mainposts", postData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      
+      console.log("Post request successful:", response.data);
+      // Reset the form or perform any other actions after successful submission
+    } catch (error) {
+      console.error("Error submitting post:", error);
+    }
+  };
+
+
   const handleAddressSearchClick = () => {
+
+    
     console.log("handleAddressSearchClick is triggered");
     setShowAdrSearch(true);
   };
@@ -375,8 +405,8 @@ export default function Post() {
                     카테고리
                   </option>
                   <Option value="Traffic Accident">교통사고</Option>
-                  <Option value="Theft">도난, 절도</Option>
-                  <Option value="Report Missing">실종 신고</Option>
+                  <Option value="Theft">도난,절도</Option>
+                  <Option value="Report Missing">실종신고</Option>
                   <Option value="Other">기타</Option>
                 </Select>
               </FormRow>
@@ -411,7 +441,8 @@ export default function Post() {
           <br />
         </SquareBox2>
       </PostContainer>
-      <RegisterButton>등록하기</RegisterButton>
+      <RegisterButton onClick={handleRegisterClick}>등록하기</RegisterButton>
+
     </Outer>
   );
 }
