@@ -51,7 +51,7 @@ export const Background = styled.div`
 
 export const Listbar = styled.div`
   width: 60vw;
-  height: 1000px;
+  height: 200px;
   background-color: #f5f6f8;
   overflow-y: scroll;
 `;
