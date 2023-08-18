@@ -283,6 +283,7 @@ export default function Post({ selectedLocation }) {
       const response = await instance.post("/api/mainposts", postData, {
         headers: {
           "Content-Type": "application/json",
+          // "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`, // 헤더에 토큰 추가
         },
       });
