@@ -263,7 +263,7 @@ const Post2 = (props) => {
     instance
       .get(`/api/mainposts/${mainpostId}`)
       .then((response) => {
-        // Set your state with the data
+        setPostDetail(response.data); // 가져온 데이터를 상태에 저장
       })
       .catch((error) => {
         console.error("Error fetching post data:", error);
