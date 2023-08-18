@@ -42,7 +42,6 @@ export const Outline = styled.div`
 export const Card = styled.div`
   width: 400px;
   height: 600px;
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
   align-items: center;
