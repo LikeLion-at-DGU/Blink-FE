@@ -6,6 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "../../assets/api/axios";
+import { Link } from "react-router-dom";
 
 export default function Mypage() {
   const [name, setName] = useState(""); // Initialize with an appropriate value
@@ -48,11 +49,16 @@ export default function Mypage() {
       <S.ImgBox src="" alt="프로필 이미지" />
       <S.Idp>{name}</S.Idp>
       <S.Settingp style={{ marginTop: "100px" }}>
-        내 계정 관리 <FontAwesomeIcon icon={faChevronRight} />
+        <Link to="/myaccount">
+          내 계정 관리 <FontAwesomeIcon icon={faChevronRight} />
+        </Link>
       </S.Settingp>
       <S.Settingp>
-        내 활동 관리 <FontAwesomeIcon icon={faChevronRight} />
+        <Link to="/myactive">
+          내 활동 관리 <FontAwesomeIcon icon={faChevronRight} />
+        </Link>
       </S.Settingp>
+
       <S.Logoutp>
         <FontAwesomeIcon
           icon={faRightFromBracket}
