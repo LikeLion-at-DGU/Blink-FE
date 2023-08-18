@@ -44,7 +44,6 @@ export default function Mypage() {
       <p style={{ fontSize: "40px", fontWeight: "600", marginTop: "0px" }}>
         프로필
       </p>
-
       <S.ImgBox src="" alt="프로필 이미지" />
       <S.Idp>{name}</S.Idp>
       <S.Settingp style={{ marginTop: "100px" }}>
@@ -53,7 +52,8 @@ export default function Mypage() {
       <S.Settingp>
         내 활동 관리 <FontAwesomeIcon icon={faChevronRight} />
       </S.Settingp>
-      <S.Logoutp onClick={handleLogout}>
+      {/* onClick={handleLogout} */}
+      <S.Logoutp>
         <FontAwesomeIcon
           icon={faRightFromBracket}
           style={{ marginRight: "20px" }}
