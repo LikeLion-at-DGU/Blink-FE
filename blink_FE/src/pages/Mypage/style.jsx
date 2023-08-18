@@ -14,7 +14,6 @@ export const Outline = styled.div`
 export const ImgBox = styled.img`
   width: 200px;
   height: 200px;
-  background-color: pink;
   border-radius: 60px;
   margin-right: auto;
   margin-left: auto;
@@ -60,15 +59,15 @@ export const Listbar = styled.div`
 //account manage
 export const AccountBackground = styled.div`
   width: 62vw;
-  height: 98vh;
+  height: 1000px;
   padding-left: 50px;
   padding-top: 30px;
 `;
 
 export const Textbox = styled.div`
   background-color: #f6f6f7;
-  width: 57vw;
-  height: 100vh;
+  width: 53vw;
+  height: 800px;
   margin-top: 50px;
   display: flex;
   flex-direction: column;
@@ -82,14 +81,18 @@ export const Middle = styled.p`
 `;
 
 export const Explain = styled.p`
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 600;
-  margin-left: 250px;
+  margin-left: 80px;
   text-align: right;
-  margin-right: 20px;
 `;
 
 export const Inputt = styled.input`
   height: 50px;
-  width: 500px;
+  width: 450px;
+  font-size: 25px;
+  margin-left: 30px;
+  border: none;
+  border-radius: 10px;
+  margin-top: 30px;
 `;

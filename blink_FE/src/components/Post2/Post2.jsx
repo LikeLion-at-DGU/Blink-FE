@@ -1,7 +1,7 @@
 // Import necessary libraries
 import styled from "styled-components";
 import { MdLocationOn } from "react-icons/md";
-import HorizonLine from "../Layout/Line";
+import HorizonLine from "../post/PostWrite/Line";
 import React, { useState } from "react";
 import { AiOutlinePaperClip } from "react-icons/ai";
 
