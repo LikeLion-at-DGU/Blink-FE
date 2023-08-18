@@ -3,6 +3,7 @@ import styled from "styled-components";
 import InnerPost from "./InnerPost";
 import axios from "axios";
 import instance from "../../../assets/api/axios"; // 변경된 부분
+import { useNavigate } from "react-router-dom";
 
 const PostListSlideContainer = styled.div`
   overflow: auto;
@@ -103,23 +104,31 @@ export default function PostListScroll() {
       });
   }, []); // useEffect는 컴포넌트가 마운트될 때 한 번만 실행됩니다.
 
+  const navigate = useNavigate();
+
+  const handlePostClick = (postId) => {
+    navigate(`/post2/${postId}`);
+  };
+
   return (
     <PostListSlideContainer>
       {posts.map((post) => (
-        <InnerPost
-          key={post.id}
-          title={post.title}
-          category={post.category}
-          content={post.content}
-          // 제보해요 or 찾아요 나누는 항목
-          jebo={post.jebo_bool}
-          writer={post.writer}
-          lat={post.lat}
-          lng={post.lng}
-          location={post.location}
-          created_at={post.created_at}
-          comments_cnt={post.comments_cnt}
-        />
+        <div onClick={() => handlePostClick(post.id)}>
+          <InnerPost
+            key={post.id}
+            title={post.title}
+            category={post.category}
+            content={post.content}
+            // 제보해요 or 찾아요 나누는 항목
+            jebo={post.jebo_bool}
+            writer={post.writer}
+            lat={post.lat}
+            lng={post.lng}
+            location={post.location}
+            created_at={post.created_at}
+            comments_cnt={post.comments_cnt}
+          />
+        </div>
       ))}
     </PostListSlideContainer>
   );
