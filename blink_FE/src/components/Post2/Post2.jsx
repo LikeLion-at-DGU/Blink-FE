@@ -264,6 +264,7 @@ const Post2 = (props) => {
       .get(`/api/mainposts/${mainpostId}`)
       .then((response) => {
         setPostDetail(response.data); // 가져온 데이터를 상태에 저장
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching post data:", error);
@@ -301,7 +302,17 @@ const Post2 = (props) => {
         </Context>
       </PostBox>
 
-      <ClipBox>첨부파일 자리</ClipBox>
+      <ClipBox>
+        {postDetail.medias &&
+          postDetail.medias.map((mediaObj, index) => (
+            <img
+              key={index}
+              src={mediaObj.media}
+              alt={`Media ${index}`}
+              style={{ width: "100%", height: "auto" }}
+            />
+          ))}
+      </ClipBox>
       <CommentBox>
         <CommentTitle>댓글</CommentTitle>
         <CommentForm onSubmit={handleSubmitComment}>
