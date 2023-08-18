@@ -1,9 +1,12 @@
-// Import necessary libraries
 import styled from "styled-components";
 import { MdLocationOn } from "react-icons/md";
-import HorizonLine from "../post/PostWrite/Line";
-import React, { useState } from "react";
+import HorizonLine from "../Layout/Line";
+import React, { useState, useEffect } from "react";
 import { AiOutlinePaperClip } from "react-icons/ai";
+import "react-calendar/dist/Calendar.css";
+import axios from "../../assets/api/axios";
+import instance from "../../assets/api/axios";
+import { useParams } from "react-router-dom";
 
 const Outer = styled.div`
   width: 1150px;
@@ -70,11 +73,6 @@ const ClipBox = styled.div`
   border-radius: 10px;
 `;
 
-const Title = styled.div`
-  font-size: 38px;
-  margin: 30px;
-`;
-
 const Context = styled.div`
   font-size: 23px;
   font-weight: 500;
@@ -97,11 +95,6 @@ const PostDate = styled.div`
   top: 28%;
   left: 61%;
   color: gray;
-`;
-
-const TitleBox = styled.div`
-  display: flex;
-  justify-content: space-between;
 `;
 
 const CommentForm = styled.form`
@@ -180,8 +173,22 @@ const ClipIcon = styled(AiOutlinePaperClip)`
   margin-right: 10px;
 `;
 
+const TitleBox = styled.div`
+  display: flex;
+`;
+
+const Title = styled.div`
+  font-size: 38px;
+  margin: 10px 15px 10px 0;
+`;
+const Category = styled(Title)`
+  margin: 10px 5px 10px 20px;
+`;
+
 // Define your main functional component
-const Post2 = () => {
+const Post2 = (props) => {
+  let { mainpostId } = useParams();
+
   const handleSubmitReply = (event, parentIndex) => {
     event.preventDefault();
     const updatedComments = [...comments];
@@ -249,6 +256,20 @@ const Post2 = () => {
     }
   };
 
+  const [postDetail, setPostDetail] = useState({}); // Post 상세 정보를 저장할 State
+
+  useEffect(() => {
+    // mainpostId를 사용하여 상세 정보 가져오기
+    instance
+      .get(`/api/mainposts/${mainpostId}`)
+      .then((response) => {
+        // Set your state with the data
+      })
+      .catch((error) => {
+        console.error("Error fetching post data:", error);
+      });
+  }, [mainpostId]);
+
   return (
     <Outer>
       <Text>요청 상세 페이지</Text>
@@ -257,18 +278,26 @@ const Post2 = () => {
           <MdLocationOn size={30} />
           요청 위치
         </>
-        <Here>: 실제위치 </Here>
+        <Here>: {postDetail.location} </Here>
       </HereBox>
 
       <PostBox>
         <TitleBox>
-          <Title>제목</Title>
+          <Category>
+            {postDetail.category}
+            <></>
+          </Category>
+          <Title>{postDetail.title}</Title>
         </TitleBox>
         <HorizonLine />
         <Context>
-          첫줄
-          <br />
-          둘쨋줄
+          {postDetail.content}
+          {/* .split("\n").map((line, idx) => (
+            <span key={idx}>
+              {line}
+              <br />
+            </span>
+          ))} */}
         </Context>
       </PostBox>
 
@@ -294,7 +323,7 @@ const Post2 = () => {
               />
               <ClipIcon />
             </label>
-            <UploadButton type="submit">업로드</UploadButton>
+            <UploadButton type="submit">댓글달기</UploadButton>
           </CommentFooter>
         </CommentForm>
 
@@ -304,10 +333,10 @@ const Post2 = () => {
               <OriginalComment>
                 <strong>{comment.user}:</strong> {comment.text}
                 <ReplyButton onClick={() => handleReplyButtonClick(index)}>
-                  Reply
+                  답글
                 </ReplyButton>
                 <DeleteButton onClick={() => handleDeleteComment(index)}>
-                  Delete
+                  삭제
                 </DeleteButton>
               </OriginalComment>
             </div>
@@ -319,7 +348,7 @@ const Post2 = () => {
                   <DeleteButton
                     onClick={() => handleDeleteCommentReply(index, replyIndex)}
                   >
-                    Delete
+                    삭제
                   </DeleteButton>
                 </UploadedComment>
               </div>
@@ -346,7 +375,7 @@ const Post2 = () => {
                       />
                       <ClipIcon />
                     </label>
-                    <UploadButton type="submit">Reply</UploadButton>
+                    <UploadButton type="submit">업로드</UploadButton>
                   </CommentFooter>
                 </CommentForm>
               </div>
