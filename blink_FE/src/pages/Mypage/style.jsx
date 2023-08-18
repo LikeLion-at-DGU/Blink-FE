@@ -51,7 +51,7 @@ export const Background = styled.div`
 
 export const Listbar = styled.div`
   width: 60vw;
-  height: 1000px;
+  height: 200px;
   background-color: #f5f6f8;
   overflow-y: scroll;
 `;
@@ -59,7 +59,7 @@ export const Listbar = styled.div`
 //account manage
 export const AccountBackground = styled.div`
   width: 62vw;
-  height: 98vh;
+  height: 1000px;
   padding-left: 50px;
   padding-top: 30px;
 `;
@@ -67,7 +67,7 @@ export const AccountBackground = styled.div`
 export const Textbox = styled.div`
   background-color: #f6f6f7;
   width: 53vw;
-  height: 1000px;
+  height: 800px;
   margin-top: 50px;
   display: flex;
   flex-direction: column;
@@ -83,13 +83,16 @@ export const Middle = styled.p`
 export const Explain = styled.p`
   font-size: 25px;
   font-weight: 600;
-  margin-left: 100px;
+  margin-left: 80px;
   text-align: right;
-  margin-right: 20px;
 `;
 
 export const Inputt = styled.input`
   height: 50px;
-  width: 400px;
-  font-size: 20px;
+  width: 450px;
+  font-size: 25px;
+  margin-left: 30px;
+  border: none;
+  border-radius: 10px;
+  margin-top: 30px;
 `;

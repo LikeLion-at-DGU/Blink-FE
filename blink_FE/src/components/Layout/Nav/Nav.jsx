@@ -52,7 +52,7 @@ function Nav({ title, id }) {
     const token = localStorage.getItem("token");
     if (token) {
       // 토큰이 있다면 로그인된 상태로 판단하고 마이페이지로 이동
-      window.location.href = "/my";
+      window.location.href = "/myaccount";
     } else {
       // 토큰이 없다면 로그인 안된 상태로 판단하고 로그인 페이지로 이동
       window.location.href = "/signin";
