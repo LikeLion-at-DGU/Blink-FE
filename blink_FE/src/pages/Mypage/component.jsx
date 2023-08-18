@@ -7,9 +7,11 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "../../assets/api/axios";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Mypage() {
   const [name, setName] = useState(""); // Initialize with an appropriate value
+  const navigate = useNavigate();
 
   useEffect(() => {
     const apiUrl = "/api/mypage/profile";
@@ -40,6 +42,21 @@ export default function Mypage() {
     fetchUserProfile();
   }, []);
 
+  const handleLogout = () => {
+    // 로그아웃 API 요청
+    axios
+      .post("/api/dj-rest-auth/logout/")
+      .then((response) => {
+        // 만약 로그아웃이 성공적으로 이루어진다면, 로컬 스토리지에서 토큰을 제거하고
+        // 홈으로 리디렉션
+        localStorage.removeItem("token");
+        navigate("/home");
+      })
+      .catch((error) => {
+        console.error("Logout failed", error);
+      });
+  };
+
   return (
     <S.Outline>
       <p style={{ fontSize: "40px", fontWeight: "600", marginTop: "0px" }}>
@@ -58,7 +75,7 @@ export default function Mypage() {
         </Link>
       </S.Settingp>
 
-      <S.Logoutp>
+      <S.Logoutp onClick={handleLogout}>
         <FontAwesomeIcon
           icon={faRightFromBracket}
           style={{ marginRight: "20px" }}
