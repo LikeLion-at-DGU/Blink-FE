@@ -45,7 +45,6 @@ export default function Mypage() {
       <p style={{ fontSize: "40px", fontWeight: "600", marginTop: "0px" }}>
         프로필
       </p>
-
       <S.ImgBox src="" alt="프로필 이미지" />
       <S.Idp>{name}</S.Idp>
       <S.Settingp style={{ marginTop: "100px" }}>
